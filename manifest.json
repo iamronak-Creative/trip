@@ -1,0 +1,16 @@
+{
+  "name": "Uttarakhand Travel Companion",
+  "short_name": "UK Trip",
+  "description": "Offline Travel Guide & Digital Itinerary for Uttarakhand",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#08090d",
+  "theme_color": "#08090d",
+  "icons": [
+    {
+      "src": "./assets/images/airport.jpg",
+      "sizes": "500x500",
+      "type": "image/jpeg"
+    }
+  ]
+}

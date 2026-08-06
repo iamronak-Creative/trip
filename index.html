@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#08090d">
   <title>Uttarakhand Travel Companion</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
 
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +54,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
@@ -110,7 +114,7 @@
     }
 
     .app-brand-title {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', -apple-system, sans-serif;
       font-size: 18px;
       font-weight: 700;
       letter-spacing: -0.3px;
@@ -237,12 +241,6 @@
       transition: var(--transition-fast);
     }
 
-    .glass-card:active {
-      transform: scale(0.98);
-      background: var(--glass-bg-hover);
-    }
-
-    /* HERO "NEXT UP" WIDGET */
     .hero-widget {
       background: linear-gradient(135deg, rgba(10, 132, 255, 0.15) 0%, rgba(100, 210, 255, 0.05) 100%);
       border: 1px solid rgba(10, 132, 255, 0.3);
@@ -266,7 +264,7 @@
     }
 
     .hero-title {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', -apple-system, sans-serif;
       font-size: 20px;
       font-weight: 700;
       color: #fff;
@@ -331,7 +329,7 @@
     }
 
     .day-title {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', -apple-system, sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: #fff;
@@ -362,7 +360,6 @@
       cursor: pointer;
     }
 
-    /* TIMELINE ITEM */
     .timeline-container {
       position: relative;
       padding-left: 24px;
@@ -429,6 +426,7 @@
       border-radius: var(--radius-sm);
       object-fit: cover;
       flex-shrink: 0;
+      background: #1a1e2e;
     }
 
     .timeline-info {
@@ -461,9 +459,7 @@
       text-overflow: ellipsis;
     }
 
-    /* ==========================================
-       EXPLORE TAB (SEARCH & GRID CARDS)
-       ========================================== */
+    /* EXPLORE & CARDS GRID */
     .search-box {
       position: relative;
       margin-bottom: 14px;
@@ -547,7 +543,8 @@
     .place-card-img-wrap {
       position: relative;
       width: 100%;
-      padding-top: 75%; /* 4:3 Aspect Ratio */
+      padding-top: 75%;
+      background: #1a1e2e;
     }
 
     .place-card-img {
@@ -604,9 +601,7 @@
       margin-bottom: 6px;
     }
 
-    /* ==========================================
-       GUIDE & PACKING TAB
-       ========================================== */
+    /* GUIDE & PACKING TAB */
     .warning-box {
       background: rgba(255, 159, 10, 0.1);
       border: 1px solid rgba(255, 159, 10, 0.3);
@@ -681,7 +676,6 @@
       border-color: var(--accent-green);
     }
 
-    /* FOOD LIST */
     .food-card {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
@@ -704,9 +698,7 @@
       line-height: 1.5;
     }
 
-    /* ==========================================
-       TOOLKIT & EXPENSE LOG TAB
-       ========================================== */
+    /* TOOLKIT TAB */
     .expense-summary {
       background: linear-gradient(135deg, rgba(191, 90, 242, 0.15) 0%, rgba(10, 132, 255, 0.05) 100%);
       border: 1px solid rgba(191, 90, 242, 0.3);
@@ -719,7 +711,7 @@
     }
 
     .expense-amount {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', -apple-system, sans-serif;
       font-size: 26px;
       font-weight: 800;
       color: #fff;
@@ -760,9 +752,7 @@
       font-size: 13px;
     }
 
-    /* ==========================================
-       SLIDE-UP BOTTOM SHEET MODAL
-       ========================================== */
+    /* MODAL BOTTOM SHEET */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -815,6 +805,7 @@
       width: 100%;
       height: 200px;
       object-fit: cover;
+      background: #1a1e2e;
     }
 
     .sheet-content {
@@ -845,7 +836,7 @@
     }
 
     .sheet-title {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', -apple-system, sans-serif;
       font-size: 22px;
       font-weight: 700;
       color: #fff;
@@ -910,9 +901,7 @@
 </head>
 <body>
 
-  <!-- ==========================================
-       APP HEADER
-       ========================================== -->
+  <!-- APP HEADER -->
   <header class="app-header">
     <div class="app-brand">
       <div class="app-brand-logo">UK</div>
@@ -924,9 +913,7 @@
     </div>
   </header>
 
-  <!-- ==========================================
-       MAIN VIEWPORT CONTENT
-       ========================================== -->
+  <!-- MAIN VIEWPORT CONTENT -->
   <main class="main-viewport">
 
     <!-- 1. MY TRIP TAB -->
@@ -949,7 +936,7 @@
 
       <!-- TIMELINE LIST -->
       <div id="timeline-container">
-        <!-- Rendered dynamically by JS -->
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
@@ -969,25 +956,25 @@
       </div>
 
       <div class="cards-grid" id="explore-grid">
-        <!-- Rendered dynamically by JS -->
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
     <!-- 3. GUIDE TAB -->
     <section id="tab-guide" class="tab-content">
       <div class="warning-box">
-        <div class="warning-title">⚠️ September Weather & Road Warning</div>
+        <div class="warning-title">⚡ Offline Mode Ready & Monsoon Alert</div>
         <div class="warning-desc">
-          Monsoon tail-end! Expect sudden light showers. Hill roads near Landour & Surkanda can have occasional mud patches. Drive carefully and keep umbrellas ready!
+          This app works 100% offline! All images, itinerary notes, and checklists are saved locally. Light monsoon rain expected in hill roads—keep umbrellas handy!
         </div>
       </div>
 
-      <h3 style="font-family:'Outfit'; font-size:16px; margin-bottom:12px; color:#fff;">🎒 Packing Checklist</h3>
+      <h3 style="font-family:'Outfit',sans-serif; font-size:16px; margin-bottom:12px; color:#fff;">🎒 Packing Checklist</h3>
       <div class="packing-list" id="packing-container">
         <!-- Rendered dynamically -->
       </div>
 
-      <h3 style="font-family:'Outfit'; font-size:16px; margin-bottom:12px; color:#fff; margin-top:20px;">🍲 Must-Try Local Food</h3>
+      <h3 style="font-family:'Outfit',sans-serif; font-size:16px; margin-bottom:12px; color:#fff; margin-top:20px;">🍲 Must-Try Local Food</h3>
       <div class="food-card">
         <div class="food-city">Mussoorie & Landour</div>
         <div class="food-spots">Pancakes & Omelette @ Char Dukan, Hot Chocolate @ Cafe Ivy, Garhwali Thali @ Dev Darshan.</div>
@@ -1001,7 +988,7 @@
         <div class="food-spots">Famous Aloo Puri @ Mohan Ji Puri Wale, Kulhad Lassi & Rabri near Har Ki Pauri ghats.</div>
       </div>
 
-      <h3 style="font-family:'Outfit'; font-size:16px; margin-bottom:12px; color:#fff; margin-top:20px;">📞 Emergency Contacts</h3>
+      <h3 style="font-family:'Outfit',sans-serif; font-size:16px; margin-bottom:12px; color:#fff; margin-top:20px;">📞 Emergency Contacts</h3>
       <div class="food-card">
         <div class="food-spots" style="display:flex; flex-direction:column; gap:6px;">
           <div>🚨 Disaster Management: <strong>1070</strong></div>
@@ -1013,7 +1000,7 @@
 
     <!-- 4. TOOLKIT TAB -->
     <section id="tab-toolkit" class="tab-content">
-      <h3 style="font-family:'Outfit'; font-size:18px; margin-bottom:12px; color:#fff;">💳 Trip Expense Tracker</h3>
+      <h3 style="font-family:'Outfit',sans-serif; font-size:18px; margin-bottom:12px; color:#fff;">💳 Trip Expense Tracker</h3>
       <div class="expense-summary">
         <div>
           <div style="font-size:12px; color:var(--text-secondary);">Total Spent</div>
@@ -1038,9 +1025,7 @@
 
   </main>
 
-  <!-- ==========================================
-       BOTTOM NAVIGATION BAR
-       ========================================== -->
+  <!-- BOTTOM NAVIGATION BAR -->
   <nav class="bottom-nav">
     <button class="nav-item active" data-tab="tab-trip">
       <svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
@@ -1060,9 +1045,7 @@
     </button>
   </nav>
 
-  <!-- ==========================================
-       SLIDE-UP BOTTOM SHEET MODAL
-       ========================================== -->
+  <!-- SLIDE-UP BOTTOM SHEET MODAL -->
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="bottom-sheet" id="bottom-sheet">
     <div class="sheet-handle"></div>
@@ -1088,51 +1071,54 @@
     </div>
   </div>
 
-  <!-- ==========================================
-       JAVASCRIPT LOGIC & STATE MANAGEMENT
-       ========================================== -->
+  <!-- JAVASCRIPT & PWA SERVICE WORKER REGISTRATION -->
   <script>
-    // 1. DATA SOURCE (28 Places Mapped to Sep 4 - Sep 9)
+    // Register Service Worker for 100% Offline Support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          console.log('PWA Service Worker registered for offline use!');
+        }).catch(err => {
+          console.log('Service Worker registration failed:', err);
+        });
+      });
+    }
+
+    // DATA SOURCE WITH LOCAL ASSET FALLBACKS
     const PLACES_DATA = [
-      // DAY 1 (Sep 4)
-      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant. Pick up pre-booked cab outside arrivals.", map_query: "Dehradun+Airport+Jolly+Grant", image_url: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", type: "logistics" },
-      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Sulphur water springs & cave. Quick scenic stop.", map_query: "Sahastradhara+Dehradun", image_url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80", type: "place" },
-      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant Buddha statue & India's tallest stupa. Peaceful photo stop.", map_query: "Mindrolling+Monastery+Dehradun", image_url: "https://images.unsplash.com/photo-1545987796-200d7f8a5360?w=600&q=80", type: "place" },
-      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning colonial Greco-Roman architecture & lush lawns.", map_query: "Forest+Research+Institute+Dehradun", image_url: "https://images.unsplash.com/photo-1566847899949-3a68fd927ed5?w=600&q=80", type: "place" },
-      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine with natural water dripping on Shivling.", map_query: "Tapkeshwar+Mahadev+Temple+Dehradun", image_url: "https://images.unsplash.com/photo-1609947017136-9daf32e2c86e?w=600&q=80", type: "place" },
-      { id: 6, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in & Mall Road Stroll", time: "6:45 PM", tip: "Check into Mussoorie hotel. Evening stroll & street food at Library Chowk.", map_query: "Mall+Road+Mussoorie", image_url: "https://images.unsplash.com/photo-1597074866923-dc0589150a53?w=600&q=80", type: "place" },
+      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant. Pick up pre-booked cab outside arrivals.", map_query: "Dehradun+Airport+Jolly+Grant", image_url: "./assets/images/airport.jpg", fallback_url: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=500&q=70", type: "logistics" },
+      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Sulphur water springs & cave. Quick scenic stop.", map_query: "Sahastradhara+Dehradun", image_url: "./assets/images/sahastradhara.jpg", fallback_url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=500&q=70", type: "place" },
+      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant Buddha statue & India's tallest stupa. Peaceful photo stop.", map_query: "Mindrolling+Monastery+Dehradun", image_url: "./assets/images/mindrolling.jpg", fallback_url: "https://images.unsplash.com/photo-1545987796-200d7f8a5360?w=500&q=70", type: "place" },
+      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning colonial Greco-Roman architecture & lush lawns.", map_query: "Forest+Research+Institute+Dehradun", image_url: "./assets/images/fri.jpg", fallback_url: "https://images.unsplash.com/photo-1566847899949-3a68fd927ed5?w=500&q=70", type: "place" },
+      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine with natural water dripping on Shivling.", map_query: "Tapkeshwar+Mahadev+Temple+Dehradun", image_url: "./assets/images/tapkeshwar.jpg", fallback_url: "https://images.unsplash.com/photo-1609947017136-9daf32e2c86e?w=500&q=70", type: "place" },
+      { id: 6, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in & Mall Road Stroll", time: "6:45 PM", tip: "Check into Mussoorie hotel. Evening stroll & street food at Library Chowk.", map_query: "Mall+Road+Mussoorie", image_url: "./assets/images/mallroad.jpg", fallback_url: "https://images.unsplash.com/photo-1597074866923-dc0589150a53?w=500&q=70", type: "place" },
 
-      // DAY 2 (Sep 5)
-      { id: 7, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "PRO TIP: Early start beats the huge tourist bus crowds!", map_query: "Kempty+Falls+Mussoorie", image_url: "https://images.unsplash.com/photo-1432405972618-c6b0cfba8948?w=600&q=80", type: "place" },
-      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to second highest point for Doon valley panorama.", map_query: "Gun+Hill+Mussoorie", image_url: "https://images.unsplash.com/photo-1586003292384-4110760aeb72?w=600&q=80", type: "place" },
-      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Relaxed, peaceful 3 km flat walking track.", map_query: "Camels+Back+Road+Mussoorie", image_url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80", type: "place" },
-      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba & Char Dukan", time: "2:30 PM", tip: "Telescope views of snow peaks + pancakes at Char Dukan Landour.", map_query: "Char+Dukan+Landour", image_url: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&q=80", type: "place" },
-      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "3:30 PM", tip: "Short 30-min easy hike to historic survey house with valley views.", map_query: "George+Everest+Peak+Mussoorie", image_url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80", type: "place" },
-      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End", time: "6:00 PM", tip: "Quiet forested edge of town. Perfect spot for sunset.", map_query: "Clouds+End+Mussoorie", image_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80", type: "place" },
+      { id: 7, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "PRO TIP: Early start beats the huge tourist bus crowds!", map_query: "Kempty+Falls+Mussoorie", image_url: "./assets/images/kempty.jpg", fallback_url: "https://images.unsplash.com/photo-1432405972618-c6b0cfba8948?w=500&q=70", type: "place" },
+      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to second highest point for Doon valley panorama.", map_query: "Gun+Hill+Mussoorie", image_url: "./assets/images/gunhill.jpg", fallback_url: "https://images.unsplash.com/photo-1586003292384-4110760aeb72?w=500&q=70", type: "place" },
+      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Relaxed, peaceful 3 km flat walking track.", map_query: "Camels+Back+Road+Mussoorie", image_url: "./assets/images/camelsback.jpg", fallback_url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=500&q=70", type: "place" },
+      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba & Char Dukan", time: "2:30 PM", tip: "Telescope views of snow peaks + pancakes at Char Dukan Landour.", map_query: "Char+Dukan+Landour", image_url: "./assets/images/chardukan.jpg", fallback_url: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=500&q=70", type: "place" },
+      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "3:30 PM", tip: "Short 30-min easy hike to historic survey house with valley views.", map_query: "George+Everest+Peak+Mussoorie", image_url: "./assets/images/georgeeverest.jpg", fallback_url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500&q=70", type: "place" },
+      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End", time: "6:00 PM", tip: "Quiet forested edge of town. Perfect spot for sunset.", map_query: "Clouds+End+Mussoorie", image_url: "./assets/images/cloudsend.jpg", fallback_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&q=70", type: "place" },
 
-      // DAY 3 (Sep 6)
-      { id: 13, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway to Shaktipeeth shrine with 360° Himalayan views.", map_query: "Surkanda+Devi+Temple+Ropeway", image_url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80", type: "place" },
-      { id: 14, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Drive to Rishikesh via Chamba", time: "10:30 AM", tip: "Scenic mountain drive (~3 hr drive). Check into Rishikesh hotel.", map_query: "Rishikesh+Uttarakhand", image_url: "https://images.unsplash.com/photo-1597074866923-dc0589150a53?w=600&q=80", type: "logistics" },
-      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:00 PM", tip: "Dip your feet in the holy Ganges water after travel.", map_query: "Ganga+Beach+Rishikesh", image_url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80", type: "place" },
-      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset aarti. Arrive by 5:45 PM for seating.", map_query: "Parmarth+Niketan+Rishikesh", image_url: "https://images.unsplash.com/photo-1536152470836-b943b246da54?w=600&q=80", type: "place" },
+      { id: 13, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway to Shaktipeeth shrine with 360° Himalayan views.", map_query: "Surkanda+Devi+Temple+Ropeway", image_url: "./assets/images/surkanda.jpg", fallback_url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=500&q=70", type: "place" },
+      { id: 14, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Drive to Rishikesh via Chamba", time: "10:30 AM", tip: "Scenic mountain drive (~3 hr drive). Check into Rishikesh hotel.", map_query: "Rishikesh+Uttarakhand", image_url: "./assets/images/rishikesh_drive.jpg", fallback_url: "https://images.unsplash.com/photo-1597074866923-dc0589150a53?w=500&q=70", type: "logistics" },
+      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:00 PM", tip: "Dip your feet in the holy Ganges water after travel.", map_query: "Ganga+Beach+Rishikesh", image_url: "./assets/images/gangabeach.jpg", fallback_url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500&q=70", type: "place" },
+      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset aarti. Arrive by 5:45 PM for seating.", map_query: "Parmarth+Niketan+Rishikesh", image_url: "./assets/images/parmarth.jpg", fallback_url: "https://images.unsplash.com/photo-1536152470836-b943b246da54?w=500&q=70", type: "place" },
 
-      // DAY 4 (Sep 7)
-      { id: 17, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling rafting stretch down Ganges with cliff jumping!", map_query: "Shivpuri+Rishikesh", image_url: "https://images.unsplash.com/photo-1528819622765-d6bcf132f793?w=600&q=80", type: "adventure" },
-      { id: 18, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee (83m).", map_query: "Jumpin+Heights+Rishikesh", image_url: "https://images.unsplash.com/photo-1530866495561-507c83e5a86e?w=600&q=80", type: "adventure" },
-      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Walk across iconic suspension bridges & riverside markets.", map_query: "Lakshman+Jhula+Rishikesh", image_url: "https://images.unsplash.com/photo-1601017589396-d99237460f85?w=600&q=80", type: "place" },
-      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple. Climb to top floor for sunset river views.", map_query: "Tera+Manzil+Temple+Rishikesh", image_url: "https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=80", type: "place" },
-      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Famous 1968 Beatles retreat. Incredible meditation dome graffiti.", map_query: "Beatles+Ashram+Rishikesh", image_url: "https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=600&q=80", type: "place" },
-      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with floating lamps & traditional chants.", map_query: "Triveni+Ghat+Rishikesh", image_url: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=600&q=80", type: "place" },
+      { id: 17, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling rafting stretch down Ganges with cliff jumping!", map_query: "Shivpuri+Rishikesh", image_url: "./assets/images/rafting.jpg", fallback_url: "https://images.unsplash.com/photo-1528819622765-d6bcf132f793?w=500&q=70", type: "adventure" },
+      { id: 18, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee (83m).", map_query: "Jumpin+Heights+Rishikesh", image_url: "./assets/images/bungee.jpg", fallback_url: "https://images.unsplash.com/photo-1530866495561-507c83e5a86e?w=500&q=70", type: "adventure" },
+      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Walk across iconic suspension bridges & riverside markets.", map_query: "Lakshman+Jhula+Rishikesh", image_url: "./assets/images/ramjhula.jpg", fallback_url: "https://images.unsplash.com/photo-1601017589396-d99237460f85?w=500&q=70", type: "place" },
+      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple. Climb to top floor for sunset river views.", map_query: "Tera+Manzil+Temple+Rishikesh", image_url: "./assets/images/teramanzil.jpg", fallback_url: "https://images.unsplash.com/photo-1548013146-72479768bada?w=500&q=70", type: "place" },
+      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Famous 1968 Beatles retreat. Incredible meditation dome graffiti.", map_query: "Beatles+Ashram+Rishikesh", image_url: "./assets/images/beatles.jpg", fallback_url: "https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=500&q=70", type: "place" },
+      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with floating lamps & traditional chants.", map_query: "Triveni+Ghat+Rishikesh", image_url: "./assets/images/trivenighat.jpg", fallback_url: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=500&q=70", type: "place" },
 
-      // DAY 5 (Sep 8)
-      { id: 23, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Breathtaking early morning Himalayan panorama.", map_query: "Kunjapuri+Devi+Temple", image_url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80", type: "place" },
-      { id: 24, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9-11 AM bypasses strict afternoon temple closure (1-4 PM).", map_query: "Neelkanth+Mahadev+Temple", image_url: "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=600&q=80", type: "place" },
-      { id: 25, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Vashishta Gufa Cave", time: "11:00 AM", tip: "Ancient riverbank meditation cave. Incredibly peaceful 30-min stop.", map_query: "Vashishta+Gufa+Rishikesh", image_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80", type: "place" },
-      { id: 26, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then head to Har Ki Pauri by 5:15 PM for the iconic Aarti.", map_query: "Har+Ki+Pauri+Haridwar", image_url: "https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=80", type: "place" },
+      { id: 23, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Breathtaking early morning Himalayan panorama.", map_query: "Kunjapuri+Devi+Temple", image_url: "./assets/images/kunjapuri.jpg", fallback_url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&q=70", type: "place" },
+      { id: 24, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9-11 AM bypasses strict afternoon temple closure (1-4 PM).", map_query: "Neelkanth+Mahadev+Temple", image_url: "./assets/images/neelkanth.jpg", fallback_url: "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=500&q=70", type: "place" },
+      { id: 25, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Vashishta Gufa Cave", time: "11:00 AM", tip: "Ancient riverbank meditation cave. Incredibly peaceful 30-min stop.", map_query: "Vashishta+Gufa+Rishikesh", image_url: "./assets/images/vashishta.jpg", fallback_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=500&q=70", type: "place" },
+      { id: 26, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then head to Har Ki Pauri by 5:15 PM for the iconic Aarti.", map_query: "Har+Ki+Pauri+Haridwar", image_url: "./assets/images/harkipauri.jpg", fallback_url: "https://images.unsplash.com/photo-1548013146-72479768bada?w=500&q=70", type: "place" },
 
-      // DAY 6 (Sep 9)
-      { id: 27, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to mythologically rich Daksha temple.", map_query: "Chandi+Devi+Temple+Haridwar", image_url: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80", type: "place" },
-      { id: 28, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport", time: "10:15 AM", tip: "Quick prasad/brassware shopping, then 45-min drive to airport for 2:00 PM flight.", map_query: "Dehradun+Airport+Jolly+Grant", image_url: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", type: "logistics" }
+      { id: 27, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to mythologically rich Daksha temple.", map_query: "Chandi+Devi+Temple+Haridwar", image_url: "./assets/images/chandidevi.jpg", fallback_url: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=500&q=70", type: "place" },
+      { id: 28, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport", time: "10:15 AM", tip: "Quick prasad/brassware shopping, then 45-min drive to airport for 2:00 PM flight.", map_query: "Dehradun+Airport+Jolly+Grant", image_url: "./assets/images/motibazaar.jpg", fallback_url: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=500&q=70", type: "logistics" }
     ];
 
     const PACKING_DATA = [
@@ -1141,14 +1127,12 @@
       "Power Bank (10,000mAh+)", "Mosquito Repellent Cream", "Compact Travel Umbrella", "Motion Sickness Meds"
     ];
 
-    // 2. STATE ENGINE
     let doneIds = JSON.parse(localStorage.getItem('uttarakhand_done_places') || '[]');
     let packedItems = JSON.parse(localStorage.getItem('uttarakhand_packed_items') || '[]');
     let placeNotes = JSON.parse(localStorage.getItem('uttarakhand_notes') || '{}');
     let expenses = JSON.parse(localStorage.getItem('uttarakhand_expenses') || '[]');
     let activeModalId = null;
 
-    // 3. INITIALIZATION
     document.addEventListener('DOMContentLoaded', () => {
       initNavigation();
       renderTimeline();
@@ -1160,7 +1144,6 @@
       initModalEvents();
     });
 
-    // 4. NAVIGATION HANDLER
     function initNavigation() {
       document.querySelectorAll('.nav-item').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1173,7 +1156,6 @@
         });
       });
 
-      // Filter pills in Explore
       document.querySelectorAll('.filter-pill').forEach(pill => {
         pill.addEventListener('click', () => {
           document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
@@ -1182,14 +1164,12 @@
         });
       });
 
-      // Search bar input
       document.getElementById('search-input').addEventListener('input', (e) => {
         const activeCity = document.querySelector('.filter-pill.active').getAttribute('data-city');
         renderExploreGrid(activeCity, e.target.value);
       });
     }
 
-    // 5. RENDER TIMELINE (MY TRIP)
     function renderTimeline() {
       const container = document.getElementById('timeline-container');
       container.innerHTML = '';
@@ -1207,7 +1187,6 @@
         const daySec = document.createElement('div');
         daySec.className = 'day-section';
 
-        // Day Route Map link generator
         const multiQuery = items.map(i => i.map_query).join('/');
         const mapsUrl = `https://www.google.com/maps/dir/${multiQuery}`;
 
@@ -1226,7 +1205,7 @@
               const isDone = doneIds.includes(item.id);
               return `
                 <div class="timeline-card ${isDone ? 'done' : ''}" onclick="openModal(${item.id})">
-                  <img class="timeline-thumb" src="${item.image_url}" alt="${item.name}">
+                  <img class="timeline-thumb" src="${item.image_url}" onerror="this.src='${item.fallback_url}'" alt="${item.name}">
                   <div class="timeline-info">
                     <div class="timeline-time">${item.time} • ${item.city}</div>
                     <div class="timeline-title">${item.name}</div>
@@ -1241,7 +1220,6 @@
       }
     }
 
-    // 6. RENDER EXPLORE GRID
     function renderExploreGrid(cityFilter = 'all', searchQuery = '') {
       const grid = document.getElementById('explore-grid');
       grid.innerHTML = '';
@@ -1263,7 +1241,7 @@
 
         card.innerHTML = `
           <div class="place-card-img-wrap">
-            <img class="place-card-img" src="${item.image_url}" alt="${item.name}">
+            <img class="place-card-img" src="${item.image_url}" onerror="this.src='${item.fallback_url}'" alt="${item.name}">
             <div class="place-card-badge">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
@@ -1280,7 +1258,6 @@
       });
     }
 
-    // 7. RENDER PACKING LIST
     function renderPackingList() {
       const container = document.getElementById('packing-container');
       container.innerHTML = '';
@@ -1311,7 +1288,6 @@
       renderPackingList();
     }
 
-    // 8. RENDER EXPENSES
     function renderExpenses() {
       const list = document.getElementById('expense-list');
       const totalEl = document.getElementById('total-expense');
@@ -1345,7 +1321,6 @@
       }
     });
 
-    // 9. PROGRESS & HERO WIDGET
     function updateProgress() {
       const count = doneIds.length;
       const total = PLACES_DATA.length;
@@ -1366,13 +1341,15 @@
       }
     }
 
-    // 10. MODAL SHEET HANDLERS
     function openModal(id) {
       activeModalId = id;
       const item = PLACES_DATA.find(p => p.id === id);
       if (!item) return;
 
-      document.getElementById('sheet-img').src = item.image_url;
+      const imgEl = document.getElementById('sheet-img');
+      imgEl.src = item.image_url;
+      imgEl.onerror = () => { imgEl.src = item.fallback_url; };
+
       document.getElementById('sheet-city').innerText = `${item.city} • DAY ${item.day}`;
       document.getElementById('sheet-time').innerText = item.time;
       document.getElementById('sheet-title').innerText = item.name;
