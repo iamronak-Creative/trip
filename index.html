@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Uttarakhand Travel Companion</title>
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================
+       DESIGN SYSTEM & CSS VARIABLES
+       ========================================== */
+    :root {
+      --bg-dark: #08090d;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1a1e2e 0%, #08090d 70%);
+      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-bg-hover: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.09);
+      --glass-border-light: rgba(255, 255, 255, 0.15);
+      
+      --accent-blue: #0a84ff;
+      --accent-cyan: #64d2ff;
+      --accent-green: #30d158;
+      --accent-amber: #ff9f0a;
+      --accent-purple: #bf5af2;
+      --accent-rose: #ff3b30;
+      
+      --text-main: #f2f2f7;
+      --text-secondary: #9898a0;
+      --text-muted: #636366;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      
+      --blur-val: blur(24px);
+      --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      --transition-fast: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+      --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg-dark);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* ==========================================
+       APP SHELL & LAYOUT
+       ========================================== */
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      padding-top: env(safe-area-inset-top, 0px);
+      background: rgba(8, 9, 13, 0.75);
+      backdrop-filter: var(--blur-val);
+      -webkit-backdrop-filter: var(--blur-val);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+
+    .app-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(10, 132, 255, 0.4);
+    }
+
+    .app-brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      background: linear-gradient(180deg, #ffffff 0%, #d0d0d8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .progress-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(48, 209, 88, 0.12);
+      border: 1px solid rgba(48, 209, 88, 0.3);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-green);
+    }
+
+    .progress-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+
+    .main-viewport {
+      flex: 1;
+      margin-top: 60px;
+      margin-bottom: calc(65px + env(safe-area-inset-bottom, 0px));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================
+       BOTTOM NAVIGATION BAR
+       ========================================== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: calc(65px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: rgba(8, 9, 13, 0.85);
+      backdrop-filter: var(--blur-val);
+      -webkit-backdrop-filter: var(--blur-val);
+      border-top: 1px solid var(--glass-border);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      transition: var(--transition-fast);
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 25%;
+      height: 100%;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: var(--transition-fast);
+    }
+
+    .nav-item.active {
+      color: var(--accent-blue);
+    }
+
+    .nav-item.active svg {
+      stroke: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================
+       GLASS CARDS & COMPONENTS
+       ========================================== */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: var(--blur-val);
+      -webkit-backdrop-filter: var(--blur-val);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-glow);
+      transition: var(--transition-fast);
+    }
+
+    .glass-card:active {
+      transform: scale(0.98);
+      background: var(--glass-bg-hover);
+    }
+
+    /* HERO "NEXT UP" WIDGET */
+    .hero-widget {
+      background: linear-gradient(135deg, rgba(10, 132, 255, 0.15) 0%, rgba(100, 210, 255, 0.05) 100%);
+      border: 1px solid rgba(10, 132, 255, 0.3);
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), #0066cc);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(10, 132, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--glass-bg-hover);
+      color: var(--text-main);
+      border: 1px solid var(--glass-border-light);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    /* DAY TIMELINE SECTION */
+    .day-section {
+      margin-bottom: 24px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    .day-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .day-date-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--glass-border);
+      padding: 3px 8px;
+      border-radius: 12px;
+      color: var(--accent-cyan);
+    }
+
+    .route-btn {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* TIMELINE ITEM */
+    .timeline-container {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%);
+    }
+
+    .timeline-card {
+      position: relative;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .timeline-card::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px solid var(--text-muted);
+      z-index: 2;
+      transition: var(--transition-fast);
+    }
+
+    .timeline-card.done::before {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    .timeline-card.done {
+      border-color: rgba(48, 209, 88, 0.25);
+      background: rgba(48, 209, 88, 0.03);
+    }
+
+    .timeline-card.done .timeline-title {
+      text-decoration: line-through;
+      color: var(--text-secondary);
+    }
+
+    .timeline-thumb {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .timeline-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .timeline-time {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-amber);
+      margin-bottom: 2px;
+    }
+
+    .timeline-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .timeline-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ==========================================
+       EXPLORE TAB (SEARCH & GRID CARDS)
+       ========================================== */
+    .search-box {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px 12px 42px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      backdrop-filter: var(--blur-val);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-muted);
+    }
+
+    .pill-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+
+    .pill-scroll::-webkit-scrollbar { display: none; }
+
+    .filter-pill {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .filter-pill.active {
+      background: var(--accent-blue);
+      border-color: var(--accent-blue);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(10, 132, 255, 0.4);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .place-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .place-card-img-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 75%; /* 4:3 Aspect Ratio */
+    }
+
+    .place-card-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .place-card-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(8, 9, 13, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition-fast);
+    }
+
+    .place-card.done .place-card-badge {
+      opacity: 1;
+      background: var(--accent-green);
+    }
+
+    .place-card-body {
+      padding: 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .place-card-city {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 2px;
+    }
+
+    .place-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    /* ==========================================
+       GUIDE & PACKING TAB
+       ========================================== */
+    .warning-box {
+      background: rgba(255, 159, 10, 0.1);
+      border: 1px solid rgba(255, 159, 10, 0.3);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .warning-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-amber);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .warning-desc {
+      font-size: 12px;
+      color: #e0e0e0;
+      line-height: 1.4;
+    }
+
+    .packing-list {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .packing-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .packing-item.checked {
+      border-color: rgba(48, 209, 88, 0.3);
+      background: rgba(48, 209, 88, 0.05);
+    }
+
+    .packing-item-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .packing-item.checked .packing-item-text {
+      text-decoration: line-through;
+      color: var(--text-secondary);
+    }
+
+    .checkbox-custom {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+    }
+
+    .packing-item.checked .checkbox-custom {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    /* FOOD LIST */
+    .food-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .food-city {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .food-spots {
+      font-size: 13px;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    /* ==========================================
+       TOOLKIT & EXPENSE LOG TAB
+       ========================================== */
+    .expense-summary {
+      background: linear-gradient(135deg, rgba(191, 90, 242, 0.15) 0%, rgba(10, 132, 255, 0.05) 100%);
+      border: 1px solid rgba(191, 90, 242, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .expense-amount {
+      font-family: 'Outfit', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .expense-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .expense-input {
+      flex: 1;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .expense-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .expense-item {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    /* ==========================================
+       SLIDE-UP BOTTOM SHEET MODAL
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-fast);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 85dvh;
+      background: #12141c;
+      border-top: 1px solid var(--glass-border-light);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      z-index: 201;
+      transform: translateY(100%);
+      transition: var(--transition-spring);
+      overflow-y: auto;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .bottom-sheet.active {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      margin: 10px auto 6px auto;
+    }
+
+    .sheet-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .sheet-content {
+      padding: 18px;
+    }
+
+    .sheet-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .sheet-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      background: rgba(100, 210, 255, 0.1);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    .sheet-time {
+      font-size: 12px;
+      color: var(--accent-amber);
+      font-weight: 600;
+    }
+
+    .sheet-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .sheet-tip {
+      font-size: 14px;
+      color: var(--text-main);
+      line-height: 1.5;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .notes-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .notes-textarea {
+      width: 100%;
+      height: 70px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      resize: none;
+      margin-bottom: 18px;
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .sheet-actions button {
+      flex: 1;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    .btn-danger {
+      background: rgba(255, 59, 48, 0.15);
+      color: var(--accent-rose);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       APP HEADER
+       ========================================== -->
+  <header class="app-header">
+    <div class="app-brand">
+      <div class="app-brand-logo">UK</div>
+      <div class="app-brand-title">Uttarakhand Trip</div>
+    </div>
+    <div class="progress-pill" id="global-progress">
+      <div class="progress-dot"></div>
+      <span id="progress-text">0/28 Done</span>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN VIEWPORT CONTENT
+       ========================================== -->
+  <main class="main-viewport">
+
+    <!-- 1. MY TRIP TAB -->
+    <section id="tab-trip" class="tab-content active">
+      <!-- HERO NEXT UP WIDGET -->
+      <div class="hero-widget" id="hero-widget">
+        <div class="hero-tag">📍 Next Destination</div>
+        <div class="hero-title" id="hero-title">Loading next stop...</div>
+        <div class="hero-meta" id="hero-meta">
+          <span>⏰ --:--</span> • <span id="hero-city">--</span>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary" id="hero-nav-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Navigate
+          </button>
+          <button class="btn-secondary" id="hero-done-btn">Mark Done</button>
+        </div>
+      </div>
+
+      <!-- TIMELINE LIST -->
+      <div id="timeline-container">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- 2. EXPLORE TAB -->
+    <section id="tab-explore" class="tab-content">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search places, activities, tips...">
+      </div>
+
+      <div class="pill-scroll">
+        <button class="filter-pill active" data-city="all">All Cities</button>
+        <button class="filter-pill" data-city="Dehradun">Dehradun</button>
+        <button class="filter-pill" data-city="Mussoorie">Mussoorie</button>
+        <button class="filter-pill" data-city="Rishikesh">Rishikesh</button>
+        <button class="filter-pill" data-city="Haridwar">Haridwar</button>
+      </div>
+
+      <div class="cards-grid" id="explore-grid">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- 3. GUIDE TAB -->
+    <section id="tab-guide" class="tab-content">
+      <div class="warning-box">
+        <div class="warning-title">⚠️ September Weather & Road Warning</div>
+        <div class="warning-desc">
+          Monsoon tail-end! Expect sudden light showers. Hill roads near Landour & Surkanda can have occasional mud patches. Drive carefully and keep umbrellas ready!
+        </div>
+      </div>
+
+      <h3 style="font-family:'Outfit'; font-size:16px; margin-bottom:12px; color:#fff;">🎒 Packing Checklist</h3>
+      <div class="packing-list" id="packing-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <h3 style="font-family:'Outfit'; font-size:16px; margin-bottom:12px; color:#fff; margin-top:20px;">🍲 Must-Try Local Food</h3>
+      <div class="food-card">
+        <div class="food-city">Mussoorie & Landour</div>
+        <div class="food-spots">Pancakes & Omelette @ Char Dukan, Hot Chocolate @ Cafe Ivy, Garhwali Thali @ Dev Darshan.</div>
+      </div>
+      <div class="food-card">
+        <div class="food-city">Rishikesh</div>
+        <div class="food-spots">Israeli Falafel @ Freedom Cafe, Ayurvedic Thali @ Ayushakti, Herbal Tea @ German Bakery.</div>
+      </div>
+      <div class="food-card">
+        <div class="food-city">Haridwar</div>
+        <div class="food-spots">Famous Aloo Puri @ Mohan Ji Puri Wale, Kulhad Lassi & Rabri near Har Ki Pauri ghats.</div>
+      </div>
+
+      <h3 style="font-family:'Outfit'; font-size:16px; margin-bottom:12px; color:#fff; margin-top:20px;">📞 Emergency Contacts</h3>
+      <div class="food-card">
+        <div class="food-spots" style="display:flex; flex-direction:column; gap:6px;">
+          <div>🚨 Disaster Management: <strong>1070</strong></div>
+          <div>Police Assistance: <strong>112</strong></div>
+          <div>Ambulance Service: <strong>108</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TOOLKIT TAB -->
+    <section id="tab-toolkit" class="tab-content">
+      <h3 style="font-family:'Outfit'; font-size:18px; margin-bottom:12px; color:#fff;">💳 Trip Expense Tracker</h3>
+      <div class="expense-summary">
+        <div>
+          <div style="font-size:12px; color:var(--text-secondary);">Total Spent</div>
+          <div class="expense-amount" id="total-expense">₹0</div>
+        </div>
+      </div>
+
+      <div class="expense-form">
+        <input type="text" id="expense-title" class="expense-input" placeholder="e.g., Rafting Ticket">
+        <input type="number" id="expense-amount" class="expense-input" style="width:90px;" placeholder="Amount">
+        <button class="btn-primary" id="add-expense-btn">Add</button>
+      </div>
+
+      <div class="expense-list" id="expense-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div style="margin-top:40px;">
+        <button class="btn-danger" id="reset-app-btn">Reset All Trip Progress Data</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       BOTTOM NAVIGATION BAR
+       ========================================== -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="tab-trip">
+      <svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+      <span>My Trip</span>
+    </button>
+    <button class="nav-item" data-tab="tab-explore">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span>Explore</span>
+    </button>
+    <button class="nav-item" data-tab="tab-guide">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Guide</span>
+    </button>
+    <button class="nav-item" data-tab="tab-toolkit">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span>Toolkit</span>
+    </button>
+  </nav>
+
+  <!-- ==========================================
+       SLIDE-UP BOTTOM SHEET MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="bottom-sheet" id="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <img id="sheet-img" class="sheet-img" src="" alt="Place Image">
+    <div class="sheet-content">
+      <div class="sheet-meta">
+        <span class="sheet-tag" id="sheet-city">CITY</span>
+        <span class="sheet-time" id="sheet-time">11:00 AM</span>
+      </div>
+      <h2 class="sheet-title" id="sheet-title">Place Name</h2>
+      <div class="sheet-tip" id="sheet-tip">Pro tip details...</div>
+
+      <label class="notes-label">Personal Notes & Booking Details</label>
+      <textarea id="sheet-notes" class="notes-textarea" placeholder="Add cab driver details, ticket ref numbers, memory notes..."></textarea>
+
+      <div class="sheet-actions">
+        <button class="btn-secondary" id="sheet-nav-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          Maps
+        </button>
+        <button class="btn-primary" id="sheet-done-btn">Mark Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT LOGIC & STATE MANAGEMENT
+       ========================================== -->
+  <script>
+    // 1. DATA SOURCE (28 Places Mapped to Sep 4 - Sep 9)
+    const PLACES_DATA = [
+      // DAY 1 (Sep 4)
+      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant. Pick up pre-booked cab outside arrivals.", map_query: "Dehradun+Airport+Jolly+Grant", image_url: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", type: "logistics" },
+      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Sulphur water springs & cave. Quick scenic stop.", map_query: "Sahastradhara+Dehradun", image_url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80", type: "place" },
+      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant Buddha statue & India's tallest stupa. Peaceful photo stop.", map_query: "Mindrolling+Monastery+Dehradun", image_url: "https://images.unsplash.com/photo-1545987796-200d7f8a5360?w=600&q=80", type: "place" },
+      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning colonial Greco-Roman architecture & lush lawns.", map_query: "Forest+Research+Institute+Dehradun", image_url: "https://images.unsplash.com/photo-1566847899949-3a68fd927ed5?w=600&q=80", type: "place" },
+      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine with natural water dripping on Shivling.", map_query: "Tapkeshwar+Mahadev+Temple+Dehradun", image_url: "https://images.unsplash.com/photo-1609947017136-9daf32e2c86e?w=600&q=80", type: "place" },
+      { id: 6, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in & Mall Road Stroll", time: "6:45 PM", tip: "Check into Mussoorie hotel. Evening stroll & street food at Library Chowk.", map_query: "Mall+Road+Mussoorie", image_url: "https://images.unsplash.com/photo-1597074866923-dc0589150a53?w=600&q=80", type: "place" },
+
+      // DAY 2 (Sep 5)
+      { id: 7, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "PRO TIP: Early start beats the huge tourist bus crowds!", map_query: "Kempty+Falls+Mussoorie", image_url: "https://images.unsplash.com/photo-1432405972618-c6b0cfba8948?w=600&q=80", type: "place" },
+      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to second highest point for Doon valley panorama.", map_query: "Gun+Hill+Mussoorie", image_url: "https://images.unsplash.com/photo-1586003292384-4110760aeb72?w=600&q=80", type: "place" },
+      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Relaxed, peaceful 3 km flat walking track.", map_query: "Camels+Back+Road+Mussoorie", image_url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80", type: "place" },
+      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba & Char Dukan", time: "2:30 PM", tip: "Telescope views of snow peaks + pancakes at Char Dukan Landour.", map_query: "Char+Dukan+Landour", image_url: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&q=80", type: "place" },
+      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "3:30 PM", tip: "Short 30-min easy hike to historic survey house with valley views.", map_query: "George+Everest+Peak+Mussoorie", image_url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80", type: "place" },
+      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End", time: "6:00 PM", tip: "Quiet forested edge of town. Perfect spot for sunset.", map_query: "Clouds+End+Mussoorie", image_url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80", type: "place" },
+
+      // DAY 3 (Sep 6)
+      { id: 13, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway to Shaktipeeth shrine with 360° Himalayan views.", map_query: "Surkanda+Devi+Temple+Ropeway", image_url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80", type: "place" },
+      { id: 14, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Drive to Rishikesh via Chamba", time: "10:30 AM", tip: "Scenic mountain drive (~3 hr drive). Check into Rishikesh hotel.", map_query: "Rishikesh+Uttarakhand", image_url: "https://images.unsplash.com/photo-1597074866923-dc0589150a53?w=600&q=80", type: "logistics" },
+      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:00 PM", tip: "Dip your feet in the holy Ganges water after travel.", map_query: "Ganga+Beach+Rishikesh", image_url: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80", type: "place" },
+      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset aarti. Arrive by 5:45 PM for seating.", map_query: "Parmarth+Niketan+Rishikesh", image_url: "https://images.unsplash.com/photo-1536152470836-b943b246da54?w=600&q=80", type: "place" },
+
+      // DAY 4 (Sep 7)
+      { id: 17, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling rafting stretch down Ganges with cliff jumping!", map_query: "Shivpuri+Rishikesh", image_url: "https://images.unsplash.com/photo-1528819622765-d6bcf132f793?w=600&q=80", type: "adventure" },
+      { id: 18, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee (83m).", map_query: "Jumpin+Heights+Rishikesh", image_url: "https://images.unsplash.com/photo-1530866495561-507c83e5a86e?w=600&q=80", type: "adventure" },
+      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Walk across iconic suspension bridges & riverside markets.", map_query: "Lakshman+Jhula+Rishikesh", image_url: "https://images.unsplash.com/photo-1601017589396-d99237460f85?w=600&q=80", type: "place" },
+      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple. Climb to top floor for sunset river views.", map_query: "Tera+Manzil+Temple+Rishikesh", image_url: "https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=80", type: "place" },
+      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Famous 1968 Beatles retreat. Incredible meditation dome graffiti.", map_query: "Beatles+Ashram+Rishikesh", image_url: "https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=600&q=80", type: "place" },
+      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with floating lamps & traditional chants.", map_query: "Triveni+Ghat+Rishikesh", image_url: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=600&q=80", type: "place" },
+
+      // DAY 5 (Sep 8)
+      { id: 23, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Breathtaking early morning Himalayan panorama.", map_query: "Kunjapuri+Devi+Temple", image_url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80", type: "place" },
+      { id: 24, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9-11 AM bypasses strict afternoon temple closure (1-4 PM).", map_query: "Neelkanth+Mahadev+Temple", image_url: "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=600&q=80", type: "place" },
+      { id: 25, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Vashishta Gufa Cave", time: "11:00 AM", tip: "Ancient riverbank meditation cave. Incredibly peaceful 30-min stop.", map_query: "Vashishta+Gufa+Rishikesh", image_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80", type: "place" },
+      { id: 26, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then head to Har Ki Pauri by 5:15 PM for the iconic Aarti.", map_query: "Har+Ki+Pauri+Haridwar", image_url: "https://images.unsplash.com/photo-1548013146-72479768bada?w=600&q=80", type: "place" },
+
+      // DAY 6 (Sep 9)
+      { id: 27, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to mythologically rich Daksha temple.", map_query: "Chandi+Devi+Temple+Haridwar", image_url: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80", type: "place" },
+      { id: 28, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport", time: "10:15 AM", tip: "Quick prasad/brassware shopping, then 45-min drive to airport for 2:00 PM flight.", map_query: "Dehradun+Airport+Jolly+Grant", image_url: "https://images.unsplash.com/photo-1436491865332-7a61a109db05?w=600&q=80", type: "logistics" }
+    ];
+
+    const PACKING_DATA = [
+      "Light Windbreaker / Raincoat", "Sturdy Grip Trekking Shoes", "Floaters / Sandals (For Ghats)",
+      "Full Sleeve Breathable Tees", "Quick Dry Shorts / Pants", "Light Sweater (Landour Evenings)",
+      "Power Bank (10,000mAh+)", "Mosquito Repellent Cream", "Compact Travel Umbrella", "Motion Sickness Meds"
+    ];
+
+    // 2. STATE ENGINE
+    let doneIds = JSON.parse(localStorage.getItem('uttarakhand_done_places') || '[]');
+    let packedItems = JSON.parse(localStorage.getItem('uttarakhand_packed_items') || '[]');
+    let placeNotes = JSON.parse(localStorage.getItem('uttarakhand_notes') || '{}');
+    let expenses = JSON.parse(localStorage.getItem('uttarakhand_expenses') || '[]');
+    let activeModalId = null;
+
+    // 3. INITIALIZATION
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavigation();
+      renderTimeline();
+      renderExploreGrid();
+      renderPackingList();
+      renderExpenses();
+      updateProgress();
+      updateHeroWidget();
+      initModalEvents();
+    });
+
+    // 4. NAVIGATION HANDLER
+    function initNavigation() {
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+          
+          btn.classList.add('active');
+          const targetTab = btn.getAttribute('data-tab');
+          document.getElementById(targetTab).classList.add('active');
+        });
+      });
+
+      // Filter pills in Explore
+      document.querySelectorAll('.filter-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          renderExploreGrid(pill.getAttribute('data-city'), document.getElementById('search-input').value);
+        });
+      });
+
+      // Search bar input
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        const activeCity = document.querySelector('.filter-pill.active').getAttribute('data-city');
+        renderExploreGrid(activeCity, e.target.value);
+      });
+    }
+
+    // 5. RENDER TIMELINE (MY TRIP)
+    function renderTimeline() {
+      const container = document.getElementById('timeline-container');
+      container.innerHTML = '';
+
+      const groupedByDay = PLACES_DATA.reduce((acc, item) => {
+        if (!acc[item.day]) acc[item.day] = [];
+        acc[item.day].push(item);
+        return acc;
+      }, {});
+
+      for (let day in groupedByDay) {
+        const items = groupedByDay[day];
+        const dateLabel = items[0].dateLabel;
+
+        const daySec = document.createElement('div');
+        daySec.className = 'day-section';
+
+        // Day Route Map link generator
+        const multiQuery = items.map(i => i.map_query).join('/');
+        const mapsUrl = `https://www.google.com/maps/dir/${multiQuery}`;
+
+        daySec.innerHTML = `
+          <div class="day-header">
+            <div class="day-title">
+              Day ${day} <span class="day-date-badge">${dateLabel}</span>
+            </div>
+            <button class="route-btn" onclick="window.open('${mapsUrl}', '_blank')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              Day Route
+            </button>
+          </div>
+          <div class="timeline-container">
+            ${items.map(item => {
+              const isDone = doneIds.includes(item.id);
+              return `
+                <div class="timeline-card ${isDone ? 'done' : ''}" onclick="openModal(${item.id})">
+                  <img class="timeline-thumb" src="${item.image_url}" alt="${item.name}">
+                  <div class="timeline-info">
+                    <div class="timeline-time">${item.time} • ${item.city}</div>
+                    <div class="timeline-title">${item.name}</div>
+                    <div class="timeline-sub">${item.tip}</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+        container.appendChild(daySec);
+      }
+    }
+
+    // 6. RENDER EXPLORE GRID
+    function renderExploreGrid(cityFilter = 'all', searchQuery = '') {
+      const grid = document.getElementById('explore-grid');
+      grid.innerHTML = '';
+
+      let filtered = PLACES_DATA;
+      if (cityFilter !== 'all') {
+        filtered = filtered.filter(p => p.city.toLowerCase() === cityFilter.toLowerCase());
+      }
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.tip.toLowerCase().includes(q));
+      }
+
+      filtered.forEach(item => {
+        const isDone = doneIds.includes(item.id);
+        const card = document.createElement('div');
+        card.className = `place-card ${isDone ? 'done' : ''}`;
+        card.onclick = () => openModal(item.id);
+
+        card.innerHTML = `
+          <div class="place-card-img-wrap">
+            <img class="place-card-img" src="${item.image_url}" alt="${item.name}">
+            <div class="place-card-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+          <div class="place-card-body">
+            <div>
+              <div class="place-card-city">${item.city}</div>
+              <div class="place-card-title">${item.name}</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted);">${item.time}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // 7. RENDER PACKING LIST
+    function renderPackingList() {
+      const container = document.getElementById('packing-container');
+      container.innerHTML = '';
+
+      PACKING_DATA.forEach((item, idx) => {
+        const isChecked = packedItems.includes(idx);
+        const el = document.createElement('div');
+        el.className = `packing-item ${isChecked ? 'checked' : ''}`;
+        el.onclick = () => togglePacking(idx);
+
+        el.innerHTML = `
+          <span class="packing-item-text">${item}</span>
+          <div class="checkbox-custom">
+            ${isChecked ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+          </div>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    function togglePacking(idx) {
+      if (packedItems.includes(idx)) {
+        packedItems = packedItems.filter(i => i !== idx);
+      } else {
+        packedItems.push(idx);
+      }
+      localStorage.setItem('uttarakhand_packed_items', JSON.stringify(packedItems));
+      renderPackingList();
+    }
+
+    // 8. RENDER EXPENSES
+    function renderExpenses() {
+      const list = document.getElementById('expense-list');
+      const totalEl = document.getElementById('total-expense');
+      list.innerHTML = '';
+
+      let total = 0;
+      expenses.forEach((item, idx) => {
+        total += Number(item.amount);
+        const el = document.createElement('div');
+        el.className = 'expense-item';
+        el.innerHTML = `
+          <span>${item.title}</span>
+          <span style="font-weight:700; color:var(--accent-green);">₹${item.amount}</span>
+        `;
+        list.appendChild(el);
+      });
+
+      totalEl.innerText = `₹${total}`;
+    }
+
+    document.getElementById('add-expense-btn').addEventListener('click', () => {
+      const title = document.getElementById('expense-title').value.trim();
+      const amount = document.getElementById('expense-amount').value.trim();
+
+      if (title && amount) {
+        expenses.push({ title, amount });
+        localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
+        document.getElementById('expense-title').value = '';
+        document.getElementById('expense-amount').value = '';
+        renderExpenses();
+      }
+    });
+
+    // 9. PROGRESS & HERO WIDGET
+    function updateProgress() {
+      const count = doneIds.length;
+      const total = PLACES_DATA.length;
+      document.getElementById('progress-text').innerText = `${count}/${total} Done`;
+    }
+
+    function updateHeroWidget() {
+      const remaining = PLACES_DATA.filter(p => !doneIds.includes(p.id));
+      if (remaining.length > 0) {
+        const next = remaining[0];
+        document.getElementById('hero-title').innerText = next.name;
+        document.getElementById('hero-meta').innerHTML = `<span>⏰ ${next.time}</span> • <span>Day ${next.day} (${next.city})</span>`;
+        document.getElementById('hero-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${next.map_query}`, '_blank');
+        document.getElementById('hero-done-btn').onclick = () => toggleDone(next.id);
+      } else {
+        document.getElementById('hero-title').innerText = "🎉 All Places Completed!";
+        document.getElementById('hero-meta').innerText = "Hope you had an unforgettable Uttarakhand trip!";
+      }
+    }
+
+    // 10. MODAL SHEET HANDLERS
+    function openModal(id) {
+      activeModalId = id;
+      const item = PLACES_DATA.find(p => p.id === id);
+      if (!item) return;
+
+      document.getElementById('sheet-img').src = item.image_url;
+      document.getElementById('sheet-city').innerText = `${item.city} • DAY ${item.day}`;
+      document.getElementById('sheet-time').innerText = item.time;
+      document.getElementById('sheet-title').innerText = item.name;
+      document.getElementById('sheet-tip').innerText = item.tip;
+      document.getElementById('sheet-notes').value = placeNotes[id] || '';
+
+      const isDone = doneIds.includes(id);
+      const doneBtn = document.getElementById('sheet-done-btn');
+      doneBtn.innerText = isDone ? 'Mark Undone' : 'Mark Done';
+      doneBtn.style.background = isDone ? 'var(--accent-rose)' : 'linear-gradient(135deg, var(--accent-blue), #0066cc)';
+
+      document.getElementById('modal-overlay').classList.add('active');
+      document.getElementById('bottom-sheet').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('active');
+      document.getElementById('bottom-sheet').classList.remove('active');
+      activeModalId = null;
+    }
+
+    function initModalEvents() {
+      document.getElementById('modal-overlay').addEventListener('click', closeModal);
+      
+      document.getElementById('sheet-nav-btn').addEventListener('click', () => {
+        if (activeModalId) {
+          const item = PLACES_DATA.find(p => p.id === activeModalId);
+          window.open(`https://www.google.com/maps/search/?api=1&query=${item.map_query}`, '_blank');
+        }
+      });
+
+      document.getElementById('sheet-done-btn').addEventListener('click', () => {
+        if (activeModalId) {
+          toggleDone(activeModalId);
+          closeModal();
+        }
+      });
+
+      document.getElementById('sheet-notes').addEventListener('input', (e) => {
+        if (activeModalId) {
+          placeNotes[activeModalId] = e.target.value;
+          localStorage.setItem('uttarakhand_notes', JSON.stringify(placeNotes));
+        }
+      });
+
+      document.getElementById('reset-app-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset all saved trip progress data?')) {
+          localStorage.clear();
+          doneIds = [];
+          packedItems = [];
+          placeNotes = {};
+          expenses = [];
+          renderTimeline();
+          renderExploreGrid();
+          renderPackingList();
+          renderExpenses();
+          updateProgress();
+          updateHeroWidget();
+          alert('Trip progress reset!');
+        }
+      });
+    }
+
+    function toggleDone(id) {
+      if (doneIds.includes(id)) {
+        doneIds = doneIds.filter(i => i !== id);
+      } else {
+        doneIds.push(id);
+      }
+      localStorage.setItem('uttarakhand_done_places', JSON.stringify(doneIds));
+      renderTimeline();
+      renderExploreGrid();
+      updateProgress();
+      updateHeroWidget();
+    }
+  </script>
+</body>
+</html>
