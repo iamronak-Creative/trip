@@ -1,8 +1,10 @@
-const CACHE_NAME = 'uttarakhand-trip-v2';
+const CACHE_NAME = 'uttarakhand-trip-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
+  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
   './assets/images/airport.jpg',
   './assets/images/sahastradhara.jpg',
   './assets/images/mindrolling.jpg',

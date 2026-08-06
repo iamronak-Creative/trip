@@ -5,44 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#07080b">
+  <meta name="theme-color" content="#0a0c14">
   <title>Uttarakhand Travel Companion</title>
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Leaflet.js Interactive Map CSS & JS (Cached by SW for Offline) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
     /* ==========================================
-       DRIBBBLE / MOBBIN HIGH-END DARK NEON THEME
+       PREMIUM DARK NEON DESIGN SYSTEM
        ========================================== */
     :root {
-      --bg-dark: #07080b;
-      --bg-card: #13151f;
-      --bg-card-hover: #1c1f2e;
+      --bg-dark: #0a0c14;
+      --bg-card: #141724;
+      --bg-card-hover: #1c2032;
       --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-active: rgba(34, 197, 94, 0.4);
       
-      --accent-neon: #ccff00; /* High-contrast Electric Lime */
-      --accent-cyan: #00f0ff;
-      --accent-blue: #0a84ff;
-      --accent-purple: #bf5af2;
-      --accent-amber: #ff9f0a;
-      --accent-rose: #ff3b30;
+      --accent-green: #22c55e; /* Vibrant Emerald Green */
+      --accent-cyan: #06b6d4;
+      --accent-amber: #f59e0b;
+      --accent-purple: #a855f7;
+      --accent-rose: #ef4444;
       
       --text-main: #ffffff;
-      --text-secondary: #9a9cae;
-      --text-muted: #62657a;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
       
-      --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 24px;
       --radius-xl: 32px;
       
-      --shadow-card: 0 12px 32px 0 rgba(0, 0, 0, 0.6);
+      --shadow-glow: 0 10px 30px rgba(0, 0, 0, 0.5);
       --transition-fast: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
       --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -51,7 +54,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
@@ -67,17 +70,13 @@
       position: relative;
     }
 
-    /* ==========================================
-       APP HEADER (User Profile & Location)
-       ========================================== */
+    /* APP HEADER */
     .app-header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 70px;
       padding-top: env(safe-area-inset-top, 0px);
-      background: rgba(7, 8, 11, 0.85);
+      background: rgba(10, 12, 20, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
@@ -85,66 +84,53 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-left: 18px;
-      padding-right: 18px;
+      padding-left: 18px; padding-right: 18px;
     }
 
-    .user-profile {
+    .user-brand {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-neon), var(--accent-cyan));
-      padding: 2px;
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(204, 255, 0, 0.3);
-    }
-
-    .user-avatar img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .user-info-greeting {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .user-info-name {
       font-family: 'Outfit', sans-serif;
+      font-weight: 800;
       font-size: 16px;
+      color: #0a0c14;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.4);
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
       font-weight: 700;
       color: #fff;
     }
 
-    .header-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(204, 255, 0, 0.12);
-      border: 1px solid rgba(204, 255, 0, 0.3);
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .header-progress {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
       padding: 6px 14px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
-      color: var(--accent-neon);
+      color: var(--accent-green);
     }
 
-    /* ==========================================
-       MAIN SCROLLABLE VIEWPORT
-       ========================================== */
+    /* MAIN VIEWPORT */
     .main-viewport {
       flex: 1;
       margin-top: 70px;
@@ -169,18 +155,15 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ==========================================
-       HORIZONTAL DATE STRIP CALENDAR
-       ========================================== */
+    /* HORIZONTAL DATE CALENDAR STRIP */
     .calendar-strip {
       display: flex;
       gap: 10px;
       overflow-x: auto;
       padding-bottom: 14px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       scrollbar-width: none;
     }
-
     .calendar-strip::-webkit-scrollbar { display: none; }
 
     .date-card {
@@ -191,7 +174,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       min-width: 68px;
       cursor: pointer;
       transition: var(--transition-fast);
@@ -202,7 +184,6 @@
       font-size: 11px;
       font-weight: 600;
       color: var(--text-secondary);
-      text-transform: uppercase;
     }
 
     .date-card-num {
@@ -214,132 +195,155 @@
     }
 
     .date-card.active {
-      background: var(--accent-neon);
-      border-color: var(--accent-neon);
-      box-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
     }
-
     .date-card.active .date-card-day,
-    .date-card.active .date-card-num {
-      color: #07080b;
-    }
+    .date-card.active .date-card-num { color: #0a0c14; }
 
-    /* ==========================================
-       HERO "WHAT'S NEXT" FEATURE CARD
-       ========================================== */
-    .hero-banner {
-      position: relative;
+    /* FEATURED BIG HERO CARD (NEXT DESTINATION) */
+    .hero-featured-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border-active);
       border-radius: var(--radius-xl);
       overflow: hidden;
       margin-bottom: 24px;
-      box-shadow: var(--shadow-card);
-      border: 1px solid var(--glass-border);
-      background: var(--bg-card);
+      box-shadow: var(--shadow-glow);
+      position: relative;
     }
 
-    .hero-banner-img {
+    .hero-img-wrap {
+      position: relative;
       width: 100%;
-      height: 220px;
+      height: 230px;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      display: block;
     }
 
-    .hero-banner-overlay {
+    .hero-badge-top {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(180deg, rgba(7,8,11,0.2) 0%, rgba(7,8,11,0.95) 90%);
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      top: 14px; left: 14px;
+      background: var(--accent-green);
+      color: #0a0c14;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
     }
 
-    .hero-badge-pill {
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      background: var(--accent-neon);
-      color: #07080b;
-      padding: 4px 10px;
-      border-radius: 12px;
-      width: fit-content;
+    .hero-body {
+      padding: 20px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 8px;
     }
 
-    .hero-banner-title {
+    .hero-time-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.15);
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+
+    .hero-city-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+    }
+
+    .hero-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       color: #fff;
       line-height: 1.2;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    /* METRICS STRIP (Duration, Distance, Rating) */
-    .metrics-grid {
-      display: flex;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(12px);
+    .hero-tip-text {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
-      padding: 10px 12px;
-      margin-bottom: 14px;
-      justify-content: space-around;
+      padding: 12px;
     }
 
-    .metric-item {
+    .hero-metrics-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      margin-bottom: 18px;
+    }
+
+    .hero-metric-item {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .metric-value {
-      font-size: 13px;
+    .hero-metric-val {
+      font-size: 14px;
       font-weight: 700;
-      color: var(--accent-cyan);
+      color: #fff;
     }
 
-    .metric-label {
+    .hero-metric-lbl {
       font-size: 10px;
-      color: var(--text-secondary);
+      color: var(--text-muted);
       text-transform: uppercase;
       margin-top: 2px;
     }
 
-    .hero-actions-row {
+    .hero-actions {
       display: flex;
       gap: 10px;
     }
 
-    .btn-neon {
-      background: var(--accent-neon);
-      color: #07080b;
+    .btn-action-primary {
+      background: var(--accent-green);
+      color: #0a0c14;
       border: none;
       border-radius: var(--radius-md);
-      padding: 12px 18px;
-      font-size: 13px;
+      padding: 13px 20px;
+      font-size: 14px;
       font-weight: 800;
       display: flex;
       align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(204, 255, 0, 0.4);
-      flex: 1;
       justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+      flex: 1;
     }
 
-    .btn-glass {
+    .btn-action-secondary {
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
-      font-size: 13px;
+      padding: 13px 18px;
+      font-size: 14px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -347,21 +351,16 @@
       cursor: pointer;
     }
 
-    /* ==========================================
-       TIMELINE & MEAL CARDS
-       ========================================== */
-    .section-label {
+    /* VERTICAL TIMELINE STACK CARDS */
+    .section-title {
       font-family: 'Outfit', sans-serif;
       font-size: 18px;
       font-weight: 800;
       color: #fff;
       margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
 
-    .timeline-card-v2 {
+    .location-card-row {
       background: var(--bg-card);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
@@ -375,49 +374,49 @@
       transition: var(--transition-fast);
     }
 
-    .timeline-card-v2:active {
-      transform: scale(0.97);
+    .location-card-row:active {
+      transform: scale(0.98);
       background: var(--bg-card-hover);
     }
 
-    .timeline-card-v2.done {
-      border-color: rgba(48, 209, 88, 0.3);
-      background: rgba(48, 209, 88, 0.04);
+    .location-card-row.done {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: rgba(34, 197, 94, 0.04);
     }
 
-    .timeline-card-v2.done .card-v2-title {
+    .location-card-row.done .row-title {
       text-decoration: line-through;
       color: var(--text-secondary);
     }
 
-    .card-v2-img {
-      width: 70px;
-      height: 70px;
+    .row-img {
+      width: 80px;
+      height: 80px;
       border-radius: var(--radius-md);
       object-fit: cover;
       flex-shrink: 0;
       background: #1a1e2e;
     }
 
-    .card-v2-body {
+    .row-body {
       flex: 1;
       overflow: hidden;
     }
 
-    .card-v2-meta {
+    .row-meta {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 4px;
     }
 
-    .card-v2-time {
+    .row-time {
       font-size: 11px;
       font-weight: 700;
-      color: var(--accent-neon);
+      color: var(--accent-amber);
     }
 
-    .card-v2-type {
+    .row-tag {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
@@ -427,7 +426,7 @@
       color: var(--accent-cyan);
     }
 
-    .card-v2-title {
+    .row-title {
       font-family: 'Outfit', sans-serif;
       font-size: 16px;
       font-weight: 700;
@@ -438,7 +437,7 @@
       margin-bottom: 4px;
     }
 
-    .card-v2-sub {
+    .row-sub {
       font-size: 12px;
       color: var(--text-secondary);
       white-space: nowrap;
@@ -446,104 +445,135 @@
       text-overflow: ellipsis;
     }
 
-    /* MEAL CARD SPECIAL STYLING */
-    .meal-card {
-      background: linear-gradient(135deg, rgba(255, 159, 10, 0.12) 0%, rgba(204, 255, 0, 0.04) 100%);
-      border: 1px solid rgba(255, 159, 10, 0.3);
-    }
-
-    .meal-card .card-v2-time {
-      color: var(--accent-amber);
-    }
-
-    /* ==========================================
-       MAP EXPLORER CANVAS & CARDS
-       ========================================== */
-    .map-hub-banner {
-      height: 180px;
-      background: linear-gradient(180deg, #131726 0%, #07080b 100%);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--glass-border);
-      position: relative;
-      margin-bottom: 18px;
-      overflow: hidden;
+    /* INLINE SELECTION BUTTON ON CARD */
+    .row-check-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .map-grid-pattern {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: radial-gradient(rgba(204, 255, 0, 0.15) 1px, transparent 0);
-      background-size: 16px 16px;
-    }
-
-    .map-node {
-      position: absolute;
-      background: var(--accent-neon);
-      color: #07080b;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 800;
-      box-shadow: 0 0 16px var(--accent-neon);
+      flex-shrink: 0;
+      transition: var(--transition-fast);
+      background: none;
       cursor: pointer;
     }
 
-    .cards-grid-v2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+    .location-card-row.done .row-check-btn {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
     }
 
-    .explore-card {
+    .meal-row {
+      border-color: rgba(245, 158, 11, 0.3);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(10, 12, 20, 0.4) 100%);
+    }
+
+    /* REAL INTERACTIVE MAP TAB */
+    #leaflet-map {
+      width: 100%;
+      height: 280px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--glass-border);
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+
+    .gps-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .gps-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* GUIDE & ESSENTIALS TAB */
+    .guide-card {
       background: var(--bg-card);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: var(--transition-fast);
-      position: relative;
+      padding: 16px;
+      margin-bottom: 16px;
     }
 
-    .explore-card-img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .explore-card-content {
-      padding: 12px;
-    }
-
-    .explore-card-city {
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--accent-neon);
-      text-transform: uppercase;
-    }
-
-    .explore-card-title {
+    .guide-card-title {
       font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .food-item-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .food-item-row:last-child { border-bottom: none; margin-bottom: 0; }
+
+    .food-spot-name {
       font-size: 14px;
       font-weight: 700;
       color: #fff;
-      margin-top: 2px;
-      line-height: 1.3;
     }
 
-    /* ==========================================
-       BOTTOM NAVIGATION BAR (DRIBBBLE STYLE)
-       ========================================== */
-    .bottom-nav-v2 {
+    .food-spot-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .packing-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .packing-check-row {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .packing-check-row.checked {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: rgba(34, 197, 94, 0.06);
+    }
+
+    .packing-check-row.checked span {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    /* BOTTOM FLOATING NAVIGATION BAR */
+    .bottom-nav-floating {
       position: fixed;
-      bottom: 12px;
-      left: 16px;
-      right: 16px;
+      bottom: 14px; left: 18px; right: 18px;
       height: 65px;
-      background: rgba(19, 21, 31, 0.9);
+      background: rgba(20, 23, 36, 0.92);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--glass-border);
@@ -555,21 +585,23 @@
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     }
 
-    .nav-btn {
+    .nav-tab-btn {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+      gap: 3px;
       color: var(--text-muted);
       background: none;
       border: none;
       cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
       transition: var(--transition-fast);
+      width: 25%;
     }
 
-    .nav-btn svg {
+    .nav-tab-btn svg {
       width: 22px;
       height: 22px;
       fill: none;
@@ -579,25 +611,21 @@
       stroke-linejoin: round;
     }
 
-    .nav-btn.active {
-      background: var(--accent-neon);
-      color: #07080b;
-      box-shadow: 0 0 16px rgba(204, 255, 0, 0.4);
+    .nav-tab-btn.active {
+      color: var(--accent-green);
     }
 
-    .nav-btn.active svg {
-      stroke: #07080b;
+    .nav-tab-btn.active svg {
+      stroke: var(--accent-green);
     }
 
-    /* ==========================================
-       SLIDE-UP MODAL BOTTOM SHEET
-       ========================================== */
+    /* MODAL BOTTOM SHEET */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 200;
       opacity: 0;
       visibility: hidden;
@@ -613,7 +641,7 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       max-height: 88dvh;
-      background: #0f111a;
+      background: #111422;
       border-top: 1px solid var(--glass-border);
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
       z-index: 201;
@@ -627,19 +655,13 @@
       transform: translateY(0);
     }
 
-    .sheet-img-wrap {
-      position: relative;
-      width: 100%;
-      height: 220px;
-    }
-
     .sheet-img {
       width: 100%;
-      height: 100%;
+      height: 220px;
       object-fit: cover;
     }
 
-    .sheet-content {
+    .sheet-body {
       padding: 20px;
     }
 
@@ -656,10 +678,24 @@
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
       padding: 14px;
-      font-size: 13px;
+      font-size: 13.5px;
       line-height: 1.5;
       color: var(--text-main);
       margin-bottom: 18px;
+    }
+
+    .sheet-notes {
+      width: 100%;
+      height: 75px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      resize: none;
+      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -667,31 +703,27 @@
 
   <!-- APP HEADER -->
   <header class="app-header">
-    <div class="user-profile">
-      <div class="user-avatar">
-        <img src="./assets/images/airport.jpg" alt="Profile">
-      </div>
+    <div class="user-brand">
+      <div class="brand-logo">UK</div>
       <div>
-        <div class="user-info-greeting">Welcome Back</div>
-        <div class="user-info-name">Ronak's Trip Companion</div>
+        <div class="brand-title">Uttarakhand Companion</div>
+        <div class="brand-sub">Sep 4 – Sep 9 • 5 Nights</div>
       </div>
     </div>
-    <div class="header-badge" id="global-progress">
-      <span id="progress-text">0/28 Done</span>
-    </div>
+    <div class="header-progress" id="progress-pill">0/31 Visited</div>
   </header>
 
-  <!-- MAIN VIEWPORT CONTENT -->
+  <!-- MAIN VIEWPORT -->
   <main class="main-viewport">
 
-    <!-- 1. MY TRIP TAB -->
+    <!-- TAB 1: MY TRIP (TIMELINE) -->
     <section id="tab-trip" class="tab-content active">
 
-      <!-- HORIZONTAL CALENDAR STRIP -->
+      <!-- HORIZONTAL DATE STRIP -->
       <div class="calendar-strip">
         <div class="date-card active" data-day="all">
           <span class="date-card-day">ALL</span>
-          <span class="date-card-num">DAYS</span>
+          <span class="date-card-num">TRIP</span>
         </div>
         <div class="date-card" data-day="1">
           <span class="date-card-day">WED</span>
@@ -719,196 +751,271 @@
         </div>
       </div>
 
-      <!-- HERO "NEXT DESTINATION" BANNER -->
-      <div class="hero-banner" id="hero-banner">
-        <img id="hero-banner-img" class="hero-banner-img" src="./assets/images/kempty.jpg" alt="Next Destination">
-        <div class="hero-banner-overlay">
-          <div class="hero-badge-pill">⚡ Coming Up Next</div>
-          <h2 class="hero-banner-title" id="hero-title">Kempty Falls Mussoorie</h2>
+      <!-- FEATURED BIG HERO CARD (NEXT STOP) -->
+      <div class="hero-featured-card" id="hero-card">
+        <div class="hero-img-wrap">
+          <img id="hero-img" class="hero-img" src="./assets/images/airport.jpg" alt="Next Destination">
+          <div class="hero-badge-top">📍 Next Up On Your Trip</div>
+        </div>
+        <div class="hero-body">
+          <div class="hero-meta-row">
+            <span class="hero-time-tag" id="hero-time">11:00 AM</span>
+            <span class="hero-city-tag" id="hero-city">Dehradun</span>
+          </div>
+          <h2 class="hero-title" id="hero-title">Dehradun Airport Arrival</h2>
+          <div class="hero-tip-text" id="hero-tip">Pick up cab outside arrivals and start scenic drive into the city.</div>
           
-          <div class="metrics-grid">
-            <div class="metric-item">
-              <span class="metric-value" id="hero-time">7:00 AM</span>
-              <span class="metric-label">Start Time</span>
+          <div class="hero-metrics-bar">
+            <div class="hero-metric-item">
+              <span class="hero-metric-val" id="hero-dist">0 km</span>
+              <span class="hero-metric-lbl">Distance</span>
             </div>
-            <div class="metric-item">
-              <span class="metric-value" id="hero-dist">15 km</span>
-              <span class="metric-label">Distance</span>
+            <div class="hero-metric-item">
+              <span class="hero-metric-val">~45 mins</span>
+              <span class="hero-metric-lbl">Drive Time</span>
             </div>
-            <div class="metric-item">
-              <span class="metric-value">40 mins</span>
-              <span class="metric-label">Est. Drive</span>
-            </div>
-            <div class="metric-item">
-              <span class="metric-value">4.9★</span>
-              <span class="metric-label">Rating</span>
+            <div class="hero-metric-item">
+              <span class="hero-metric-val">24°C</span>
+              <span class="hero-metric-lbl">Weather</span>
             </div>
           </div>
 
-          <div class="hero-actions-row">
-            <button class="btn-neon" id="hero-nav-btn">
+          <div class="hero-actions">
+            <button class="btn-action-primary" id="hero-nav-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-              Navigate Now
+              Navigate Maps
             </button>
-            <button class="btn-glass" id="hero-done-btn">Mark Visited</button>
+            <button class="btn-action-secondary" id="hero-done-btn">Mark Visited</button>
           </div>
         </div>
       </div>
 
-      <!-- TIMELINE LIST -->
-      <div class="section-label">
-        <span>Detailed Itinerary & Dining</span>
-      </div>
-
+      <!-- VERTICAL TIMELINE STACK -->
+      <div class="section-title">Timeline & Food Spots</div>
       <div id="timeline-container">
         <!-- Rendered dynamically -->
       </div>
     </section>
 
-    <!-- 2. EXPLORE MAP & DISCOVER TAB -->
-    <section id="tab-explore" class="tab-content">
-      <div class="map-hub-banner">
-        <div class="map-grid-pattern"></div>
-        <div class="map-node" style="top:25%; left:20%;" onclick="openModal(7)">📍 Kempty Falls</div>
-        <div class="map-node" style="top:60%; left:65%;" onclick="openModal(16)">🔥 Ganga Aarti</div>
-        <div class="map-node" style="top:40%; left:45%;" onclick="openModal(18)">🪂 Bungee Jump</div>
+    <!-- TAB 2: INTERACTIVE LEAFLET MAP & NEARBY SPOTS -->
+    <section id="tab-map" class="tab-content">
+      <div class="gps-bar">
+        <div class="gps-info">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="gps-status-text">Detecting GPS location...</span>
+        </div>
+        <button class="btn-action-primary" style="padding:6px 12px; font-size:12px;" onclick="locateUserGPS()">Update GPS</button>
       </div>
 
-      <div class="section-label">
-        <span>Explore All Destinations</span>
-      </div>
+      <!-- REAL LEAFLET MAP CANVAS -->
+      <div id="leaflet-map"></div>
 
-      <div class="cards-grid-v2" id="explore-grid">
-        <!-- Rendered dynamically -->
+      <div class="section-title">Nearby Places</div>
+      <div id="nearby-container">
+        <!-- Rendered dynamically sorted by distance -->
       </div>
     </section>
 
-    <!-- 3. GUIDE & PACKING TAB -->
+    <!-- TAB 3: ESSENTIALS, FOOD & PACKING GUIDE -->
     <section id="tab-guide" class="tab-content">
-      <h3 style="font-family:'Outfit',sans-serif; font-size:18px; color:#fff; margin-bottom:14px;">🎒 Interactive Packing Checklist</h3>
-      <div id="packing-container"></div>
+      <div class="guide-card">
+        <div class="guide-card-title">
+          <span>🍲 Food & Culinary Bible</span>
+        </div>
+        
+        <div class="food-item-row">
+          <div class="food-spot-name">Mussoorie & Landour</div>
+          <div class="food-spot-desc">🥞 Pancakes, Cinnamon rolls & Omelettes at <strong>Char Dukan Landour</strong>. Hot Chocolate at <strong>Cafe Ivy</strong>. Garhwali Thali at <strong>Dev Darshan</strong>.</div>
+        </div>
+        <div class="food-item-row">
+          <div class="food-spot-name">Rishikesh</div>
+          <div class="food-spot-desc">🥙 Israeli Falafel & Hummus at <strong>Freedom Cafe</strong>. Ayurvedic Thali at <strong>Ayushakti</strong>. Organic Herbal Tea at <strong>German Bakery</strong>.</div>
+        </div>
+        <div class="food-item-row">
+          <div class="food-spot-name">Haridwar</div>
+          <div class="food-spot-desc">🥘 Famous Aloo Puri & Halwa at <strong>Mohan Ji Puri Wale</strong>. Kulhad Rabri & Lassi near Har Ki Pauri ghats.</div>
+        </div>
+      </div>
+
+      <div class="guide-card">
+        <div class="guide-card-title">
+          <span>🎒 Packing Checklist</span>
+        </div>
+        <div class="packing-grid" id="packing-container"></div>
+      </div>
+
+      <div class="guide-card">
+        <div class="guide-card-title">
+          <span>⚡ Weather & Emergency Helplines</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+          <div>🚨 Uttarakhand Disaster Management: <strong>1070</strong></div>
+          <div>Police Helpline: <strong>112</strong> | Ambulance: <strong>108</strong></div>
+          <div style="margin-top:8px; color:var(--accent-amber);">⚠️ Monsoon alert: Keep compact umbrellas & floaters for Ganges ghats.</div>
+        </div>
+      </div>
     </section>
 
-    <!-- 4. TOOLKIT TAB -->
+    <!-- TAB 4: TOOLKIT & EXPENSES -->
     <section id="tab-toolkit" class="tab-content">
-      <h3 style="font-family:'Outfit',sans-serif; font-size:18px; color:#fff; margin-bottom:14px;">💳 Trip Expense Tracker</h3>
-      <div id="expense-container"></div>
+      <div class="guide-card">
+        <div class="guide-card-title">💳 Trip Expense Logger</div>
+        <div style="font-size:24px; font-weight:800; color:var(--accent-green); margin-bottom:14px;" id="total-expense">₹0</div>
+        
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <input type="text" id="exp-name" placeholder="Expense description..." style="flex:1; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:12px; padding:10px; color:#fff; font-size:13px; outline:none;">
+          <input type="number" id="exp-val" placeholder="₹ Amount" style="width:90px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:12px; padding:10px; color:#fff; font-size:13px; outline:none;">
+          <button class="btn-action-primary" style="padding:10px 14px;" onclick="addExpense()">Add</button>
+        </div>
+
+        <div id="expense-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+
+      <div style="margin-top:30px;">
+        <button class="btn-action-secondary" style="width:100%; color:var(--accent-rose); border-color:rgba(239,68,68,0.3);" onclick="resetAllData()">Reset All Trip Data</button>
+      </div>
     </section>
 
   </main>
 
-  <!-- BOTTOM NAVIGATION BAR (DRIBBBLE FLOATING PILL) -->
-  <nav class="bottom-nav-v2">
-    <button class="nav-btn active" data-tab="tab-trip">
+  <!-- BOTTOM FLOATING NAVIGATION BAR -->
+  <nav class="bottom-nav-floating">
+    <button class="nav-tab-btn active" data-tab="tab-trip">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Itinerary</span>
     </button>
-    <button class="nav-btn" data-tab="tab-explore">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+    <button class="nav-tab-btn" data-tab="tab-map">
+      <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span>Live Map</span>
     </button>
-    <button class="nav-btn" data-tab="tab-guide">
+    <button class="nav-tab-btn" data-tab="tab-guide">
       <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Essentials</span>
     </button>
-    <button class="nav-btn" data-tab="tab-toolkit">
+    <button class="nav-tab-btn" data-tab="tab-toolkit">
       <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span>Toolkit</span>
     </button>
   </nav>
 
   <!-- MODAL BOTTOM SHEET -->
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="bottom-sheet" id="bottom-sheet">
-    <div class="sheet-img-wrap">
-      <img id="sheet-img" class="sheet-img" src="" alt="Place">
-    </div>
-    <div class="sheet-content">
+    <img id="sheet-img" class="sheet-img" src="" alt="Place">
+    <div class="sheet-body">
       <h2 class="sheet-title" id="sheet-title">Title</h2>
-      <div class="sheet-tip-box" id="sheet-tip">Tip details...</div>
+      <div class="sheet-tip-box" id="sheet-tip">Details...</div>
+
+      <label style="font-size:12px; font-weight:600; color:var(--text-secondary); margin-bottom:6px; display:block;">Personal Notes & Driver Info</label>
+      <textarea id="sheet-notes" class="sheet-notes" placeholder="Add cab driver details, ticket slot timings..."></textarea>
+
       <div style="display:flex; gap:10px;">
-        <button class="btn-neon" id="sheet-nav-btn">Navigate Maps</button>
-        <button class="btn-glass" id="sheet-done-btn">Mark Done</button>
+        <button class="btn-action-primary" id="sheet-nav-btn">Navigate Maps</button>
+        <button class="btn-action-secondary" id="sheet-done-btn">Mark Done</button>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT & PWA DATA -->
+  <!-- JAVASCRIPT LOGIC & LEAFLET MAP INTEGRATION -->
   <script>
+    // Register Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
     }
 
     const PLACES_DATA = [
       // DAY 1 (Sep 4)
-      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals.", dist: "0 km", image_url: "./assets/images/airport.jpg", type: "Logistics" },
-      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Sulphur water springs & cave. Quick scenic stop.", dist: "28 km", image_url: "./assets/images/sahastradhara.jpg", type: "Scenic" },
-      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "🍱 Lunch @ Kumar Vegetarian Dehradun", time: "1:00 PM", tip: "Delicious North Indian Thali & Garhwali specials.", dist: "12 km", image_url: "./assets/images/sahastradhara.jpg", type: "Dining" },
-      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant Buddha statue & India's tallest stupa.", dist: "8 km", image_url: "./assets/images/sahastradhara.jpg", type: "Shrine" },
-      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning Greco-Roman colonial architecture & lawns.", dist: "10 km", image_url: "./assets/images/sahastradhara.jpg", type: "Sightseeing" },
-      { id: 6, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine with natural dripping water on Shivling.", dist: "6 km", image_url: "./assets/images/tapkeshwar.jpg", type: "Shrine" },
-      { id: 7, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in & ☕ Evening Street Food @ Mall Road", time: "6:45 PM", tip: "Evening walk at Library Chowk. Try hot momos & kulhad tea.", dist: "34 km", image_url: "./assets/images/mallroad.jpg", type: "Dining" },
+      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals.", dist: "0 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/airport.jpg", type: "Logistics" },
+      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Sulphur water springs & cave. Quick scenic stop.", dist: "28 km", lat: 30.3872, lng: 78.1322, image_url: "./assets/images/sahastradhara.jpg", type: "Scenic" },
+      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "🍱 Lunch @ Kumar Vegetarian Dehradun", time: "1:00 PM", tip: "Delicious North Indian Thali & Garhwali specials.", dist: "12 km", lat: 30.3165, lng: 78.0322, image_url: "./assets/images/sahastradhara.jpg", type: "Dining" },
+      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant Buddha statue & India's tallest stupa.", dist: "8 km", lat: 30.2604, lng: 78.0084, image_url: "./assets/images/sahastradhara.jpg", type: "Shrine" },
+      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning Greco-Roman colonial architecture & lawns.", dist: "10 km", lat: 30.3444, lng: 77.9996, image_url: "./assets/images/sahastradhara.jpg", type: "Sightseeing" },
+      { id: 6, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine with natural dripping water on Shivling.", dist: "6 km", lat: 30.3547, lng: 78.0177, image_url: "./assets/images/tapkeshwar.jpg", type: "Shrine" },
+      { id: 7, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in & ☕ Evening Street Food @ Mall Road", time: "6:45 PM", tip: "Evening walk at Library Chowk. Try hot momos & kulhad tea.", dist: "34 km", lat: 30.4598, lng: 78.0644, image_url: "./assets/images/mallroad.jpg", type: "Dining" },
 
       // DAY 2 (Sep 5)
-      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "Early start beats the tourist bus crowds!", dist: "15 km", image_url: "./assets/images/kempty.jpg", type: "Scenic" },
-      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to second highest point for Doon valley views.", dist: "12 km", image_url: "./assets/images/gunhill.jpg", type: "Scenic" },
-      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Peaceful 3 km flat walking track.", dist: "3 km", image_url: "./assets/images/camelsback.jpg", type: "Sightseeing" },
-      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "🥞 Brunch @ Char Dukan Landour", time: "2:30 PM", tip: "Famous pancakes, cinnamon rolls & hot tea at Landour.", dist: "8 km", image_url: "./assets/images/chardukan.jpg", type: "Dining" },
-      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba Viewpoint", time: "3:00 PM", tip: "Telescope views of snow peaks.", dist: "1 km", image_url: "./assets/images/chardukan.jpg", type: "Scenic" },
-      { id: 13, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "4:00 PM", tip: "Easy 30-min trek to historic survey house.", dist: "10 km", image_url: "./assets/images/georgeeverest.jpg", type: "Adventure" },
-      { id: 14, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End Sunset", time: "6:00 PM", tip: "Quiet forested edge of town. Perfect sunset spot.", dist: "6 km", image_url: "./assets/images/cloudsend.jpg", type: "Scenic" },
+      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "Early start beats the tourist bus crowds!", dist: "15 km", lat: 30.4856, lng: 78.0425, image_url: "./assets/images/kempty.jpg", type: "Scenic" },
+      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to second highest point for Doon valley views.", dist: "12 km", lat: 30.4578, lng: 78.0772, image_url: "./assets/images/gunhill.jpg", type: "Scenic" },
+      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Peaceful 3 km flat walking track.", dist: "3 km", lat: 30.4542, lng: 78.0825, image_url: "./assets/images/camelsback.jpg", type: "Sightseeing" },
+      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "🥞 Brunch @ Char Dukan Landour", time: "2:30 PM", tip: "Famous pancakes, cinnamon rolls & hot tea at Landour.", dist: "8 km", lat: 30.4611, lng: 78.0931, image_url: "./assets/images/chardukan.jpg", type: "Dining" },
+      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba Viewpoint", time: "3:00 PM", tip: "Telescope views of snow peaks.", dist: "1 km", lat: 30.4633, lng: 78.0964, image_url: "./assets/images/chardukan.jpg", type: "Scenic" },
+      { id: 13, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "4:00 PM", tip: "Easy 30-min trek to historic survey house.", dist: "10 km", lat: 30.4639, lng: 78.0211, image_url: "./assets/images/georgeeverest.jpg", type: "Adventure" },
+      { id: 14, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End Sunset", time: "6:00 PM", tip: "Quiet forested edge of town. Perfect sunset spot.", dist: "6 km", lat: 30.4625, lng: 78.0069, image_url: "./assets/images/cloudsend.jpg", type: "Scenic" },
 
       // DAY 3 (Sep 6)
-      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway to Shaktipeeth shrine with 360° views.", dist: "24 km", image_url: "./assets/images/surkanda.jpg", type: "Shrine" },
-      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "🍱 Mountain Drive Lunch via Chamba", time: "1:00 PM", tip: "Local pahadi lunch on highway to Rishikesh.", dist: "60 km", image_url: "./assets/images/surkanda.jpg", type: "Dining" },
-      { id: 17, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:00 PM", tip: "Dip your feet in the Ganges after travel.", dist: "50 km", image_url: "./assets/images/gangabeach.jpg", type: "Scenic" },
-      { id: 18, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset aarti. Arrive by 5:45 PM for seating.", dist: "4 km", image_url: "./assets/images/parmarth.jpg", type: "Shrine" },
+      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway to Shaktipeeth shrine with 360° views.", dist: "24 km", lat: 30.4131, lng: 78.2861, image_url: "./assets/images/surkanda.jpg", type: "Shrine" },
+      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "🍱 Mountain Drive Lunch via Chamba", time: "1:00 PM", tip: "Local pahadi lunch on highway to Rishikesh.", dist: "60 km", lat: 30.3400, lng: 78.3900, image_url: "./assets/images/surkanda.jpg", type: "Dining" },
+      { id: 17, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:00 PM", tip: "Dip your feet in the Ganges after travel.", dist: "50 km", lat: 30.1245, lng: 78.3200, image_url: "./assets/images/gangabeach.jpg", type: "Scenic" },
+      { id: 18, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset aarti. Arrive by 5:45 PM for seating.", dist: "4 km", lat: 30.1189, lng: 78.3142, image_url: "./assets/images/parmarth.jpg", type: "Shrine" },
 
       // DAY 4 (Sep 7)
-      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling rafting stretch down Ganges with cliff jumping!", dist: "16 km", image_url: "./assets/images/rafting.jpg", type: "Adventure" },
-      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "🪂 Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee (83m).", dist: "15 km", image_url: "./assets/images/rafting.jpg", type: "Adventure" },
-      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "🥙 Lunch @ Freedom Cafe Rishikesh", time: "2:30 PM", tip: "Famous Israeli falafel & river view seating.", dist: "10 km", image_url: "./assets/images/rafting.jpg", type: "Dining" },
-      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Iconic suspension bridges & riverside shops.", dist: "2 km", image_url: "./assets/images/ramjhula.jpg", type: "Sightseeing" },
-      { id: 23, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple with sunset river views.", dist: "1 km", image_url: "./assets/images/teramanzil.jpg", type: "Shrine" },
-      { id: 24, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Historic Beatles meditation retreat with graffiti dome art.", dist: "3 km", image_url: "./assets/images/beatles.jpg", type: "Sightseeing" },
-      { id: 25, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with floating lamps.", dist: "5 km", image_url: "./assets/images/trivenighat.jpg", type: "Shrine" },
+      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling rafting stretch down Ganges with cliff jumping!", dist: "16 km", lat: 30.1386, lng: 78.3889, image_url: "./assets/images/rafting.jpg", type: "Adventure" },
+      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "🪂 Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee (83m).", dist: "15 km", lat: 30.0711, lng: 78.3931, image_url: "./assets/images/rafting.jpg", type: "Adventure" },
+      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "🥙 Lunch @ Freedom Cafe Rishikesh", time: "2:30 PM", tip: "Famous Israeli falafel & river view seating.", dist: "10 km", lat: 30.1283, lng: 78.3242, image_url: "./assets/images/rafting.jpg", type: "Dining" },
+      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Iconic suspension bridges & riverside shops.", dist: "2 km", lat: 30.1236, lng: 78.3175, image_url: "./assets/images/ramjhula.jpg", type: "Sightseeing" },
+      { id: 23, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple with sunset river views.", dist: "1 km", lat: 30.1258, lng: 78.3267, image_url: "./assets/images/teramanzil.jpg", type: "Shrine" },
+      { id: 24, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Historic Beatles meditation retreat with graffiti dome art.", dist: "3 km", lat: 30.1147, lng: 78.3131, image_url: "./assets/images/beatles.jpg", type: "Sightseeing" },
+      { id: 25, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with floating lamps.", dist: "5 km", lat: 30.1039, lng: 78.2975, image_url: "./assets/images/trivenighat.jpg", type: "Shrine" },
 
       // DAY 5 (Sep 8)
-      { id: 26, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Early morning Himalayan panorama.", dist: "28 km", image_url: "./assets/images/kunjapuri.jpg", type: "Scenic" },
-      { id: 27, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9 AM bypasses afternoon temple closure.", dist: "32 km", image_url: "./assets/images/neelkanth.jpg", type: "Shrine" },
-      { id: 28, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then Har Ki Pauri by 5:15 PM for Aarti.", dist: "25 km", image_url: "./assets/images/harkipauri.jpg", type: "Shrine" },
-      { id: 29, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "🥘 Dinner @ Mohan Ji Puri Wale", time: "8:00 PM", tip: "Famous Haridwar Aloo Puri & Lassi.", dist: "1 km", image_url: "./assets/images/harkipauri.jpg", type: "Dining" },
+      { id: 26, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Early morning Himalayan panorama.", dist: "28 km", lat: 30.1706, lng: 78.3228, image_url: "./assets/images/kunjapuri.jpg", type: "Scenic" },
+      { id: 27, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9 AM bypasses afternoon temple closure.", dist: "32 km", lat: 30.0817, lng: 78.3364, image_url: "./assets/images/neelkanth.jpg", type: "Shrine" },
+      { id: 28, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then Har Ki Pauri by 5:15 PM for Aarti.", dist: "25 km", lat: 29.9567, lng: 78.1708, image_url: "./assets/images/harkipauri.jpg", type: "Shrine" },
+      { id: 29, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "🥘 Dinner @ Mohan Ji Puri Wale", time: "8:00 PM", tip: "Famous Haridwar Aloo Puri & Lassi.", dist: "1 km", lat: 29.9542, lng: 78.1690, image_url: "./assets/images/harkipauri.jpg", type: "Dining" },
 
       // DAY 6 (Sep 9)
-      { id: 30, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to Daksha temple.", dist: "6 km", image_url: "./assets/images/chandidevi.jpg", type: "Shrine" },
-      { id: 31, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport Drive", time: "10:15 AM", tip: "Prasad shopping, then 45-min drive to airport for 2 PM flight.", dist: "45 km", image_url: "./assets/images/motibazaar.jpg", type: "Logistics" }
+      { id: 30, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to Daksha temple.", dist: "6 km", lat: 29.9389, lng: 78.1814, image_url: "./assets/images/chandidevi.jpg", type: "Shrine" },
+      { id: 31, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport Drive", time: "10:15 AM", tip: "Prasad shopping, then 45-min drive to airport for 2 PM flight.", dist: "45 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/motibazaar.jpg", type: "Logistics" }
+    ];
+
+    const PACKING_DATA = [
+      "Light Windbreaker / Raincoat", "Sturdy Grip Trekking Shoes", "Floaters / Sandals (For Ganges Ghats)",
+      "Full Sleeve Breathable Tees", "Quick Dry Shorts / Cargo Pants", "Light Sweater (Landour Evenings)",
+      "Power Bank (10,000mAh+)", "Mosquito Repellent Cream", "Compact Travel Umbrella", "Motion Sickness Meds (Hill Drives)"
     ];
 
     let doneIds = JSON.parse(localStorage.getItem('uttarakhand_done_places') || '[]');
-    let selectedDayFilter = 'all';
+    let packedItems = JSON.parse(localStorage.getItem('uttarakhand_packed_items') || '[]');
+    let placeNotes = JSON.parse(localStorage.getItem('uttarakhand_notes') || '{}');
+    let expenses = JSON.parse(localStorage.getItem('uttarakhand_expenses') || '[]');
+    let selectedDay = 'all';
+    let leafletMap = null;
+    let userMarker = null;
 
     document.addEventListener('DOMContentLoaded', () => {
+      initNavigation();
       initCalendarStrip();
-      initTabs();
       renderTimeline();
-      renderExploreGrid();
-      updateHeroBanner();
+      renderPackingList();
+      renderExpenses();
+      updateProgress();
+      updateHeroCard();
     });
+
+    function initNavigation() {
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+          
+          btn.classList.add('active');
+          const target = btn.getAttribute('data-tab');
+          document.getElementById(target).classList.add('active');
+
+          if (target === 'tab-map') {
+            setTimeout(initLeafletMap, 200);
+          }
+        });
+      });
+    }
 
     function initCalendarStrip() {
       document.querySelectorAll('.date-card').forEach(card => {
         card.addEventListener('click', () => {
           document.querySelectorAll('.date-card').forEach(c => c.classList.remove('active'));
           card.classList.add('active');
-          selectedDayFilter = card.getAttribute('data-day');
+          selectedDay = card.getAttribute('data-day');
           renderTimeline();
-        });
-      });
-    }
-
-    function initTabs() {
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-          document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-          btn.classList.add('active');
-          document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
         });
       });
     }
@@ -917,80 +1024,56 @@
       const container = document.getElementById('timeline-container');
       container.innerHTML = '';
 
-      let items = PLACES_DATA;
-      if (selectedDayFilter !== 'all') {
-        items = items.filter(p => p.day === Number(selectedDayFilter));
+      let filtered = PLACES_DATA;
+      if (selectedDay !== 'all') {
+        filtered = filtered.filter(p => p.day === Number(selectedDay));
       }
 
-      items.forEach(item => {
+      filtered.forEach(item => {
         const isDone = doneIds.includes(item.id);
         const card = document.createElement('div');
-        card.className = `timeline-card-v2 ${item.type === 'Dining' ? 'meal-card' : ''} ${isDone ? 'done' : ''}`;
-        card.onclick = () => openModal(item.id);
+        card.className = `location-card-row ${item.type === 'Dining' ? 'meal-row' : ''} ${isDone ? 'done' : ''}`;
 
         card.innerHTML = `
-          <img class="card-v2-img" src="${item.image_url}" alt="${item.name}">
-          <div class="card-v2-body">
-            <div class="card-v2-meta">
-              <span class="card-v2-time">${item.time}</span>
-              <span class="card-v2-type">${item.type}</span>
+          <img class="row-img" src="${item.image_url}" alt="${item.name}">
+          <div class="row-body" onclick="openModal(${item.id})">
+            <div class="row-meta">
+              <span class="row-time">${item.time}</span>
+              <span class="row-tag">${item.type}</span>
             </div>
-            <div class="card-v2-title">${item.name}</div>
-            <div class="card-v2-sub">📍 ${item.city} • ${item.dist} away</div>
+            <div class="row-title">${item.name}</div>
+            <div class="row-sub">📍 ${item.city} • ${item.dist} away</div>
           </div>
+          <button class="row-check-btn" onclick="event.stopPropagation(); toggleDone(${item.id});">
+            ${isDone ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0c14" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+          </button>
         `;
         container.appendChild(card);
       });
     }
 
-    function renderExploreGrid() {
-      const grid = document.getElementById('explore-grid');
-      grid.innerHTML = '';
-
-      PLACES_DATA.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'explore-card';
-        card.onclick = () => openModal(item.id);
-
-        card.innerHTML = `
-          <img class="explore-card-img" src="${item.image_url}" alt="${item.name}">
-          <div class="explore-card-content">
-            <div class="explore-card-city">${item.city}</div>
-            <div class="explore-card-title">${item.name}</div>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function updateHeroBanner() {
+    function updateHeroCard() {
       const remaining = PLACES_DATA.filter(p => !doneIds.includes(p.id));
       if (remaining.length > 0) {
         const next = remaining[0];
         document.getElementById('hero-title').innerText = next.name;
         document.getElementById('hero-time').innerText = next.time;
+        document.getElementById('hero-city').innerText = `${next.city} • DAY ${next.day}`;
         document.getElementById('hero-dist').innerText = next.dist;
-        document.getElementById('hero-banner-img').src = next.image_url;
-        document.getElementById('hero-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${next.map_query}`, '_blank');
-        document.getElementById('hero-done-btn').onclick = () => toggleDone(next.id);
+        document.getElementById('hero-tip').innerText = next.tip;
+        document.getElementById('hero-img').src = next.image_url;
+        document.getElementById('hero-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(next.name)}`, '_blank');
+        
+        const doneBtn = document.getElementById('hero-done-btn');
+        const isDone = doneIds.includes(next.id);
+        doneBtn.innerText = isDone ? 'Mark Undone' : 'Mark Visited';
+        doneBtn.onclick = () => toggleDone(next.id);
       }
     }
 
-    function openModal(id) {
-      const item = PLACES_DATA.find(p => p.id === id);
-      if (!item) return;
-      document.getElementById('sheet-img').src = item.image_url;
-      document.getElementById('sheet-title').innerText = item.name;
-      document.getElementById('sheet-tip').innerText = item.tip;
-      document.getElementById('sheet-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${item.map_query}`, '_blank');
-      document.getElementById('modal-overlay').classList.add('active');
-      document.getElementById('bottom-sheet').classList.add('active');
+    function updateProgress() {
+      document.getElementById('progress-pill').innerText = `${doneIds.length}/${PLACES_DATA.length} Visited`;
     }
-
-    document.getElementById('modal-overlay').onclick = () => {
-      document.getElementById('modal-overlay').classList.remove('active');
-      document.getElementById('bottom-sheet').classList.remove('active');
-    };
 
     function toggleDone(id) {
       if (doneIds.includes(id)) {
@@ -1000,7 +1083,213 @@
       }
       localStorage.setItem('uttarakhand_done_places', JSON.stringify(doneIds));
       renderTimeline();
-      updateHeroBanner();
+      updateProgress();
+      updateHeroCard();
+    }
+
+    /* REAL LEAFLET MAP & GPS DISTANCE LOGIC */
+    function initLeafletMap() {
+      if (leafletMap) {
+        leafletMap.invalidateSize();
+        return;
+      }
+
+      // Center map around Uttarakhand (Mussoorie/Rishikesh valley)
+      leafletMap = L.map('leaflet-map').setView([30.3165, 78.0322], 9);
+
+      // Dark Theme OpenStreetMap tile layer
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap & CartoDB'
+      }).addTo(leafletMap);
+
+      // Plot ALL 28 locations on the real map
+      PLACES_DATA.forEach(place => {
+        const marker = L.marker([place.lat, place.lng]).addTo(leafletMap);
+        marker.bindPopup(`
+          <div style="font-family:sans-serif;">
+            <strong style="color:#0a0c14;">${place.name}</strong><br>
+            <span style="font-size:11px; color:#555;">${place.city} • ${place.time}</span><br>
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}" target="_blank" style="font-size:11px; color:#06b6d4; text-decoration:none;">Navigate in Maps</a>
+          </div>
+        `);
+      });
+
+      locateUserGPS();
+    }
+
+    function locateUserGPS() {
+      if ('geolocation' in navigator) {
+        document.getElementById('gps-status-text').innerText = 'Detecting current GPS location...';
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          document.getElementById('gps-status-text').innerText = `📍 GPS Located (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+
+          if (leafletMap) {
+            if (userMarker) leafletMap.removeLayer(userMarker);
+            userMarker = L.circleMarker([lat, lng], {
+              radius: 9,
+              fillColor: '#22c55e',
+              color: '#ffffff',
+              weight: 2,
+              opacity: 1,
+              fillOpacity: 0.9
+            }).addTo(leafletMap).bindPopup('You Are Here!').openPopup();
+            leafletMap.setView([lat, lng], 11);
+          }
+
+          renderNearbyPlaces(lat, lng);
+        }, err => {
+          document.getElementById('gps-status-text').innerText = 'GPS offline or permission pending. Showing default Uttarakhand map.';
+          renderNearbyPlaces(30.3165, 78.0322); // Default Dehradun coords
+        });
+      }
+    }
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function renderNearbyPlaces(userLat, userLng) {
+      const container = document.getElementById('nearby-container');
+      container.innerHTML = '';
+
+      const sorted = [...PLACES_DATA].map(p => {
+        const d = calculateDistance(userLat, userLng, p.lat, p.lng);
+        return { ...p, calcDist: d };
+      }).sort((a, b) => a.calcDist - b.calcDist);
+
+      sorted.slice(0, 10).forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'location-card-row';
+        card.onclick = () => openModal(item.id);
+        card.innerHTML = `
+          <img class="row-img" src="${item.image_url}" alt="${item.name}">
+          <div class="row-body">
+            <div class="row-meta">
+              <span class="row-time">${item.time}</span>
+              <span class="row-tag" style="color:var(--accent-green);">${item.calcDist.toFixed(1)} km away</span>
+            </div>
+            <div class="row-title">${item.name}</div>
+            <div class="row-sub">📍 ${item.city} • ${item.type}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* GUIDE & PACKING CHECKLIST */
+    function renderPackingList() {
+      const container = document.getElementById('packing-container');
+      container.innerHTML = '';
+
+      PACKING_DATA.forEach((item, idx) => {
+        const isChecked = packedItems.includes(idx);
+        const row = document.createElement('div');
+        row.className = `packing-check-row ${isChecked ? 'checked' : ''}`;
+        row.onclick = () => togglePackingItem(idx);
+
+        row.innerHTML = `
+          <span>${item}</span>
+          <div style="width:20px; height:20px; border-radius:6px; border:2px solid var(--text-muted); display:flex; align-items:center; justify-content:center; background:${isChecked ? 'var(--accent-green)' : 'none'}; border-color:${isChecked ? 'var(--accent-green)' : 'var(--text-muted)'};">
+            ${isChecked ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a0c14" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function togglePackingItem(idx) {
+      if (packedItems.includes(idx)) {
+        packedItems = packedItems.filter(i => i !== idx);
+      } else {
+        packedItems.push(idx);
+      }
+      localStorage.setItem('uttarakhand_packed_items', JSON.stringify(packedItems));
+      renderPackingList();
+    }
+
+    /* EXPENSES LOG */
+    function renderExpenses() {
+      const list = document.getElementById('expense-list');
+      const totalEl = document.getElementById('total-expense');
+      list.innerHTML = '';
+      let tot = 0;
+
+      expenses.forEach((item, idx) => {
+        tot += Number(item.amount);
+        const el = document.createElement('div');
+        el.style.cssText = "display:flex; justify-content:space-between; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border); border-radius:12px; padding:10px 14px; font-size:13px;";
+        el.innerHTML = `<span>${item.title}</span><strong style="color:var(--accent-green);">₹${item.amount}</strong>`;
+        list.appendChild(el);
+      });
+
+      totalEl.innerText = `₹${tot}`;
+    }
+
+    function addExpense() {
+      const name = document.getElementById('exp-name').value.trim();
+      const val = document.getElementById('exp-val').value.trim();
+      if (name && val) {
+        expenses.push({ title: name, amount: val });
+        localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
+        document.getElementById('exp-name').value = '';
+        document.getElementById('exp-val').value = '';
+        renderExpenses();
+      }
+    }
+
+    /* MODAL BOTTOM SHEET */
+    function openModal(id) {
+      const item = PLACES_DATA.find(p => p.id === id);
+      if (!item) return;
+
+      document.getElementById('sheet-img').src = item.image_url;
+      document.getElementById('sheet-title').innerText = item.name;
+      document.getElementById('sheet-tip').innerText = item.tip;
+      document.getElementById('sheet-notes').value = placeNotes[id] || '';
+
+      const navBtn = document.getElementById('sheet-nav-btn');
+      navBtn.onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`, '_blank');
+
+      const doneBtn = document.getElementById('sheet-done-btn');
+      const isDone = doneIds.includes(id);
+      doneBtn.innerText = isDone ? 'Mark Undone' : 'Mark Visited';
+      doneBtn.onclick = () => { toggleDone(id); closeModal(); };
+
+      document.getElementById('modal-overlay').classList.add('active');
+      document.getElementById('bottom-sheet').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('active');
+      document.getElementById('bottom-sheet').classList.remove('active');
+    }
+
+    document.getElementById('modal-overlay').onclick = closeModal;
+
+    function resetAllData() {
+      if (confirm('Are you sure you want to reset all trip data?')) {
+        localStorage.clear();
+        doneIds = [];
+        packedItems = [];
+        placeNotes = {};
+        expenses = [];
+        renderTimeline();
+        renderPackingList();
+        renderExpenses();
+        updateProgress();
+        updateHeroCard();
+        alert('All trip data reset successfully!');
+      }
     }
   </script>
 </body>
