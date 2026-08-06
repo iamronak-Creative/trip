@@ -56,18 +56,18 @@
       padding: 0;
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
     }
 
-    body {
+    html, body {
       background: var(--bg-dark);
       color: var(--text-main);
+      min-height: 100vh;
       min-height: 100dvh;
-      width: 100vw;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
 
     /* APP HEADER */
@@ -76,11 +76,11 @@
       top: 0; left: 0; right: 0;
       height: 70px;
       padding-top: env(safe-area-inset-top, 0px);
-      background: rgba(10, 12, 20, 0.88);
+      background: rgba(10, 12, 20, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -132,11 +132,12 @@
 
     /* MAIN VIEWPORT */
     .main-viewport {
-      flex: 1;
-      margin-top: 70px;
-      margin-bottom: calc(75px + env(safe-area-inset-bottom, 0px));
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      padding-top: 80px;
+      padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px));
+      min-height: 100vh;
+      min-height: 100dvh;
+      width: 100%;
+      overflow-y: visible;
       position: relative;
     }
 
