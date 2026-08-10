@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v3';
+const CACHE_NAME = 'uttarakhand-trip-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS_TO_CACHE = [
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
   './assets/images/airport.jpg',
   './assets/images/sahastradhara.jpg',
+  './assets/images/dehradun_thali.jpg',
   './assets/images/mindrolling.jpg',
   './assets/images/fri.jpg',
   './assets/images/tapkeshwar.jpg',
@@ -18,18 +19,17 @@ const ASSETS_TO_CACHE = [
   './assets/images/georgeeverest.jpg',
   './assets/images/cloudsend.jpg',
   './assets/images/surkanda.jpg',
-  './assets/images/rishikesh_drive.jpg',
   './assets/images/gangabeach.jpg',
   './assets/images/parmarth.jpg',
   './assets/images/rafting.jpg',
   './assets/images/bungee.jpg',
+  './assets/images/freedom_cafe.jpg',
   './assets/images/ramjhula.jpg',
   './assets/images/teramanzil.jpg',
   './assets/images/beatles.jpg',
   './assets/images/trivenighat.jpg',
   './assets/images/kunjapuri.jpg',
   './assets/images/neelkanth.jpg',
-  './assets/images/vashishta.jpg',
   './assets/images/harkipauri.jpg',
   './assets/images/chandidevi.jpg',
   './assets/images/motibazaar.jpg'
