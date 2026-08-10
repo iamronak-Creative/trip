@@ -109,8 +109,8 @@
 
     /* LINE ICON SVG UTILITY */
     .line-icon {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       stroke: currentColor;
       stroke-width: 2;
       stroke-linecap: round;
@@ -159,13 +159,18 @@
 
     .header-actions { display: flex; align-items: center; gap: 8px; }
 
-    .sos-btn {
-      background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.5);
-      color: var(--accent-rose); border-radius: 9px; padding: 6px 12px; font-size: 11.5px; font-weight: 800;
-      display: flex; align-items: center; gap: 6px; cursor: pointer; transition: var(--transition-fast);
+    /* RESET ICON BUTTON IN HEADER (NO TEXT LABEL) */
+    .reset-icon-btn {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid var(--glass-border-blue);
+      color: var(--accent-blue);
+      border-radius: 9px;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition-fast);
       box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.25);
     }
-    .sos-btn:active { transform: scale(0.95); }
+    .reset-icon-btn:active { transform: scale(0.92) rotate(-30deg); }
 
     .progress-pill {
       background: rgba(139, 92, 246, 0.15);
@@ -428,10 +433,10 @@
       gap: 6px;
     }
 
-    /* TIER 3: SUBSEQUENT UPCOMING STOPS (2-COLUMN BENTO GRID) */
+    /* SECTION HEADING SINGLE LINE WITHOUT EXTRA SUBTITLE */
     .section-heading {
       font-family: 'Google Sans Flex', sans-serif !important; font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 12px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: block;
     }
 
     .bento-grid-container {
@@ -659,9 +664,9 @@
     </div>
 
     <div class="header-actions">
-      <button class="sos-btn" onclick="openSOSModal()">
-        <svg class="line-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        SOS
+      <!-- RESET ICON BUTTON ONLY (NO TEXT LABEL) -->
+      <button class="reset-icon-btn" onclick="resetVisitedStops()" title="Reset Location Checkmarks">
+        <svg class="line-icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
       <div class="progress-pill" id="progress-text">0/34</div>
     </div>
@@ -823,11 +828,8 @@
         </div>
       </div>
 
-      <!-- TIER 3: SUBSEQUENT UPCOMING STOPS (2-COLUMN BENTO GRID) -->
-      <div class="section-heading">
-        <span>Upcoming Itinerary</span>
-        <span class="editorial-eyebrow">Garhwal Himalayas Circuit</span>
-      </div>
+      <!-- TIER 3: SUBSEQUENT UPCOMING STOPS (SINGLE LINE SECTION HEADING) -->
+      <div class="section-heading">Upcoming Itinerary</div>
       <div class="bento-grid-container" id="timeline-grid-container">
         <!-- Rendered dynamically without duplicates -->
       </div>
@@ -951,10 +953,12 @@
           </div>
         </div>
 
-        <div style="display:flex; gap:8px; margin-bottom:16px;">
-          <input type="text" id="exp-name" placeholder="Expense description..." style="flex:1; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:10px; color:#fff; font-size:13px; outline:none;">
-          <input type="number" id="exp-val" placeholder="Total ₹" style="width:90px; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:10px; color:#fff; font-size:13px; outline:none;">
-          <button class="btn-bento-primary" style="padding:10px 14px; flex:none;" onclick="addExpense()">Add</button>
+        <!-- CENTERED ADD EXPENSE BUTTON THAT OPENS POPUP MODAL -->
+        <div style="text-align:center; margin:16px 0 20px 0;">
+          <button class="btn-bento-primary" style="margin:0 auto; padding:12px 24px; font-size:13.5px;" onclick="openAddExpenseModal()">
+            <svg class="line-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Expense
+          </button>
         </div>
 
         <div class="section-heading" style="font-size:14px; margin-bottom:10px;">Expense Items Breakdown</div>
@@ -972,10 +976,6 @@
           <svg class="line-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           Call Cab Driver (+91 90272 44461)
         </button>
-      </div>
-
-      <div style="margin-top:30px;">
-        <button class="btn-bento-secondary" style="width:100%; color:var(--accent-blue); border-color:rgba(56,189,248,0.4);" onclick="resetVisitedStops()">Reset All Visited Location Checkmarks</button>
       </div>
     </section>
 
@@ -1001,7 +1001,7 @@
     </button>
   </nav>
 
-  <!-- MODAL BOTTOM SHEET -->
+  <!-- MODAL BOTTOM SHEET FOR PLACE DETAILS -->
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="bottom-sheet" id="bottom-sheet">
     <img id="sheet-img" class="sheet-img" src="" alt="Place" onerror="handleImgError(this)">
@@ -1019,6 +1019,28 @@
     </div>
   </div>
 
+  <!-- POPUP MODAL FOR ADDING EXPENSES -->
+  <div class="modal-overlay" id="expense-modal-overlay"></div>
+  <div class="bottom-sheet" id="expense-modal" style="padding:20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="font-family:'Google Sans Flex', sans-serif !important; font-size:18px; font-weight:800; color:#fff;">Add New Expense</h3>
+      <button onclick="closeExpenseModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
+        <svg class="line-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <label style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:4px; display:block;">Expense Description</label>
+    <input type="text" id="exp-modal-name" placeholder="e.g. River Rafting, Dinner..." style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:12px; color:#fff; font-size:13px; outline:none; margin-bottom:12px;">
+
+    <label style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:4px; display:block;">Total Amount (₹)</label>
+    <input type="number" id="exp-modal-total" placeholder="0" style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:12px; color:#fff; font-size:13px; outline:none; margin-bottom:12px;">
+
+    <label style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:4px; display:block;">Advance Paid (₹)</label>
+    <input type="number" id="exp-modal-advance" placeholder="0" style="width:100%; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:12px; color:#fff; font-size:13px; outline:none; margin-bottom:18px;">
+
+    <button class="btn-bento-primary" style="width:100%; padding:14px;" onclick="saveExpenseFromModal()">Save Expense</button>
+  </div>
+
   <!-- JAVASCRIPT & PWA DATA -->
   <script>
     function handleImgError(img) {
@@ -1027,7 +1049,7 @@
     }
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=26').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=27').then(reg => {
         reg.update();
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1443,15 +1465,54 @@
       document.getElementById('total-pending').innerText = `₹${Math.round(pendingSum).toLocaleString('en-IN')}`;
     }
 
-    function addExpense() {
-      const name = document.getElementById('exp-name').value.trim();
-      const val = Number(document.getElementById('exp-val').value.trim());
-      if (name && val) {
-        expenses.push({ id: `custom-${Date.now()}`, title: name, total: val, advance: val, pending: 0, cat: 'Custom' });
+    /* POPUP MODAL FOR ADDING EXPENSES */
+    function openAddExpenseModal() {
+      document.getElementById('exp-modal-name').value = '';
+      document.getElementById('exp-modal-total').value = '';
+      document.getElementById('exp-modal-advance').value = '';
+      
+      const overlay = document.getElementById('expense-modal-overlay');
+      const modal = document.getElementById('expense-modal');
+      overlay.style.display = 'block';
+      modal.style.display = 'block';
+      setTimeout(() => {
+        overlay.classList.add('active');
+        modal.classList.add('active');
+      }, 10);
+    }
+
+    function closeExpenseModal() {
+      const overlay = document.getElementById('expense-modal-overlay');
+      const modal = document.getElementById('expense-modal');
+      overlay.classList.remove('active');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    document.getElementById('expense-modal-overlay').onclick = closeExpenseModal;
+
+    function saveExpenseFromModal() {
+      const name = document.getElementById('exp-modal-name').value.trim();
+      const total = Number(document.getElementById('exp-modal-total').value.trim());
+      const advance = Number(document.getElementById('exp-modal-advance').value.trim() || 0);
+
+      if (name && !isNaN(total) && total > 0) {
+        expenses.push({
+          id: `custom-${Date.now()}`,
+          title: name,
+          total: total,
+          advance: advance,
+          pending: Math.max(0, total - advance),
+          cat: 'Custom'
+        });
         localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
-        document.getElementById('exp-name').value = '';
-        document.getElementById('exp-val').value = '';
         renderExpenses();
+        closeExpenseModal();
+      } else {
+        alert('Please enter a valid expense description and total amount.');
       }
     }
 
@@ -1490,11 +1551,7 @@
       }
     }
 
-    function openSOSModal() {
-      alert("EMERGENCY HELPLINES:\n• Cab Driver: +91 90272 44461\n• Police: 112\n• Disaster Management: 1070\n• Ambulance: 108");
-    }
-
-    /* MODAL BOTTOM SHEET */
+    /* MODAL BOTTOM SHEET FOR PLACE DETAILS */
     function openModal(id) {
       const item = PLACES_DATA.find(p => p.id === id);
       if (!item) return;
