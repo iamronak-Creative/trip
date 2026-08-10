@@ -12,10 +12,10 @@
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- Google Fonts: Google Sans Flex ONLY for Display & Body, Playfair Display (Editorial Eyebrow), Space Mono (Telemetry) -->
+  <!-- Google Fonts: STRICTLY GOOGLE SANS FLEX ONLY NO OTHER FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Leaflet.js Interactive Map CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -23,7 +23,7 @@
 
   <style>
     /* =========================================================
-       NATIVE LUXURY DESIGN SYSTEM (50% REDUCED CORNER RADIUS)
+       NATIVE LUXURY DESIGN SYSTEM (STRICTLY GOOGLE SANS FLEX ONLY)
        ========================================================= */
     :root {
       --bg-dark: #070913;
@@ -46,12 +46,13 @@
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
       
+      /* STRICTLY GOOGLE SANS FLEX ONLY ACROSS THE ENTIRE APPLICATION */
       --font-display: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-body: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-editorial: 'Playfair Display', Georgia, serif;
-      --font-mono: 'Space Mono', monospace;
+      --font-editorial: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       
-      /* Reduced corner roundness by 50% for sleek, structured edges */
+      /* 50% Reduced corner radius */
       --radius-sm: 6px;
       --radius-md: 8px;
       --radius-lg: 10px;
@@ -67,7 +68,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: var(--font-display);
+      font-family: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, sans-serif !important;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -86,20 +87,24 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-y;
+      font-family: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
 
     /* TYPOGRAPHY UTILITIES */
     .mono-num {
-      font-family: var(--font-mono);
-      letter-spacing: -0.5px;
+      font-family: 'Google Sans Flex', -apple-system, sans-serif !important;
+      font-weight: 700;
+      letter-spacing: -0.2px;
     }
 
     .editorial-eyebrow {
-      font-family: var(--font-editorial);
-      font-style: italic;
+      font-family: 'Google Sans Flex', -apple-system, sans-serif !important;
+      font-style: normal;
+      font-weight: 700;
       color: var(--accent-blue);
-      font-size: 13px;
-      letter-spacing: 0.2px;
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
     }
 
     /* LINE ICON SVG UTILITY */
@@ -144,12 +149,12 @@
       border-radius: 7px;
       background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
       display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-display); font-weight: 800; font-size: 15px; color: #fff;
+      font-family: 'Google Sans Flex', sans-serif !important; font-weight: 800; font-size: 15px; color: #fff;
       box-shadow: var(--shadow-violet-glow);
     }
 
     .brand-title {
-      font-family: var(--font-display); font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.4px;
+      font-family: 'Google Sans Flex', sans-serif !important; font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.4px;
     }
 
     .header-actions { display: flex; align-items: center; gap: 8px; }
@@ -168,7 +173,7 @@
       padding: 6px 12px;
       border-radius: 9px;
       font-size: 11.5px; font-weight: 700; color: var(--accent-violet);
-      font-family: var(--font-mono);
+      font-family: 'Google Sans Flex', sans-serif !important;
     }
 
     /* VIEWPORT */
@@ -191,7 +196,7 @@
       box-shadow: var(--shadow-liquid);
     }
 
-    .countdown-timer { font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--accent-blue); }
+    .countdown-timer { font-family: 'Google Sans Flex', sans-serif !important; font-size: 15px; font-weight: 700; color: var(--accent-blue); }
     .countdown-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 
     /* WEATHER WIDGET STRIP */
@@ -208,7 +213,7 @@
     }
 
     .weather-city { font-size: 10.5px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.5px; }
-    .weather-temp { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: #fff; margin: 2px 0; }
+    .weather-temp { font-family: 'Google Sans Flex', sans-serif !important; font-size: 18px; font-weight: 700; color: #fff; margin: 2px 0; }
     .weather-desc { font-size: 10.5px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
 
     /* DATE STRIP */
@@ -226,7 +231,7 @@
     }
 
     .date-chip-day { font-size: 9.5px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; }
-    .date-chip-num { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #fff; margin-top: 2px; }
+    .date-chip-num { font-family: 'Google Sans Flex', sans-serif !important; font-size: 14px; font-weight: 700; color: #fff; margin-top: 2px; }
 
     .date-chip.active {
       background: linear-gradient(135deg, var(--accent-blue), var(--accent-violet));
@@ -278,10 +283,10 @@
     .hero-card-body { padding: 18px; position: relative; z-index: 10; }
 
     .hero-meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .hero-time-badge { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--accent-blue); background: rgba(56, 189, 248, 0.15); padding: 3px 10px; border-radius: 6px; }
+    .hero-time-badge { font-family: 'Google Sans Flex', sans-serif !important; font-size: 11.5px; font-weight: 700; color: var(--accent-blue); background: rgba(56, 189, 248, 0.15); padding: 3px 10px; border-radius: 6px; }
     .hero-city-tag { font-size: 10.5px; font-weight: 800; color: var(--accent-violet); text-transform: uppercase; letter-spacing: 0.8px; }
 
-    .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 12px; }
+    .hero-title { font-family: 'Google Sans Flex', sans-serif !important; font-size: 20px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 12px; }
 
     .hero-info-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;
@@ -290,7 +295,7 @@
     }
 
     .hero-info-cell { display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .hero-info-val { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: #fff; }
+    .hero-info-val { font-family: 'Google Sans Flex', sans-serif !important; font-size: 13px; font-weight: 700; color: #fff; }
     .hero-info-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
 
     .hero-box {
@@ -323,7 +328,7 @@
 
     /* 2-COLUMN BENTO GRID OF PORTRAIT CARDS */
     .section-heading {
-      font-family: var(--font-display); font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 12px;
+      font-family: 'Google Sans Flex', sans-serif !important; font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 12px;
       display: flex; align-items: center; justify-content: space-between;
     }
 
@@ -395,7 +400,7 @@
     }
 
     .bento-card-time {
-      font-family: var(--font-mono);
+      font-family: 'Google Sans Flex', sans-serif !important;
       font-size: 10px;
       font-weight: 700;
       color: var(--accent-blue);
@@ -407,7 +412,7 @@
     }
 
     .bento-card-title {
-      font-family: var(--font-display);
+      font-family: 'Google Sans Flex', sans-serif !important;
       font-size: 13px;
       font-weight: 800;
       color: #fff;
@@ -447,7 +452,7 @@
 
     /* ESSENTIALS */
     .guide-box { background: var(--bg-card-solid); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow-liquid); }
-    .guide-box-title { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: var(--accent-blue); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .guide-box-title { font-family: 'Google Sans Flex', sans-serif !important; font-size: 16px; font-weight: 800; color: var(--accent-blue); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
     .food-spot-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.15); }
     .food-spot-title { font-size: 13px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
@@ -472,7 +477,7 @@
       background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 10px 8px; text-align: center;
       box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.15);
     }
-    .expense-metric-val { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .expense-metric-val { font-family: 'Google Sans Flex', sans-serif !important; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
     .expense-metric-lbl { font-size: 9.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
 
     /* BOTTOM NAV GLASS BAR */
@@ -510,7 +515,7 @@
 
     .sheet-img { width: 100%; height: 210px; object-fit: cover; }
     .sheet-content { padding: 18px; }
-    .sheet-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .sheet-title { font-family: 'Google Sans Flex', sans-serif !important; font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
     .sheet-tip-box { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px 14px; font-size: 13px; line-height: 1.5; color: var(--text-main); margin-bottom: 16px; box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.15); }
     .sheet-notes { width: 100%; height: 80px; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; color: #fff; font-size: 13px; outline: none; resize: none; margin-bottom: 18px; }
   </style>
@@ -623,7 +628,7 @@
       <!-- HERO BENTO TILE: CURRENT ACTIVE DESTINATION -->
       <div class="hero-bento-card" id="current-card">
         <div class="hero-img-wrap">
-          <img id="current-img" class="hero-img" src="./assets/images/airport.jpg?v=21" alt="Current Location">
+          <img id="current-img" class="hero-img" src="./assets/images/airport.jpg?v=22" alt="Current Location">
           <div class="hero-live-tag">
             <div class="live-dot"></div>
             <span>Current Active Stop</span>
@@ -870,7 +875,7 @@
   <!-- JAVASCRIPT & PWA DATA -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=21').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=22').then(reg => {
         reg.update();
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -889,50 +894,50 @@
 
     const PLACES_DATA = [
       // DAY 1 (Sep 4)
-      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals and start scenic drive into the city.", dist: "0 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/airport.jpg?v=21", type: "Logistics", wear: "Casual Travel Outfit", food: "Airport Cafe Snacks & Fresh Coconut Water" },
-      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Natural sulphur water springs & cave structure. Scenic short stop for photos and foot dip.", dist: "28 km", lat: 30.3872, lng: 78.1322, image_url: "./assets/images/sahastradhara.jpg?v=21", type: "Nature", wear: "Floaters / Sandals", food: "Fresh Sugarcane Juice & Local Tea" },
-      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Lunch @ Kumar Vegetarian Dehradun", time: "1:00 PM", tip: "Famous North Indian Thali & Garhwali special thali in heart of Dehradun.", dist: "12 km", lat: 30.3165, lng: 78.0322, image_url: "./assets/images/dehradun_thali.jpg?v=21", type: "Food & Dining", wear: "Casual", food: "Garhwali Chainsoo Thali & Paneer Tikka" },
-      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant 60m Golden Buddha statue & 185-ft Great Stupa of Mindrolling.", dist: "8 km", lat: 30.2604, lng: 78.0084, image_url: "./assets/images/mindrolling.jpg?v=21", type: "Holy Shrine", wear: "Modest Clothing", food: "Tibetan Butter Tea & Dumplings" },
-      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning Greco-Roman colonial red-brick architecture & sprawling manicured lawns.", dist: "10 km", lat: 30.3444, lng: 77.9996, image_url: "./assets/images/fri.jpg?v=21", type: "Architecture", wear: "Walking Shoes", food: "Campus Ice Cream & Lemonade" },
-      { id: 6, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine where natural mountain water drips continuously on Shivling.", dist: "6 km", lat: 30.3547, lng: 78.0177, image_url: "./assets/images/tapkeshwar.jpg?v=21", type: "Holy Shrine", wear: "Slip-on Shoes", food: "Temple Prasad" },
-      { id: 101, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in @ Perfectstayz Seven Oaks", time: "6:00 PM", tip: "Hotel Stay (2 Nights). Res ID: ARRO4O. Primary Guest: Ronak Jain. Total: ₹5,000.02 (Advance: ₹1,500).", dist: "32 km", lat: 30.4560, lng: 78.0700, image_url: "./assets/images/hotel_sevenoaks.jpg?v=21", type: "Hotel Stay", wear: "Comfortable Loungewear", food: "Seven Oaks In-House Dining" },
-      { id: 7, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Evening Street Food @ Mall Road", time: "7:15 PM", tip: "Evening stroll at Library Chowk. Try hot steam momos & kulhad masala tea.", dist: "34 km", lat: 30.4598, lng: 78.0644, image_url: "./assets/images/mallroad.jpg?v=21", type: "Food & Dining", wear: "Light Jacket / Sweater", food: "Steamed Momos & Kulhad Tea" },
+      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals and start scenic drive into the city.", dist: "0 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/airport.jpg?v=22", type: "Logistics", wear: "Casual Travel Outfit", food: "Airport Cafe Snacks & Fresh Coconut Water" },
+      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Natural sulphur water springs & cave structure. Scenic short stop for photos and foot dip.", dist: "28 km", lat: 30.3872, lng: 78.1322, image_url: "./assets/images/sahastradhara.jpg?v=22", type: "Nature", wear: "Floaters / Sandals", food: "Fresh Sugarcane Juice & Local Tea" },
+      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Lunch @ Kumar Vegetarian Dehradun", time: "1:00 PM", tip: "Famous North Indian Thali & Garhwali special thali in heart of Dehradun.", dist: "12 km", lat: 30.3165, lng: 78.0322, image_url: "./assets/images/dehradun_thali.jpg?v=22", type: "Food & Dining", wear: "Casual", food: "Garhwali Chainsoo Thali & Paneer Tikka" },
+      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant 60m Golden Buddha statue & 185-ft Great Stupa of Mindrolling.", dist: "8 km", lat: 30.2604, lng: 78.0084, image_url: "./assets/images/mindrolling.jpg?v=22", type: "Holy Shrine", wear: "Modest Clothing", food: "Tibetan Butter Tea & Dumplings" },
+      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning Greco-Roman colonial red-brick architecture & sprawling manicured lawns.", dist: "10 km", lat: 30.3444, lng: 77.9996, image_url: "./assets/images/fri.jpg?v=22", type: "Architecture", wear: "Walking Shoes", food: "Campus Ice Cream & Lemonade" },
+      { id: 6, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine where natural mountain water drips continuously on Shivling.", dist: "6 km", lat: 30.3547, lng: 78.0177, image_url: "./assets/images/tapkeshwar.jpg?v=22", type: "Holy Shrine", wear: "Slip-on Shoes", food: "Temple Prasad" },
+      { id: 101, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in @ Perfectstayz Seven Oaks", time: "6:00 PM", tip: "Hotel Stay (2 Nights). Res ID: ARRO4O. Primary Guest: Ronak Jain. Total: ₹5,000.02 (Advance: ₹1,500).", dist: "32 km", lat: 30.4560, lng: 78.0700, image_url: "./assets/images/hotel_sevenoaks.jpg?v=22", type: "Hotel Stay", wear: "Comfortable Loungewear", food: "Seven Oaks In-House Dining" },
+      { id: 7, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Evening Street Food @ Mall Road", time: "7:15 PM", tip: "Evening stroll at Library Chowk. Try hot steam momos & kulhad masala tea.", dist: "34 km", lat: 30.4598, lng: 78.0644, image_url: "./assets/images/mallroad.jpg?v=22", type: "Food & Dining", wear: "Light Jacket / Sweater", food: "Steamed Momos & Kulhad Tea" },
 
       // DAY 2 (Sep 5)
-      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "Early 7 AM start beats tourist bus crowds! Cascading waterfalls in pine valley.", dist: "15 km", lat: 30.4856, lng: 78.0425, image_url: "./assets/images/kempty.jpg?v=21", type: "Nature", wear: "Extra Clothes & Towel", food: "Hot Maggi Noodles" },
-      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to Mussoorie's 2nd highest peak for panoramic Doon valley views.", dist: "12 km", lat: 30.4578, lng: 78.0772, image_url: "./assets/images/gunhill.jpg?v=21", type: "Sightseeing", wear: "Sunglasses", food: "Roasted Corn / Bhutta" },
-      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Peaceful 3 km flat walking track overlooking Himalayan valleys.", dist: "3 km", lat: 30.4542, lng: 78.0825, image_url: "./assets/images/camelsback.jpg?v=21", type: "Sightseeing", wear: "Sneakers", food: "Soft Drink / Fresh Juice" },
-      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Brunch @ Char Dukan Landour", time: "2:30 PM", tip: "Famous pancakes, cinnamon rolls, cheese omelettes & hot tea at Landour.", dist: "8 km", lat: 30.4611, lng: 78.0931, image_url: "./assets/images/chardukan.jpg?v=21", type: "Food & Dining", wear: "Light Layer", food: "Cinnamon Pancakes & Tea" },
-      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba Viewpoint", time: "3:00 PM", tip: "Telescope views of snow-capped Himalayan peaks.", dist: "1 km", lat: 30.4633, lng: 78.0964, image_url: "./assets/images/laltibba.jpg?v=21", type: "Sightseeing", wear: "Warm Layer", food: "Landour Hot Chocolate" },
-      { id: 13, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "4:00 PM", tip: "Easy 30-min trek to historic survey house ruins overlooking Aglar valley.", dist: "10 km", lat: 30.4639, lng: 78.0211, image_url: "./assets/images/georgeeverest.jpg?v=21", type: "Adventure", wear: "Trekking Shoes", food: "Hydration Bottle" },
-      { id: 14, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End Sunset", time: "6:00 PM", tip: "Quiet forested edge of Mussoorie hill town. Perfect mountain sunset spot.", dist: "6 km", lat: 30.4625, lng: 78.0069, image_url: "./assets/images/cloudsend.jpg?v=21", type: "Nature", wear: "Jacket", food: "Sunset Coffee" },
+      { id: 8, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Kempty Falls", time: "7:00 AM", tip: "Early 7 AM start beats tourist bus crowds! Cascading waterfalls in pine valley.", dist: "15 km", lat: 30.4856, lng: 78.0425, image_url: "./assets/images/kempty.jpg?v=22", type: "Nature", wear: "Extra Clothes & Towel", food: "Hot Maggi Noodles" },
+      { id: 9, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Gun Hill Ropeway", time: "10:00 AM", tip: "Cable car ride to Mussoorie's 2nd highest peak for panoramic Doon valley views.", dist: "12 km", lat: 30.4578, lng: 78.0772, image_url: "./assets/images/gunhill.jpg?v=22", type: "Sightseeing", wear: "Sunglasses", food: "Roasted Corn / Bhutta" },
+      { id: 10, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Camel's Back Road", time: "11:30 AM", tip: "Peaceful 3 km flat walking track overlooking Himalayan valleys.", dist: "3 km", lat: 30.4542, lng: 78.0825, image_url: "./assets/images/camelsback.jpg?v=22", type: "Sightseeing", wear: "Sneakers", food: "Soft Drink / Fresh Juice" },
+      { id: 11, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Brunch @ Char Dukan Landour", time: "2:30 PM", tip: "Famous pancakes, cinnamon rolls, cheese omelettes & hot tea at Landour.", dist: "8 km", lat: 30.4611, lng: 78.0931, image_url: "./assets/images/chardukan.jpg?v=22", type: "Food & Dining", wear: "Light Layer", food: "Cinnamon Pancakes & Tea" },
+      { id: 12, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Lal Tibba Viewpoint", time: "3:00 PM", tip: "Telescope views of snow-capped Himalayan peaks.", dist: "1 km", lat: 30.4633, lng: 78.0964, image_url: "./assets/images/laltibba.jpg?v=22", type: "Sightseeing", wear: "Warm Layer", food: "Landour Hot Chocolate" },
+      { id: 13, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "George Everest Peak", time: "4:00 PM", tip: "Easy 30-min trek to historic survey house ruins overlooking Aglar valley.", dist: "10 km", lat: 30.4639, lng: 78.0211, image_url: "./assets/images/georgeeverest.jpg?v=22", type: "Adventure", wear: "Trekking Shoes", food: "Hydration Bottle" },
+      { id: 14, day: 2, dateLabel: "Sep 5", city: "Mussoorie", name: "Cloud's End Sunset", time: "6:00 PM", tip: "Quiet forested edge of Mussoorie hill town. Perfect mountain sunset spot.", dist: "6 km", lat: 30.4625, lng: 78.0069, image_url: "./assets/images/cloudsend.jpg?v=22", type: "Nature", wear: "Jacket", food: "Sunset Coffee" },
 
       // DAY 3 (Sep 6)
-      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway cable car to Shaktipeeth shrine with 360° Himalayan peak views.", dist: "24 km", lat: 30.4131, lng: 78.2861, image_url: "./assets/images/surkanda.jpg?v=21", type: "Holy Shrine", wear: "Temple Modest Wear", food: "Temple Prasad" },
-      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Mountain Drive Lunch via Chamba", time: "1:00 PM", tip: "Local pahadi lunch stop on scenic mountain drive down to Rishikesh.", dist: "60 km", lat: 30.3400, lng: 78.3900, image_url: "./assets/images/mountain_drive.jpg?v=21", type: "Food & Dining", wear: "Comfortable", food: "Local Pahadi Kadi Rice" },
-      { id: 102, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Check-in @ Perfectstayz Mystic Falls", time: "3:00 PM", tip: "Hotel Stay (2 Nights). Res ID: XZDGBD. Primary Guest: Ronak Jain. Total: ₹4,800.02 (Advance: ₹1,400).", dist: "48 km", lat: 30.1210, lng: 78.3190, image_url: "./assets/images/hotel_mysticfalls.jpg?v=21", type: "Hotel Stay", wear: "Riverside Casual", food: "Mystic Falls Cafe" },
-      { id: 17, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:30 PM", tip: "Dip your feet in white sands of holy Ganges river after long hill drive.", dist: "50 km", lat: 30.1245, lng: 78.3200, image_url: "./assets/images/gangabeach.jpg?v=21", type: "Nature", wear: "Floaters", food: "Fresh Coconut Water" },
-      { id: 18, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset Ganga Aarti. Arrive by 5:45 PM for front seating.", dist: "4 km", lat: 30.1189, lng: 78.3142, image_url: "./assets/images/parmarth.jpg?v=21", type: "Holy Shrine", wear: "Traditional / Modest", food: "Floating Flower Diya" },
+      { id: 15, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Surkanda Devi Temple (Kaddukhal)", time: "8:45 AM", tip: "10-min ropeway cable car to Shaktipeeth shrine with 360° Himalayan peak views.", dist: "24 km", lat: 30.4131, lng: 78.2861, image_url: "./assets/images/surkanda.jpg?v=22", type: "Holy Shrine", wear: "Temple Modest Wear", food: "Temple Prasad" },
+      { id: 16, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Mountain Drive Lunch via Chamba", time: "1:00 PM", tip: "Local pahadi lunch stop on scenic mountain drive down to Rishikesh.", dist: "60 km", lat: 30.3400, lng: 78.3900, image_url: "./assets/images/mountain_drive.jpg?v=22", type: "Food & Dining", wear: "Comfortable", food: "Local Pahadi Kadi Rice" },
+      { id: 102, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Check-in @ Perfectstayz Mystic Falls", time: "3:00 PM", tip: "Hotel Stay (2 Nights). Res ID: XZDGBD. Primary Guest: Ronak Jain. Total: ₹4,800.02 (Advance: ₹1,400).", dist: "48 km", lat: 30.1210, lng: 78.3190, image_url: "./assets/images/hotel_mysticfalls.jpg?v=22", type: "Hotel Stay", wear: "Riverside Casual", food: "Mystic Falls Cafe" },
+      { id: 17, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Ganga Beach Relaxation", time: "4:30 PM", tip: "Dip your feet in white sands of holy Ganges river after long hill drive.", dist: "50 km", lat: 30.1245, lng: 78.3200, image_url: "./assets/images/gangabeach.jpg?v=22", type: "Nature", wear: "Floaters", food: "Fresh Coconut Water" },
+      { id: 18, day: 3, dateLabel: "Sep 6", city: "Rishikesh", name: "Parmarth Niketan Ganga Aarti", time: "6:15 PM", tip: "Serene spiritual sunset Ganga Aarti. Arrive by 5:45 PM for front seating.", dist: "4 km", lat: 30.1189, lng: 78.3142, image_url: "./assets/images/parmarth.jpg?v=22", type: "Holy Shrine", wear: "Traditional / Modest", food: "Floating Flower Diya" },
 
       // DAY 4 (Sep 7)
-      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling white water rafting stretch down Ganges with cliff jumping!", dist: "16 km", lat: 30.1386, lng: 78.3889, image_url: "./assets/images/rafting.jpg?v=21", type: "Extreme Adventure", wear: "Quick Dry Shorts & T-shirt", food: "Energy Snack / Glucose" },
-      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee jump (83 meters high!).", dist: "15 km", lat: 30.0711, lng: 78.3931, image_url: "./assets/images/bungee.jpg?v=21", type: "Extreme Adventure", wear: "Tied Sneakers & Comfortable Clothes", food: "Red Bull / Energy Drink" },
-      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Lunch @ Freedom Cafe Rishikesh", time: "2:30 PM", tip: "Famous Israeli falafel hummus platter & balcony seating over Ganges river.", dist: "10 km", lat: 30.1283, lng: 78.3242, image_url: "./assets/images/freedom_cafe.jpg?v=21", type: "Food & Dining", wear: "Casual Beachwear", food: "Falafel Hummus Platter" },
-      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Iconic suspension bridges & vibrant riverside souvenir shops.", dist: "2 km", lat: 30.1236, lng: 78.3175, image_url: "./assets/images/ramjhula.jpg?v=21", type: "Sightseeing", wear: "Slip-on Shoes", food: "Herbal Iced Tea" },
-      { id: 23, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple with panoramic sunset river views of Lakshman Jhula.", dist: "1 km", lat: 30.1258, lng: 78.3267, image_url: "./assets/images/teramanzil.jpg?v=21", type: "Holy Shrine", wear: "Easy-to-remove Shoes", food: "Temple Sweets" },
-      { id: 24, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Historic Beatles meditation retreat featuring vibrant graffiti art on stone domes.", dist: "3 km", lat: 30.1147, lng: 78.3131, image_url: "./assets/images/beatles.jpg?v=21", type: "Architecture", wear: "Walking Shoes", food: "Organic Green Tea" },
-      { id: 25, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with hundreds of floating brass oil lamps.", dist: "5 km", lat: 30.1039, lng: 78.2975, image_url: "./assets/images/trivenighat.jpg?v=21", type: "Holy Shrine", wear: "Modest Attire", food: "Floating Lamp Diya" },
+      { id: 19, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "White Water Rafting (Shivpuri)", time: "7:30 AM", tip: "16 km thrilling white water rafting stretch down Ganges with cliff jumping!", dist: "16 km", lat: 30.1386, lng: 78.3889, image_url: "./assets/images/rafting.jpg?v=22", type: "Extreme Adventure", wear: "Quick Dry Shorts & T-shirt", food: "Energy Snack / Glucose" },
+      { id: 20, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Bungee Jump (Jumpin Heights)", time: "11:00 AM", tip: "Mohanchatti - India's highest fixed platform bungee jump (83 meters high!).", dist: "15 km", lat: 30.0711, lng: 78.3931, image_url: "./assets/images/bungee.jpg?v=22", type: "Extreme Adventure", wear: "Tied Sneakers & Comfortable Clothes", food: "Red Bull / Energy Drink" },
+      { id: 21, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Lunch @ Freedom Cafe Rishikesh", time: "2:30 PM", tip: "Famous Israeli falafel hummus platter & balcony seating over Ganges river.", dist: "10 km", lat: 30.1283, lng: 78.3242, image_url: "./assets/images/freedom_cafe.jpg?v=22", type: "Food & Dining", wear: "Casual Beachwear", food: "Falafel Hummus Platter" },
+      { id: 22, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Ram & Lakshman Jhula", time: "3:30 PM", tip: "Iconic suspension bridges & vibrant riverside souvenir shops.", dist: "2 km", lat: 30.1236, lng: 78.3175, image_url: "./assets/images/ramjhula.jpg?v=22", type: "Sightseeing", wear: "Slip-on Shoes", food: "Herbal Iced Tea" },
+      { id: 23, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Tera Manzil Temple", time: "4:30 PM", tip: "13-storey temple with panoramic sunset river views of Lakshman Jhula.", dist: "1 km", lat: 30.1258, lng: 78.3267, image_url: "./assets/images/teramanzil.jpg?v=22", type: "Holy Shrine", wear: "Easy-to-remove Shoes", food: "Temple Sweets" },
+      { id: 24, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "The Beatles Ashram", time: "5:15 PM", tip: "Historic Beatles meditation retreat featuring vibrant graffiti art on stone domes.", dist: "3 km", lat: 30.1147, lng: 78.3131, image_url: "./assets/images/beatles.jpg?v=22", type: "Architecture", wear: "Walking Shoes", food: "Organic Green Tea" },
+      { id: 25, day: 4, dateLabel: "Sep 7", city: "Rishikesh", name: "Triveni Ghat Evening Aarti", time: "6:15 PM", tip: "Vibrant confluence ghat with hundreds of floating brass oil lamps.", dist: "5 km", lat: 30.1039, lng: 78.2975, image_url: "./assets/images/trivenighat.jpg?v=22", type: "Holy Shrine", wear: "Modest Attire", food: "Floating Lamp Diya" },
 
       // DAY 5 (Sep 8)
-      { id: 26, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Early 5 AM start for breathtaking Himalayan sunrise panorama.", dist: "28 km", lat: 30.1706, lng: 78.3228, image_url: "./assets/images/kunjapuri.jpg?v=21", type: "Nature", wear: "Warm Jacket", food: "Peak Chai" },
-      { id: 27, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9 AM bypasses afternoon temple closure queues.", dist: "32 km", lat: 30.0817, lng: 78.3364, image_url: "./assets/images/neelkanth.jpg?v=21", type: "Holy Shrine", wear: "Traditional Clothes", food: "Belpatra Prasad" },
-      { id: 103, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Check-in @ Perfectstayz Aalaya Suites", time: "2:00 PM", tip: "Hotel Stay (1 Night). Res ID: FEDJYX. Primary Guest: Ronak Jain. Total: ₹1,000.00 (Advance: ₹300).", dist: "25 km", lat: 29.9520, lng: 78.1650, image_url: "./assets/images/hotel_aalaaysuites.jpg?v=21", type: "Hotel Stay", wear: "Casual", food: "Haridwar Welcome Drink" },
-      { id: 28, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then reach Har Ki Pauri by 5:15 PM for sacred Aarti.", dist: "25 km", lat: 29.9567, lng: 78.1708, image_url: "./assets/images/harkipauri.jpg?v=21", type: "Holy Shrine", wear: "Floaters for Ghats", food: "Creamy Kulhad Lassi" },
-      { id: 29, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Dinner @ Mohan Ji Puri Wale", time: "8:00 PM", tip: "Famous Haridwar puffed Aloo Puri, Halwa & thick creamy lassi.", dist: "1 km", lat: 29.9542, lng: 78.1690, image_url: "./assets/images/mohanji_puri.jpg?v=21", type: "Food & Dining", wear: "Casual", food: "Puffed Aloo Puri & Halwa" },
+      { id: 26, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Kunjapuri Devi Sunrise Peak", time: "5:00 AM", tip: "Early 5 AM start for breathtaking Himalayan sunrise panorama.", dist: "28 km", lat: 30.1706, lng: 78.3228, image_url: "./assets/images/kunjapuri.jpg?v=22", type: "Nature", wear: "Warm Jacket", food: "Peak Chai" },
+      { id: 27, day: 5, dateLabel: "Sep 8", city: "Rishikesh", name: "Neelkanth Mahadev Temple", time: "9:00 AM", tip: "Reaching by 9 AM bypasses afternoon temple closure queues.", dist: "32 km", lat: 30.0817, lng: 78.3364, image_url: "./assets/images/neelkanth.jpg?v=22", type: "Holy Shrine", wear: "Traditional Clothes", food: "Belpatra Prasad" },
+      { id: 103, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Check-in @ Perfectstayz Aalaya Suites", time: "2:00 PM", tip: "Hotel Stay (1 Night). Res ID: FEDJYX. Primary Guest: Ronak Jain. Total: ₹1,000.00 (Advance: ₹300).", dist: "25 km", lat: 29.9520, lng: 78.1650, image_url: "./assets/images/hotel_aalaaysuites.jpg?v=22", type: "Hotel Stay", wear: "Casual", food: "Haridwar Welcome Drink" },
+      { id: 28, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Mansa Devi & Har Ki Pauri Aarti", time: "4:00 PM", tip: "Cable car up Mansa Devi, then reach Har Ki Pauri by 5:15 PM for sacred Aarti.", dist: "25 km", lat: 29.9567, lng: 78.1708, image_url: "./assets/images/harkipauri.jpg?v=22", type: "Holy Shrine", wear: "Floaters for Ghats", food: "Creamy Kulhad Lassi" },
+      { id: 29, day: 5, dateLabel: "Sep 8", city: "Haridwar", name: "Dinner @ Mohan Ji Puri Wale", time: "8:00 PM", tip: "Famous Haridwar puffed Aloo Puri, Halwa & thick creamy lassi.", dist: "1 km", lat: 29.9542, lng: 78.1690, image_url: "./assets/images/mohanji_puri.jpg?v=22", type: "Food & Dining", wear: "Casual", food: "Puffed Aloo Puri & Halwa" },
 
       // DAY 6 (Sep 9)
-      { id: 30, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to historic Daksha Mahadev temple.", dist: "6 km", lat: 29.9389, lng: 78.1814, image_url: "./assets/images/chandidevi.jpg?v=21", type: "Holy Shrine", wear: "Modest", food: "Morning Chai" },
-      { id: 31, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport Drive", time: "10:15 AM", tip: "Souvenir & prasad shopping, then 45-min drive to Jolly Grant Airport for 2 PM flight.", dist: "45 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/motibazaar.jpg?v=21", type: "Logistics", wear: "Travel Outfit", food: "Airport Meal" }
+      { id: 30, day: 6, dateLabel: "Sep 9", city: "Haridwar", name: "Chandi Devi & Daksha Mahadev", time: "6:30 AM", tip: "Beat morning ropeway queue + quick visit to historic Daksha Mahadev temple.", dist: "6 km", lat: 29.9389, lng: 78.1814, image_url: "./assets/images/chandidevi.jpg?v=22", type: "Holy Shrine", wear: "Modest", food: "Morning Chai" },
+      { id: 31, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport Drive", time: "10:15 AM", tip: "Souvenir & prasad shopping, then 45-min drive to Jolly Grant Airport for 2 PM flight.", dist: "45 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/motibazaar.jpg?v=22", type: "Logistics", wear: "Travel Outfit", food: "Airport Meal" }
     ];
 
     const PACKING_ITEMS = [
