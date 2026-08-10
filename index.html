@@ -576,13 +576,20 @@
 
     .altitude-col { flex: 1; background: linear-gradient(0deg, var(--accent-violet), var(--accent-blue)); border-radius: 3px; transition: var(--transition-fast); }
 
-    /* EXPENSE DASHBOARD METRICS */
+    /* EXPENSE DASHBOARD METRICS - INTERACTIVE CLICKABLE CARDS */
     .expense-metrics-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;
     }
     .expense-metric-card {
       background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 10px 8px; text-align: center;
       box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+    .expense-metric-card:active {
+      transform: scale(0.95);
+      border-color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
     }
     .expense-metric-val { font-family: 'Google Sans Flex', sans-serif !important; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
     .expense-metric-lbl { font-size: 9.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
@@ -938,18 +945,19 @@
       <div class="guide-box">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Complete Trip Expense Tracker</div>
         
+        <!-- CLICKABLE INTERACTIVE METRIC CARDS -->
         <div class="expense-metrics-grid">
-          <div class="expense-metric-card">
+          <div class="expense-metric-card" onclick="openExpenseBreakdownModal('total')" title="Click to view Total Cost Details">
             <div class="expense-metric-val" id="total-committed" style="color:var(--accent-blue);">₹72,445</div>
-            <div class="expense-metric-lbl">Total Cost</div>
+            <div class="expense-metric-lbl">Total Cost ➔</div>
           </div>
-          <div class="expense-metric-card">
+          <div class="expense-metric-card" onclick="openExpenseBreakdownModal('advance')" title="Click to view Advance Paid Details">
             <div class="expense-metric-val" id="total-advances" style="color:var(--accent-emerald);">₹49,845</div>
-            <div class="expense-metric-lbl">Advance Paid</div>
+            <div class="expense-metric-lbl">Advance Paid ➔</div>
           </div>
-          <div class="expense-metric-card">
+          <div class="expense-metric-card" onclick="openExpenseBreakdownModal('pending')" title="Click to view Pending Due Details">
             <div class="expense-metric-val" id="total-pending" style="color:var(--accent-violet);">₹22,600</div>
-            <div class="expense-metric-lbl">Pending Due</div>
+            <div class="expense-metric-lbl">Pending Due ➔</div>
           </div>
         </div>
 
@@ -1041,6 +1049,18 @@
     <button class="btn-bento-primary" style="width:100%; padding:14px;" onclick="saveExpenseFromModal()">Save Expense</button>
   </div>
 
+  <!-- POPUP MODAL FOR METRIC BREAKDOWN (TOTAL COST, ADVANCE PAID, PENDING DUE) -->
+  <div class="modal-overlay" id="expense-breakdown-overlay"></div>
+  <div class="bottom-sheet" id="expense-breakdown-sheet" style="padding:20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="font-family:'Google Sans Flex', sans-serif !important; font-size:18px; font-weight:800; color:#fff;" id="expense-breakdown-title">Expense Details</h3>
+      <button onclick="closeExpenseBreakdownModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
+        <svg class="line-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="expense-breakdown-cards" style="display:flex; flex-direction:column; gap:10px;"></div>
+  </div>
+
   <!-- JAVASCRIPT & PWA DATA -->
   <script>
     function handleImgError(img) {
@@ -1049,7 +1069,7 @@
     }
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=28').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=29').then(reg => {
         reg.update();
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1429,7 +1449,6 @@
       let advanceSum = 0;
       let pendingSum = 0;
 
-      // Calculate totals over entire array
       expenses.forEach(item => {
         const tot = Number(item.total || item.amount || 0);
         const adv = Number(item.advance || 0);
@@ -1439,7 +1458,6 @@
         pendingSum += pen;
       });
 
-      // Render cards in index 0..N order (where 0 is the newest added item)
       expenses.forEach((item, idx) => {
         const tot = Number(item.total || item.amount || 0);
         const adv = Number(item.advance || 0);
@@ -1473,7 +1491,98 @@
       document.getElementById('total-pending').innerText = `₹${Math.round(pendingSum).toLocaleString('en-IN')}`;
     }
 
-    /* POPUP MODAL FOR ADDING EXPENSES - PREPEND (UNSHIFT) TO DISPLAY LATEST AT THE TOP */
+    /* POPUP MODAL FOR METRIC BREAKDOWN (CLICKING TOTAL COST, ADVANCE PAID, OR PENDING DUE CARDS) */
+    function openExpenseBreakdownModal(type) {
+      const overlay = document.getElementById('expense-breakdown-overlay');
+      const sheet = document.getElementById('expense-breakdown-sheet');
+      const titleEl = document.getElementById('expense-breakdown-title');
+      const containerEl = document.getElementById('expense-breakdown-cards');
+
+      containerEl.innerHTML = '';
+
+      let filtered = [];
+      let headerTitle = '';
+      let badgeColor = '';
+
+      if (type === 'total') {
+        headerTitle = 'Total Cost Itemized Cards';
+        badgeColor = 'var(--accent-blue)';
+        filtered = expenses;
+      } else if (type === 'advance') {
+        headerTitle = 'Advance Paid Itemized Cards';
+        badgeColor = 'var(--accent-emerald)';
+        filtered = expenses.filter(item => Number(item.advance || 0) > 0);
+      } else if (type === 'pending') {
+        headerTitle = 'Pending Dues Itemized Cards';
+        badgeColor = 'var(--accent-violet)';
+        filtered = expenses.filter(item => {
+          const tot = Number(item.total || item.amount || 0);
+          const adv = Number(item.advance || 0);
+          const pen = Number(item.pending !== undefined ? item.pending : (tot - adv));
+          return pen > 0;
+        });
+      }
+
+      titleEl.innerText = headerTitle;
+
+      if (filtered.length === 0) {
+        containerEl.innerHTML = '<div style="color:var(--text-secondary); font-size:13px; text-align:center; padding:20px;">No items found for this breakdown.</div>';
+      } else {
+        filtered.forEach(item => {
+          const tot = Number(item.total || item.amount || 0);
+          const adv = Number(item.advance || 0);
+          const pen = Number(item.pending !== undefined ? item.pending : (tot - adv));
+
+          let mainVal = '';
+          let subText = '';
+
+          if (type === 'total') {
+            mainVal = `₹${tot.toLocaleString('en-IN')}`;
+            subText = `Advance Paid: ₹${adv.toLocaleString('en-IN')} | Pending Due: ₹${pen.toLocaleString('en-IN')}`;
+          } else if (type === 'advance') {
+            mainVal = `₹${adv.toLocaleString('en-IN')}`;
+            subText = `Advance Paid towards total budget of ₹${tot.toLocaleString('en-IN')}`;
+          } else {
+            mainVal = `₹${pen.toLocaleString('en-IN')}`;
+            subText = `Pending Balance due out of total budget of ₹${tot.toLocaleString('en-IN')}`;
+          }
+
+          const card = document.createElement('div');
+          card.className = 'food-spot-card';
+          card.style.borderLeft = `3.5px solid ${badgeColor}`;
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:#fff; font-size:13.5px;">${item.title}</strong>
+              <strong style="color:${badgeColor}; font-size:14.5px;" class="mono-num">${mainVal}</strong>
+            </div>
+            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;">${subText}</div>
+          `;
+          containerEl.appendChild(card);
+        });
+      }
+
+      overlay.style.display = 'block';
+      sheet.style.display = 'block';
+      setTimeout(() => {
+        overlay.classList.add('active');
+        sheet.classList.add('active');
+      }, 10);
+    }
+
+    function closeExpenseBreakdownModal() {
+      const overlay = document.getElementById('expense-breakdown-overlay');
+      const sheet = document.getElementById('expense-breakdown-sheet');
+      overlay.classList.remove('active');
+      sheet.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        sheet.style.display = 'none';
+      }, 300);
+    }
+
+    document.getElementById('expense-breakdown-overlay').onclick = closeExpenseBreakdownModal;
+
+    /* POPUP MODAL FOR ADDING EXPENSES */
     function openAddExpenseModal() {
       document.getElementById('exp-modal-name').value = '';
       document.getElementById('exp-modal-total').value = '';
@@ -1508,7 +1617,6 @@
       const advance = Number(document.getElementById('exp-modal-advance').value.trim() || 0);
 
       if (name && !isNaN(total) && total > 0) {
-        // UNSHIFT prepends the new expense to index 0 so it displays at the top (first place)
         expenses.unshift({
           id: `custom-${Date.now()}`,
           title: name,
