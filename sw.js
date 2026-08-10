@@ -1,51 +1,58 @@
-const CACHE_NAME = 'uttarakhand-trip-v23';
+const CACHE_NAME = 'uttarakhand-trip-v24';
 const ASSETS_TO_CACHE = [
   './',
-  './index.html?v=23',
+  './index.html',
   './manifest.json',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
   'https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700;800&display=swap',
-  './assets/images/airport.jpg?v=23',
-  './assets/images/sahastradhara.jpg?v=23',
-  './assets/images/dehradun_thali.jpg?v=23',
-  './assets/images/mindrolling.jpg?v=23',
-  './assets/images/fri.jpg?v=23',
-  './assets/images/tapkeshwar.jpg?v=23',
-  './assets/images/hotel_sevenoaks.jpg?v=23',
-  './assets/images/mallroad.jpg?v=23',
-  './assets/images/kempty.jpg?v=23',
-  './assets/images/gunhill.jpg?v=23',
-  './assets/images/camelsback.jpg?v=23',
-  './assets/images/chardukan.jpg?v=23',
-  './assets/images/laltibba.jpg?v=23',
-  './assets/images/georgeeverest.jpg?v=23',
-  './assets/images/cloudsend.jpg?v=23',
-  './assets/images/surkanda.jpg?v=23',
-  './assets/images/mountain_drive.jpg?v=23',
-  './assets/images/hotel_mysticfalls.jpg?v=23',
-  './assets/images/gangabeach.jpg?v=23',
-  './assets/images/parmarth.jpg?v=23',
-  './assets/images/rafting.jpg?v=23',
-  './assets/images/bungee.jpg?v=23',
-  './assets/images/freedom_cafe.jpg?v=23',
-  './assets/images/ramjhula.jpg?v=23',
-  './assets/images/teramanzil.jpg?v=23',
-  './assets/images/beatles.jpg?v=23',
-  './assets/images/trivenighat.jpg?v=23',
-  './assets/images/kunjapuri.jpg?v=23',
-  './assets/images/neelkanth.jpg?v=23',
-  './assets/images/hotel_aalaaysuites.jpg?v=23',
-  './assets/images/harkipauri.jpg?v=23',
-  './assets/images/mohanji_puri.jpg?v=23',
-  './assets/images/chandidevi.jpg?v=23',
-  './assets/images/motibazaar.jpg?v=23'
+  './assets/images/airport.jpg',
+  './assets/images/sahastradhara.jpg',
+  './assets/images/dehradun_thali.jpg',
+  './assets/images/mindrolling.jpg',
+  './assets/images/fri.jpg',
+  './assets/images/tapkeshwar.jpg',
+  './assets/images/hotel_sevenoaks.jpg',
+  './assets/images/mallroad.jpg',
+  './assets/images/kempty.jpg',
+  './assets/images/gunhill.jpg',
+  './assets/images/camelsback.jpg',
+  './assets/images/chardukan.jpg',
+  './assets/images/laltibba.jpg',
+  './assets/images/georgeeverest.jpg',
+  './assets/images/cloudsend.jpg',
+  './assets/images/surkanda.jpg',
+  './assets/images/mountain_drive.jpg',
+  './assets/images/hotel_mysticfalls.jpg',
+  './assets/images/gangabeach.jpg',
+  './assets/images/parmarth.jpg',
+  './assets/images/rafting.jpg',
+  './assets/images/bungee.jpg',
+  './assets/images/freedom_cafe.jpg',
+  './assets/images/ramjhula.jpg',
+  './assets/images/teramanzil.jpg',
+  './assets/images/beatles.jpg',
+  './assets/images/trivenighat.jpg',
+  './assets/images/kunjapuri.jpg',
+  './assets/images/neelkanth.jpg',
+  './assets/images/hotel_aalaaysuites.jpg',
+  './assets/images/harkipauri.jpg',
+  './assets/images/mohanji_puri.jpg',
+  './assets/images/chandidevi.jpg',
+  './assets/images/motibazaar.jpg'
 ];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+    caches.open(CACHE_NAME).then(async (cache) => {
+      // Individually cache assets to prevent single network failure from breaking installation
+      for (const asset of ASSETS_TO_CACHE) {
+        try {
+          await cache.add(asset);
+        } catch (err) {
+          console.warn('Failed to cache asset:', asset, err);
+        }
+      }
     })
   );
   self.skipWaiting();
@@ -68,8 +75,21 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    fetch(e.request).catch(() => {
-      return caches.match(e.request);
+    caches.match(e.request, { ignoreSearch: true }).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(e.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      });
+    }).catch(() => {
+      return fetch(e.request);
     })
   );
 });
