@@ -1049,7 +1049,7 @@
     }
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=27').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=28').then(reg => {
         reg.update();
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1058,12 +1058,12 @@
     }
 
     const DEFAULT_EXPENSES = [
-      { id: 'exp-flight-1', title: 'Flight Ticket (Departure to Dehradun)', total: 20048, advance: 20048, pending: 0, cat: 'Flight' },
-      { id: 'exp-flight-2', title: 'Flight Ticket (Return from Dehradun)', total: 23597, advance: 23597, pending: 0, cat: 'Flight' },
-      { id: 'exp-cab', title: 'Cab Service (6 Days @ ₹3,000/day)', total: 18000, advance: 3000, pending: 15000, cat: 'Cab' },
-      { id: 'exp-hotel-1', title: 'Perfectstayz Seven Oaks (Mussoorie)', total: 5000.02, advance: 1500, pending: 3500.02, cat: 'Hotel' },
-      { id: 'exp-hotel-2', title: 'Perfectstayz Mystic Falls (Rishikesh)', total: 4800.02, advance: 1400, pending: 3400.02, cat: 'Hotel' },
-      { id: 'exp-hotel-3', title: 'Perfectstayz Aalaya Suites (Haridwar)', total: 1000.00, advance: 300, pending: 700, cat: 'Hotel' }
+      { id: 'exp-flight-1', title: 'Flight Ticket (Departure to Dehradun)', total: 20048, advance: 20048, pending: 0, cat: 'Flight', timestamp: 1 },
+      { id: 'exp-flight-2', title: 'Flight Ticket (Return from Dehradun)', total: 23597, advance: 23597, pending: 0, cat: 'Flight', timestamp: 2 },
+      { id: 'exp-cab', title: 'Cab Service (6 Days @ ₹3,000/day)', total: 18000, advance: 3000, pending: 15000, cat: 'Cab', timestamp: 3 },
+      { id: 'exp-hotel-1', title: 'Perfectstayz Seven Oaks (Mussoorie)', total: 5000.02, advance: 1500, pending: 3500.02, cat: 'Hotel', timestamp: 4 },
+      { id: 'exp-hotel-2', title: 'Perfectstayz Mystic Falls (Rishikesh)', total: 4800.02, advance: 1400, pending: 3400.02, cat: 'Hotel', timestamp: 5 },
+      { id: 'exp-hotel-3', title: 'Perfectstayz Aalaya Suites (Haridwar)', total: 1000.00, advance: 300, pending: 700, cat: 'Hotel', timestamp: 6 }
     ];
 
     const PLACES_DATA = [
@@ -1421,6 +1421,7 @@
       renderPackingList();
     }
 
+    /* RENDER EXPENSES IN DESCENDING ORDER (LATEST EXPENSE FIRST) */
     function renderExpenses() {
       const list = document.getElementById('expense-list');
       list.innerHTML = '';
@@ -1428,14 +1429,21 @@
       let advanceSum = 0;
       let pendingSum = 0;
 
+      // Calculate totals over entire array
+      expenses.forEach(item => {
+        const tot = Number(item.total || item.amount || 0);
+        const adv = Number(item.advance || 0);
+        const pen = Number(item.pending !== undefined ? item.pending : (tot - adv));
+        totalSum += tot;
+        advanceSum += adv;
+        pendingSum += pen;
+      });
+
+      // Render cards in index 0..N order (where 0 is the newest added item)
       expenses.forEach((item, idx) => {
         const tot = Number(item.total || item.amount || 0);
         const adv = Number(item.advance || 0);
         const pen = Number(item.pending !== undefined ? item.pending : (tot - adv));
-        
-        totalSum += tot;
-        advanceSum += adv;
-        pendingSum += pen;
 
         const el = document.createElement('div');
         el.className = 'expense-item-card';
@@ -1465,7 +1473,7 @@
       document.getElementById('total-pending').innerText = `₹${Math.round(pendingSum).toLocaleString('en-IN')}`;
     }
 
-    /* POPUP MODAL FOR ADDING EXPENSES */
+    /* POPUP MODAL FOR ADDING EXPENSES - PREPEND (UNSHIFT) TO DISPLAY LATEST AT THE TOP */
     function openAddExpenseModal() {
       document.getElementById('exp-modal-name').value = '';
       document.getElementById('exp-modal-total').value = '';
@@ -1500,13 +1508,15 @@
       const advance = Number(document.getElementById('exp-modal-advance').value.trim() || 0);
 
       if (name && !isNaN(total) && total > 0) {
-        expenses.push({
+        // UNSHIFT prepends the new expense to index 0 so it displays at the top (first place)
+        expenses.unshift({
           id: `custom-${Date.now()}`,
           title: name,
           total: total,
           advance: advance,
           pending: Math.max(0, total - advance),
-          cat: 'Custom'
+          cat: 'Custom',
+          timestamp: Date.now()
         });
         localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
         renderExpenses();
