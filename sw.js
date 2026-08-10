@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v24';
+const CACHE_NAME = 'uttarakhand-trip-v25';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -45,7 +45,6 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
-      // Individually cache assets to prevent single network failure from breaking installation
       for (const asset of ASSETS_TO_CACHE) {
         try {
           await cache.add(asset);
