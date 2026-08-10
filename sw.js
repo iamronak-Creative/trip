@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v5';
+const CACHE_NAME = 'uttarakhand-trip-v6';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -16,9 +16,11 @@ const ASSETS_TO_CACHE = [
   './assets/images/gunhill.jpg',
   './assets/images/camelsback.jpg',
   './assets/images/chardukan.jpg',
+  './assets/images/laltibba.jpg',
   './assets/images/georgeeverest.jpg',
   './assets/images/cloudsend.jpg',
   './assets/images/surkanda.jpg',
+  './assets/images/mountain_drive.jpg',
   './assets/images/gangabeach.jpg',
   './assets/images/parmarth.jpg',
   './assets/images/rafting.jpg',
@@ -31,6 +33,7 @@ const ASSETS_TO_CACHE = [
   './assets/images/kunjapuri.jpg',
   './assets/images/neelkanth.jpg',
   './assets/images/harkipauri.jpg',
+  './assets/images/mohanji_puri.jpg',
   './assets/images/chandidevi.jpg',
   './assets/images/motibazaar.jpg'
 ];
