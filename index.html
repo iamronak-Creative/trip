@@ -6,7 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#07090e">
-  <title>Uttarakhand Liquid Travel Companion</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Uttarakhand Companion</title>
 
   <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
@@ -22,7 +23,7 @@
 
   <style>
     /* ==========================================
-       LIQUID GLASS & NATIVE APP DESIGN SYSTEM
+       LIQUID GLASS DESIGN SYSTEM (V5 REFRESH)
        ========================================== */
     :root {
       --bg-dark: #07090e;
@@ -75,13 +76,13 @@
       touch-action: pan-y;
     }
 
-    /* NATIVE APP HEADER */
+    /* HEADER */
     .app-header {
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 70px;
       padding-top: env(safe-area-inset-top, 0px);
-      background: rgba(7, 9, 14, 0.82);
+      background: rgba(7, 9, 14, 0.88);
       backdrop-filter: blur(28px) saturate(180%);
       -webkit-backdrop-filter: blur(28px) saturate(180%);
       border-bottom: 1px solid var(--glass-border);
@@ -99,610 +100,254 @@
     }
 
     .brand-icon {
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       border-radius: 14px;
       background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 800;
-      font-size: 18px;
-      color: #07090e;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 18px; color: #07090e;
       box-shadow: var(--shadow-glow);
     }
 
     .brand-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.2px;
+      font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 800; color: #fff;
     }
 
-    .brand-sub {
-      font-size: 11px;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
+    .brand-sub { font-size: 11px; color: var(--text-secondary); }
 
     .progress-pill {
       background: rgba(34, 197, 94, 0.14);
       border: 1px solid rgba(34, 197, 94, 0.4);
       padding: 6px 14px;
       border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-green);
-      backdrop-filter: blur(10px);
+      font-size: 12px; font-weight: 700; color: var(--accent-green);
     }
 
-    /* MAIN VIEWPORT */
+    /* VIEWPORT */
     .main-viewport {
       padding-top: 82px;
       padding-bottom: calc(95px + env(safe-area-inset-bottom, 0px));
       width: 100%;
-      position: relative;
     }
 
-    .tab-content {
-      display: none;
-      padding: 16px;
-      animation: tabFadeIn 0.3s ease-out;
-    }
+    .tab-content { display: none; padding: 16px; animation: tabFadeIn 0.3s ease-out; }
+    .tab-content.active { display: block; }
+    @keyframes tabFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes tabFadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* HORIZONTAL DATE STRIP */
+    /* DATE STRIP */
     .date-strip-container {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 14px;
-      margin-bottom: 20px;
-      scrollbar-width: none;
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 14px; margin-bottom: 20px; scrollbar-width: none;
     }
     .date-strip-container::-webkit-scrollbar { display: none; }
 
     .date-chip {
-      background: var(--bg-card);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 10px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 72px;
-      cursor: pointer;
-      transition: var(--transition-fast);
-      flex-shrink: 0;
+      background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border); border-radius: var(--radius-md);
+      padding: 10px 16px; display: flex; flex-direction: column; align-items: center; min-width: 72px;
+      cursor: pointer; transition: var(--transition-fast); flex-shrink: 0;
     }
 
-    .date-chip-day {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-    }
-
-    .date-chip-num {
-      font-family: 'Outfit', sans-serif;
-      font-size: 18px;
-      font-weight: 800;
-      color: #fff;
-      margin-top: 2px;
-    }
+    .date-chip-day { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+    .date-chip-num { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #fff; margin-top: 2px; }
 
     .date-chip.active {
-      background: var(--accent-green);
-      border-color: var(--accent-green);
-      box-shadow: var(--shadow-glow);
+      background: var(--accent-green); border-color: var(--accent-green); box-shadow: var(--shadow-glow);
     }
-    .date-chip.active .date-chip-day,
-    .date-chip.active .date-chip-num { color: #07090e; }
+    .date-chip.active .date-chip-day, .date-chip.active .date-chip-num { color: #07090e; }
 
-    /* FEATURED NEXT STOP HERO CARD (LIQUID GLASS) */
-    .hero-glass-card {
-      background: linear-gradient(180deg, rgba(25, 30, 48, 0.85) 0%, rgba(14, 18, 28, 0.95) 100%);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+    /* CARD 1: CURRENT LOCATION BIG CARD (ALL DETAILS ON CARD) */
+    .current-location-card {
+      background: linear-gradient(180deg, rgba(25, 30, 48, 0.9) 0%, rgba(14, 18, 28, 0.98) 100%);
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       border: 1px solid var(--glass-border-active);
       border-radius: var(--radius-xl);
       overflow: hidden;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       box-shadow: var(--shadow-liquid);
       position: relative;
     }
 
-    .hero-img-wrap {
-      position: relative;
-      width: 100%;
-      height: 220px;
+    .current-img-wrap { position: relative; width: 100%; height: 230px; }
+    .current-img { width: 100%; height: 100%; object-fit: cover; }
+    .current-badge-live {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--accent-green); color: #07090e; font-size: 11px; font-weight: 800;
+      text-transform: uppercase; padding: 5px 14px; border-radius: 20px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
     }
 
-    .hero-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .current-card-body { padding: 20px; }
+
+    .current-meta-strip { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .current-time-badge {
+      font-size: 12px; font-weight: 800; color: var(--accent-amber);
+      background: rgba(245, 158, 11, 0.16); border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 3px 10px; border-radius: 12px;
+    }
+    .current-city-tag { font-size: 12px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; }
+
+    .current-title {
+      font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 14px;
     }
 
-    .hero-badge-live {
-      position: absolute;
-      top: 14px; left: 14px;
-      background: var(--accent-green);
-      color: #07090e;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
-    }
-
-    .hero-content {
-      padding: 20px;
-    }
-
-    .hero-meta-strip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .hero-time-badge {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-amber);
-      background: rgba(245, 158, 11, 0.16);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-
-    .hero-city-tag {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-    }
-
-    .hero-title-text {
-      font-family: 'Outfit', sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.25;
-      margin-bottom: 10px;
-    }
-
-    .hero-tip-box {
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      line-height: 1.55;
-      margin-bottom: 16px;
+    /* ALL DETAILS INSIDE CURRENT LOCATION CARD */
+    .current-detail-box {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
       padding: 14px;
+      margin-bottom: 14px;
     }
 
-    .hero-metrics-grid {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      margin-bottom: 18px;
+    .detail-box-heading {
+      font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 800; color: var(--accent-cyan);
+      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
     }
 
-    .metric-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .detail-box-text { font-size: 13px; color: #cbd5e1; line-height: 1.55; }
+
+    .current-metrics-grid {
+      display: flex; align-items: center; justify-content: space-around;
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md); padding: 12px; margin-bottom: 18px;
     }
 
-    .metric-val {
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-    }
+    .metric-cell { display: flex; flex-direction: column; align-items: center; }
+    .metric-val { font-size: 14px; font-weight: 700; color: #fff; }
+    .metric-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
 
-    .metric-lbl {
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    .hero-action-buttons {
-      display: flex;
-      gap: 10px;
-    }
+    .current-action-buttons { display: flex; gap: 10px; }
 
     .btn-liquid-primary {
-      background: var(--accent-green);
-      color: #07090e;
-      border: none;
-      border-radius: var(--radius-md);
-      padding: 14px 20px;
-      font-size: 14px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
-      flex: 1;
-      transition: var(--transition-fast);
+      background: var(--accent-green); color: #07090e; border: none; border-radius: var(--radius-md);
+      padding: 14px 20px; font-size: 14px; font-weight: 800; display: flex; align-items: center;
+      justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+      flex: 1; transition: var(--transition-fast);
     }
     .btn-liquid-primary:active { transform: scale(0.97); }
 
     .btn-liquid-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: var(--transition-fast);
+      background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md); padding: 14px 18px; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; gap: 6px; cursor: pointer; transition: var(--transition-fast);
     }
     .btn-liquid-secondary:active { transform: scale(0.97); }
 
-    /* EXPANDED RICH LOCATION CARDS */
-    .section-heading {
-      font-family: 'Outfit', sans-serif;
-      font-size: 19px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .rich-location-card {
+    /* CARD 2: NEXT STOP SUMMARY CARD (CLICK SHOWS POPUP) */
+    .next-stop-summary-card {
       background: var(--bg-card-solid);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      margin-bottom: 18px;
+      margin-bottom: 24px;
       box-shadow: var(--shadow-liquid);
+      cursor: pointer;
       transition: var(--transition-fast);
       position: relative;
     }
+    .next-stop-summary-card:active { transform: scale(0.98); background: var(--bg-card-hover); }
 
-    .rich-card-header-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
+    .next-stop-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      background: var(--accent-cyan); color: #07090e; font-size: 10px; font-weight: 800;
+      text-transform: uppercase; padding: 4px 12px; border-radius: 14px;
     }
 
-    .rich-card-body {
-      padding: 16px;
+    .next-stop-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .next-stop-body { padding: 16px; }
+
+    .next-stop-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .next-stop-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+    .next-stop-hint { font-size: 12px; font-weight: 700; color: var(--accent-green); display: flex; align-items: center; gap: 4px; }
+
+    /* RICH TIMELINE CARDS */
+    .section-heading {
+      font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 16px;
     }
 
-    .rich-card-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
+    .rich-location-card {
+      background: var(--bg-card-solid); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+      overflow: hidden; margin-bottom: 18px; box-shadow: var(--shadow-liquid); transition: var(--transition-fast);
     }
+    .rich-card-header-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .rich-card-body { padding: 16px; }
 
-    .rich-card-time {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--accent-amber);
-      background: rgba(245, 158, 11, 0.14);
-      padding: 3px 10px;
-      border-radius: 10px;
-    }
+    .rich-card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .rich-card-time { font-size: 12px; font-weight: 800; color: var(--accent-amber); background: rgba(245, 158, 11, 0.14); padding: 3px 10px; border-radius: 10px; }
+    .rich-card-type { font-size: 11px; font-weight: 700; color: var(--accent-cyan); background: rgba(6, 182, 212, 0.14); padding: 3px 10px; border-radius: 10px; }
 
-    .rich-card-type {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      background: rgba(6, 182, 212, 0.14);
-      padding: 3px 10px;
-      border-radius: 10px;
-    }
-
-    .rich-card-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 19px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.3;
-      margin-bottom: 6px;
-    }
-
-    .rich-card-sub {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-    }
+    .rich-card-title { font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 6px; }
+    .rich-card-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
 
     .rich-card-desc {
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 1.55;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      margin-bottom: 14px;
+      font-size: 13px; color: #cbd5e1; line-height: 1.55; background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; margin-bottom: 14px;
     }
 
-    .rich-card-tags-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .tag-badge {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--glass-border);
-      color: #e2e8f0;
-    }
-
-    .rich-card-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
+    .rich-card-actions { display: flex; gap: 10px; align-items: center; }
 
     .btn-card-check {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
-      border: 2px solid var(--text-muted);
-      background: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: var(--transition-fast);
+      width: 44px; height: 44px; border-radius: var(--radius-md); border: 2px solid var(--text-muted);
+      background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
     }
 
-    .rich-location-card.visited {
-      border-color: rgba(34, 197, 94, 0.4);
-      background: rgba(34, 197, 94, 0.04);
-    }
+    .rich-location-card.visited { border-color: rgba(34, 197, 94, 0.4); background: rgba(34, 197, 94, 0.04); }
+    .rich-location-card.visited .btn-card-check { background: var(--accent-green); border-color: var(--accent-green); }
 
-    .rich-location-card.visited .btn-card-check {
-      background: var(--accent-green);
-      border-color: var(--accent-green);
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
-    }
-
-    /* LEAFLET REAL MAP TAB */
-    #leaflet-map {
-      width: 100%;
-      height: 280px;
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--glass-border);
-      margin-bottom: 20px;
-      z-index: 1;
-    }
+    /* LEAFLET MAP */
+    #leaflet-map { width: 100%; height: 280px; border-radius: var(--radius-xl); border: 1px solid var(--glass-border); margin-bottom: 20px; z-index: 1; }
 
     .gps-bar {
-      background: var(--bg-card);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
+      background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
     }
 
-    .gps-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      font-weight: 600;
-    }
+    /* ESSENTIALS */
+    .guide-box { background: var(--bg-card-solid); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 18px; }
+    .guide-box-title { font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 12px; }
 
-    /* GUIDE & PACKING */
-    .guide-box {
-      background: var(--bg-card-solid);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-bottom: 18px;
-    }
+    .food-spot-card { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
+    .food-spot-title { font-size: 14px; font-weight: 800; color: #fff; }
+    .food-spot-text { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
 
-    .guide-box-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--accent-cyan);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .packing-row { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; cursor: pointer; }
+    .packing-row.done span { text-decoration: line-through; color: var(--text-muted); }
 
-    .food-spot-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
-
-    .food-spot-title {
-      font-size: 14px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .food-spot-text {
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-      line-height: 1.5;
-    }
-
-    .packing-row {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      cursor: pointer;
-    }
-
-    .packing-row.done span {
-      text-decoration: line-through;
-      color: var(--text-muted);
-    }
-
-    /* FLOATING BOTTOM NAV BAR */
+    /* BOTTOM NAV */
     .bottom-nav-glass {
-      position: fixed;
-      bottom: 14px; left: 18px; right: 18px;
-      height: 65px;
-      background: rgba(18, 22, 36, 0.88);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 35px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
+      position: fixed; bottom: 14px; left: 18px; right: 18px; height: 65px;
+      background: rgba(18, 22, 36, 0.88); backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%); border: 1px solid var(--glass-border);
+      border-radius: 35px; z-index: 1000; display: flex; align-items: center; justify-content: space-around;
       box-shadow: var(--shadow-liquid);
     }
 
     .nav-item-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      color: var(--text-muted);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 10px;
-      font-weight: 700;
-      transition: var(--transition-fast);
-      width: 25%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+      color: var(--text-muted); background: none; border: none; cursor: pointer; font-size: 10px; font-weight: 700; width: 25%;
     }
-
-    .nav-item-btn svg {
-      width: 22px; height: 22px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .nav-item-btn.active {
-      color: var(--accent-green);
-    }
+    .nav-item-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-item-btn.active { color: var(--accent-green); }
     .nav-item-btn.active svg { stroke: var(--accent-green); }
 
     /* MODAL BOTTOM SHEET */
     .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(14px);
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition-fast);
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(14px);
+      z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition-fast);
     }
     .modal-overlay.active { opacity: 1; visibility: visible; }
 
     .bottom-sheet {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      max-height: 88dvh;
-      background: #111524;
-      border-top: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      z-index: 2001;
-      transform: translateY(100%);
-      transition: var(--transition-spring);
-      overflow-y: auto;
+      position: fixed; bottom: 0; left: 0; right: 0; max-height: 88dvh; background: #111524;
+      border-top: 1px solid var(--glass-border); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      z-index: 2001; transform: translateY(100%); transition: var(--transition-spring); overflow-y: auto;
       padding-bottom: calc(35px + env(safe-area-inset-bottom, 0px));
     }
     .bottom-sheet.active { transform: translateY(0); }
 
-    .sheet-img {
-      width: 100%; height: 220px; object-fit: cover;
-    }
-
-    .sheet-content {
-      padding: 20px;
-    }
-
-    .sheet-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 8px;
-    }
-
-    .sheet-tip-box {
-      background: var(--bg-card);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      font-size: 13.5px;
-      line-height: 1.55;
-      color: var(--text-main);
-      margin-bottom: 18px;
-    }
-
-    .sheet-notes {
-      width: 100%;
-      height: 80px;
-      background: var(--bg-card);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      color: #fff;
-      font-size: 13px;
-      outline: none;
-      resize: none;
-      margin-bottom: 20px;
-    }
+    .sheet-img { width: 100%; height: 220px; object-fit: cover; }
+    .sheet-content { padding: 20px; }
+    .sheet-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .sheet-tip-box { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 14px; font-size: 13.5px; line-height: 1.55; color: var(--text-main); margin-bottom: 18px; }
+    .sheet-notes { width: 100%; height: 80px; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; color: #fff; font-size: 13px; outline: none; resize: none; margin-bottom: 20px; }
   </style>
 </head>
 <body>
@@ -713,7 +358,7 @@
       <div class="brand-icon">UK</div>
       <div>
         <div class="brand-title">Uttarakhand Companion</div>
-        <div class="brand-sub">Sep 4 – Sep 9 • 5 Nights</div>
+        <div class="brand-sub">Sep 4 – Sep 9 • Live Trip</div>
       </div>
     </div>
     <div class="progress-pill" id="progress-text">0/31 Visited</div>
@@ -722,7 +367,7 @@
   <!-- MAIN VIEWPORT -->
   <main class="main-viewport">
 
-    <!-- TAB 1: MY TRIP (TIMELINE) -->
+    <!-- TAB 1: MY TRIP (TIMELINE & 2 TOP CARDS) -->
     <section id="tab-trip" class="tab-content active">
 
       <!-- HORIZONTAL DATE STRIP -->
@@ -757,28 +402,27 @@
         </div>
       </div>
 
-      <!-- FEATURED BIG HERO CARD (NEXT STOP) -->
-      <div class="hero-glass-card" id="hero-card">
-        <div class="hero-img-wrap">
-          <img id="hero-img" class="hero-img" src="./assets/images/airport.jpg" alt="Next Stop">
-          <div class="hero-badge-live">⚡ Next Up On Trip</div>
+      <!-- CARD 1: CURRENT LOCATION BIG CARD (ALL DETAILS ON CARD) -->
+      <div class="current-location-card" id="current-card">
+        <div class="current-img-wrap">
+          <img id="current-img" class="current-img" src="./assets/images/airport.jpg" alt="Current Location">
+          <div class="current-badge-live">📍 Current Active Stop</div>
         </div>
-        <div class="hero-content">
-          <div class="hero-meta-strip">
-            <span class="hero-time-badge" id="hero-time">11:00 AM</span>
-            <span class="hero-city-tag" id="hero-city">Dehradun</span>
+        <div class="current-card-body">
+          <div class="current-meta-strip">
+            <span class="current-time-badge" id="current-time">11:00 AM</span>
+            <span class="current-city-tag" id="current-city">Dehradun</span>
           </div>
-          <h2 class="hero-title-text" id="hero-title">Dehradun Airport Arrival</h2>
-          <div class="hero-tip-box" id="hero-tip">Pick up cab outside arrivals and start scenic drive into the city.</div>
+          <h2 class="current-title" id="current-title">Dehradun Airport Arrival</h2>
           
-          <div class="hero-metrics-grid">
+          <div class="current-metrics-grid">
             <div class="metric-cell">
-              <span class="metric-val" id="hero-dist">0 km</span>
+              <span class="metric-val" id="current-dist">0 km</span>
               <span class="metric-lbl">Distance</span>
             </div>
             <div class="metric-cell">
               <span class="metric-val">~45 mins</span>
-              <span class="metric-lbl">Drive Time</span>
+              <span class="metric-lbl">Est. Drive</span>
             </div>
             <div class="metric-cell">
               <span class="metric-val">24°C</span>
@@ -786,20 +430,50 @@
             </div>
           </div>
 
-          <div class="hero-action-buttons">
-            <button class="btn-liquid-primary" id="hero-nav-btn">
+          <!-- FULL DETAILS DIRECTLY ON CURRENT CARD -->
+          <div class="current-detail-box">
+            <div class="detail-box-heading">🎯 Highlights & Things to Do</div>
+            <div class="detail-box-text" id="current-tip">Arrive at Jolly Grant Airport. Pick up cab outside arrivals and start scenic drive into the city.</div>
+          </div>
+
+          <div class="current-detail-box">
+            <div class="detail-box-heading">🍲 Food & Dining Options Nearby</div>
+            <div class="detail-box-text" id="current-food">☕ Airport Cafe Snacks & Fresh Coconut Water.</div>
+          </div>
+
+          <div class="current-detail-box">
+            <div class="detail-box-heading">🎒 What to Wear & Carry</div>
+            <div class="detail-box-text" id="current-wear">👕 Casual Travel Outfit • Power Bank & Hydration.</div>
+          </div>
+
+          <div class="current-action-buttons">
+            <button class="btn-liquid-primary" id="current-nav-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
               Navigate Maps
             </button>
-            <button class="btn-liquid-secondary" id="hero-done-btn">Mark Visited</button>
+            <button class="btn-liquid-secondary" id="current-done-btn">Mark Visited</button>
           </div>
         </div>
       </div>
 
-      <!-- EXPANDED RICH LOCATION CARDS STACK -->
-      <div class="section-heading">Detailed Itinerary & Food Stops</div>
+      <!-- CARD 2: NEXT STOP CARD (SUMMARY CARD - CLICK SHOWS FULL POPUP) -->
+      <div class="next-stop-summary-card" id="next-stop-card" onclick="openNextStopPopup()">
+        <div class="next-stop-badge">⏭️ Next Stop</div>
+        <img id="next-stop-img" class="next-stop-img" src="./assets/images/sahastradhara.jpg" alt="Next Stop">
+        <div class="next-stop-body">
+          <div class="next-stop-title" id="next-stop-title">Sahastradhara Sulphur Springs</div>
+          <div class="next-stop-sub" id="next-stop-sub">📍 Dehradun • 11:45 AM • 28 km away</div>
+          <div class="next-stop-hint">
+            <span>Tap for Full Details & Food Guide</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- REMAINING ITINERARY LIST -->
+      <div class="section-heading">All Remaining Itinerary Stops</div>
       <div id="timeline-container">
-        <!-- Dynamically rendered -->
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
@@ -915,19 +589,24 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT & PWA DATA -->
+  <!-- JAVASCRIPT & CACHE BUSTING SERVICE WORKER -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+      navigator.serviceWorker.register('./sw.js?v=5').then(reg => {
+        reg.update();
+      });
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+      });
     }
 
     const PLACES_DATA = [
       // DAY 1 (Sep 4)
-      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals and start scenic drive into the city.", dist: "0 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/airport.jpg", type: "Logistics", wear: "👕 Casual Travel", food: "☕ Airport Cafe Snacks" },
-      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Natural sulphur water springs & cave structure. Scenic short stop for photos and foot dip.", dist: "28 km", lat: 30.3872, lng: 78.1322, image_url: "./assets/images/sahastradhara.jpg", type: "Nature", wear: "🩴 Floaters / Sandals", food: "🥤 Fresh Sugarcane Juice" },
-      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "🍱 Lunch @ Kumar Vegetarian Dehradun", time: "1:00 PM", tip: "Famous North Indian Thali & Garhwali special thali in heart of Dehradun.", dist: "12 km", lat: 30.3165, lng: 78.0322, image_url: "./assets/images/dehradun_thali.jpg", type: "Food & Dining", wear: "👕 Casual", food: "🍛 Garhwali Chainsoo Thali" },
-      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant 60m Golden Buddha statue & 185-ft Great Stupa of Mindrolling.", dist: "8 km", lat: 30.2604, lng: 78.0084, image_url: "./assets/images/mindrolling.jpg", type: "Holy Shrine", wear: "👟 Modest Clothing", food: "🍵 Tibetan Butter Tea" },
-      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning Greco-Roman colonial red-brick architecture & sprawling manicured lawns.", dist: "10 km", lat: 30.3444, lng: 77.9996, image_url: "./assets/images/fri.jpg", type: "Architecture", wear: "👟 Walking Shoes", food: "🍦 Campus Ice Cream" },
+      { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals and start scenic drive into the city.", dist: "0 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/airport.jpg", type: "Logistics", wear: "👕 Casual Travel Outfit", food: "☕ Airport Cafe Snacks & Fresh Coconut Water" },
+      { id: 2, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Sahastradhara Sulphur Springs", time: "11:45 AM", tip: "Natural sulphur water springs & cave structure. Scenic short stop for photos and foot dip.", dist: "28 km", lat: 30.3872, lng: 78.1322, image_url: "./assets/images/sahastradhara.jpg", type: "Nature", wear: "🩴 Floaters / Sandals", food: "🥤 Fresh Sugarcane Juice & Local Tea" },
+      { id: 3, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "🍱 Lunch @ Kumar Vegetarian Dehradun", time: "1:00 PM", tip: "Famous North Indian Thali & Garhwali special thali in heart of Dehradun.", dist: "12 km", lat: 30.3165, lng: 78.0322, image_url: "./assets/images/dehradun_thali.jpg", type: "Food & Dining", wear: "👕 Casual", food: "🍛 Garhwali Chainsoo Thali & Paneer Tikka" },
+      { id: 4, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Mindrolling Monastery", time: "2:00 PM", tip: "Giant 60m Golden Buddha statue & 185-ft Great Stupa of Mindrolling.", dist: "8 km", lat: 30.2604, lng: 78.0084, image_url: "./assets/images/mindrolling.jpg", type: "Holy Shrine", wear: "👟 Modest Clothing", food: "🍵 Tibetan Butter Tea & Dumplings" },
+      { id: 5, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Forest Research Institute (FRI)", time: "3:15 PM", tip: "Stunning Greco-Roman colonial red-brick architecture & sprawling manicured lawns.", dist: "10 km", lat: 30.3444, lng: 77.9996, image_url: "./assets/images/fri.jpg", type: "Architecture", wear: "👟 Walking Shoes", food: "🍦 Campus Ice Cream & Lemonade" },
       { id: 6, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Tapkeshwar Mahadev Temple", time: "4:30 PM", tip: "Ancient cave shrine where natural mountain water drips continuously on Shivling.", dist: "6 km", lat: 30.3547, lng: 78.0177, image_url: "./assets/images/tapkeshwar.jpg", type: "Holy Shrine", wear: "🩴 Slip-on Shoes", food: "🚩 Temple Prasad" },
       { id: 7, day: 1, dateLabel: "Sep 4", city: "Mussoorie", name: "Check-in & ☕ Evening Street Food @ Mall Road", time: "6:45 PM", tip: "Evening stroll at Library Chowk. Try hot steam momos & kulhad masala tea.", dist: "34 km", lat: 30.4598, lng: 78.0644, image_url: "./assets/images/mallroad.jpg", type: "Food & Dining", wear: "🧥 Light Jacket / Sweater", food: "🥟 Steamed Momos & Kulhad Tea" },
 
@@ -979,6 +658,7 @@
     let selectedDayFilter = 'all';
     let leafletMap = null;
     let userMarker = null;
+    let nextStopItem = null;
 
     document.addEventListener('DOMContentLoaded', () => {
       initNavigation();
@@ -987,7 +667,7 @@
       renderPackingList();
       renderExpenses();
       updateProgress();
-      updateHeroCard();
+      updateTopCards();
     });
 
     function initNavigation() {
@@ -1018,6 +698,47 @@
       });
     }
 
+    function updateTopCards() {
+      const remaining = PLACES_DATA.filter(p => !doneIds.includes(p.id));
+      
+      if (remaining.length > 0) {
+        // CARD 1: CURRENT ACTIVE STOP
+        const current = remaining[0];
+        document.getElementById('current-title').innerText = current.name;
+        document.getElementById('current-time').innerText = current.time;
+        document.getElementById('current-city').innerText = `${current.city} • DAY ${current.day}`;
+        document.getElementById('current-dist').innerText = current.dist;
+        document.getElementById('current-img').src = current.image_url;
+        
+        document.getElementById('current-tip').innerText = current.tip;
+        document.getElementById('current-food').innerText = current.food || "Local snacks & regional beverages.";
+        document.getElementById('current-wear').innerText = current.wear || "Comfortable travel attire.";
+
+        document.getElementById('current-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(current.name)}`, '_blank');
+        
+        const doneBtn = document.getElementById('current-done-btn');
+        doneBtn.innerText = doneIds.includes(current.id) ? 'Mark Undone' : 'Mark Visited';
+        doneBtn.onclick = () => toggleDone(current.id);
+
+        // CARD 2: NEXT STOP CARD
+        if (remaining.length > 1) {
+          nextStopItem = remaining[1];
+          document.getElementById('next-stop-card').style.display = 'block';
+          document.getElementById('next-stop-title').innerText = nextStopItem.name;
+          document.getElementById('next-stop-sub').innerText = `📍 ${nextStopItem.city} • ${nextStopItem.time} • ${nextStopItem.dist} away`;
+          document.getElementById('next-stop-img').src = nextStopItem.image_url;
+        } else {
+          document.getElementById('next-stop-card').style.display = 'none';
+        }
+      }
+    }
+
+    function openNextStopPopup() {
+      if (nextStopItem) {
+        openModal(nextStopItem.id);
+      }
+    }
+
     function renderTimeline() {
       const container = document.getElementById('timeline-container');
       container.innerHTML = '';
@@ -1045,11 +766,6 @@
 
             <div class="rich-card-desc">${item.tip}</div>
 
-            <div class="rich-card-tags-row">
-              ${item.wear ? `<span class="tag-badge">${item.wear}</span>` : ''}
-              ${item.food ? `<span class="tag-badge">🍲 ${item.food}</span>` : ''}
-            </div>
-
             <div class="rich-card-actions">
               <button class="btn-card-check" onclick="toggleDone(${item.id})">
                 ${isVisited ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#07090e" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
@@ -1070,25 +786,6 @@
       });
     }
 
-    function updateHeroCard() {
-      const remaining = PLACES_DATA.filter(p => !doneIds.includes(p.id));
-      if (remaining.length > 0) {
-        const next = remaining[0];
-        document.getElementById('hero-title').innerText = next.name;
-        document.getElementById('hero-time').innerText = next.time;
-        document.getElementById('hero-city').innerText = `${next.city} • DAY ${next.day}`;
-        document.getElementById('hero-dist').innerText = next.dist;
-        document.getElementById('hero-tip').innerText = next.tip;
-        document.getElementById('hero-img').src = next.image_url;
-        document.getElementById('hero-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(next.name)}`, '_blank');
-        
-        const doneBtn = document.getElementById('hero-done-btn');
-        const isVisited = doneIds.includes(next.id);
-        doneBtn.innerText = isVisited ? 'Mark Undone' : 'Mark Visited';
-        doneBtn.onclick = () => toggleDone(next.id);
-      }
-    }
-
     function updateProgress() {
       document.getElementById('progress-text').innerText = `${doneIds.length}/${PLACES_DATA.length} Visited`;
     }
@@ -1102,10 +799,10 @@
       localStorage.setItem('uttarakhand_done_places', JSON.stringify(doneIds));
       renderTimeline();
       updateProgress();
-      updateHeroCard();
+      updateTopCards();
     }
 
-    /* LEAFLET REAL MAP LOGIC */
+    /* LEAFLET MAP */
     function initLeafletMap() {
       if (leafletMap) {
         leafletMap.invalidateSize();
@@ -1115,8 +812,7 @@
       leafletMap = L.map('leaflet-map').setView([30.3165, 78.0322], 9);
 
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap & CartoDB'
+        maxZoom: 19, attribution: '&copy; OpenStreetMap & CartoDB'
       }).addTo(leafletMap);
 
       PLACES_DATA.forEach(place => {
@@ -1151,7 +847,7 @@
 
           renderNearbyPlaces(lat, lng);
         }, err => {
-          document.getElementById('gps-status-text').innerText = 'GPS offline or permission pending. Showing default map.';
+          document.getElementById('gps-status-text').innerText = 'GPS offline or permission pending.';
           renderNearbyPlaces(30.3165, 78.0322);
         });
       }
@@ -1258,7 +954,7 @@
 
       document.getElementById('sheet-img').src = item.image_url;
       document.getElementById('sheet-title').innerText = item.name;
-      document.getElementById('sheet-tip').innerText = item.tip;
+      document.getElementById('sheet-tip').innerText = `${item.tip}\n\n🍲 Food Option: ${item.food || 'Local delights'}\n👕 Outfit: ${item.wear || 'Comfortable'}`;
       document.getElementById('sheet-notes').value = placeNotes[id] || '';
 
       document.getElementById('sheet-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`, '_blank');
@@ -1290,7 +986,7 @@
         renderPackingList();
         renderExpenses();
         updateProgress();
-        updateHeroCard();
+        updateTopCards();
         alert('All trip data reset successfully!');
       }
     }

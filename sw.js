@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v4';
+const CACHE_NAME = 'uttarakhand-trip-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -61,10 +61,8 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      return cachedResponse || fetch(e.request).catch(() => {
-        return caches.match('./index.html');
-      });
+    fetch(e.request).catch(() => {
+      return caches.match(e.request);
     })
   );
 });
