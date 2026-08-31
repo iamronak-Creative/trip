@@ -309,7 +309,7 @@
       font-size: 11px; font-weight: 700; color: var(--accent-blue);
     }
 
-    /* TIER 1: HERO BENTO TILE (CURRENT ACTIVE DESTINATION - BIGGEST) */
+    /* TIER 1: HERO BENTO TILE (CURRENT SCHEDULED DESTINATION) */
     .hero-bento-card {
       background: linear-gradient(160deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
       backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -482,7 +482,7 @@
       gap: 6px;
     }
 
-    /* SECTION HEADING SINGLE LINE WITHOUT EXTRA SUBTITLE */
+    /* SECTION HEADING */
     .section-heading {
       font-family: 'Google Sans Flex', sans-serif !important; font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 12px;
       display: block;
@@ -495,6 +495,7 @@
       margin-bottom: 24px;
     }
 
+    /* BENTO CARD WITH PERSISTENT NAVIGATE & CHECKMARK QUICK ACTION BUTTONS */
     .bento-card {
       background: var(--bg-card-solid);
       border: 1px solid var(--glass-border);
@@ -509,7 +510,6 @@
     }
     .bento-card:active { transform: scale(0.96) translateY(-2px); background: var(--bg-card-hover); }
 
-    /* HOTEL REST CARD HIGHLIGHT STYLING AT END OF EACH DAY */
     .bento-card.hotel-rest-card {
       border: 1px solid var(--glass-border-violet);
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(88, 28, 135, 0.3));
@@ -530,10 +530,29 @@
       object-fit: cover;
     }
 
+    /* PERSISTENT QUICK NAVIGATE MAPS BUTTON ON BENTO CARD */
+    .bento-card-nav-btn {
+      position: absolute;
+      top: 8px; left: 8px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      background: rgba(7, 9, 19, 0.75);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent-blue);
+      cursor: pointer;
+      z-index: 5;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: var(--transition-fast);
+    }
+    .bento-card-nav-btn:active { transform: scale(0.88); background: var(--accent-blue); color: #070913; }
+
+    /* PERSISTENT MARK VISITED CHECKMARK BUTTON ON BENTO CARD */
     .bento-card-check {
       position: absolute;
       top: 8px; right: 8px;
-      width: 28px; height: 28px;
+      width: 32px; height: 32px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.7);
       background: rgba(7, 9, 19, 0.6);
@@ -541,7 +560,10 @@
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       z-index: 5;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      transition: var(--transition-fast);
     }
+    .bento-card-check:active { transform: scale(0.88); }
 
     .bento-card.visited {
       border-color: rgba(139, 92, 246, 0.6);
@@ -638,7 +660,7 @@
 
     .altitude-col { flex: 1; background: linear-gradient(0deg, var(--accent-violet), var(--accent-blue)); border-radius: 3px; transition: var(--transition-fast); }
 
-    /* EXPENSE DASHBOARD METRICS - INTERACTIVE CLICKABLE CARDS */
+    /* EXPENSE DASHBOARD METRICS */
     .expense-metrics-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;
     }
@@ -669,7 +691,7 @@
     .expense-action-btn:hover { background: rgba(139, 92, 246, 0.2); color: #fff; border-color: var(--accent-violet); }
     .expense-action-btn.delete:hover { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); border-color: rgba(244, 63, 94, 0.5); }
 
-    /* FLOATING BOTTOM NAV BAR WITH DISTINCT ELEVATION GAP */
+    /* FLOATING BOTTOM NAV BAR */
     .bottom-nav-glass {
       position: fixed;
       bottom: calc(18px + env(safe-area-inset-bottom, 0px));
@@ -725,7 +747,6 @@
 
   <!-- APP HEADER -->
   <header class="app-header">
-    <!-- CLICKABLE BRAND LOGO & NAME (TAKES USER TO HOME SCREEN) -->
     <div class="brand-group" onclick="goToHomeScreen()" title="Go to Home Screen">
       <div class="brand-icon">UK</div>
       <div>
@@ -734,7 +755,6 @@
     </div>
 
     <div class="header-actions">
-      <!-- RESET ICON BUTTON ONLY (NO TEXT LABEL) -->
       <button class="reset-icon-btn" onclick="resetVisitedStops()" title="Reset Location Checkmarks">
         <svg class="line-icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
@@ -748,7 +768,7 @@
     <!-- TAB 1: MY TRIP (TIMELINE & CARDS) -->
     <section id="tab-trip" class="tab-content active">
 
-      <!-- COUNTDOWN & LIVE TRIP STATUS BANNER -->
+      <!-- COUNTDOWN BANNER -->
       <div class="countdown-banner">
         <div>
           <div class="countdown-timer" id="countdown-clock">SEP 4 • 11:00 AM</div>
@@ -821,7 +841,7 @@
         </div>
       </div>
 
-      <!-- CATEGORY FILTER BAR WITH SKIPPED STOPS TAB -->
+      <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB -->
       <div class="category-filter-bar">
         <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
         <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops (<span id="missed-count-badge">0</span>)</div>
@@ -911,14 +931,14 @@
       </div>
     </section>
 
-    <!-- TAB 2: INTERACTIVE LEAFLET MAP & GPS NEARBY -->
+    <!-- TAB 2: INTERACTIVE LEAFLET MAP & ON-DEMAND GPS NEARBY -->
     <section id="tab-map" class="tab-content">
       <div class="gps-bar">
         <div class="gps-info" style="display:flex; align-items:center; gap:8px;">
           <svg class="line-icon" style="stroke:var(--accent-blue);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-          <span id="gps-status-text" style="font-size:12px; color:#fff;">Detecting GPS location...</span>
+          <span id="gps-status-text" style="font-size:12px; color:#fff;">Tap button to locate nearby spots...</span>
         </div>
-        <button class="btn-bento-primary" style="padding:6px 14px; font-size:12px; flex:none;" onclick="locateUserGPS()">Update GPS</button>
+        <button class="btn-bento-primary" style="padding:8px 16px; font-size:12px; flex:none;" onclick="locateUserGPSOnDemand()">Find Nearby Spots (My Location)</button>
       </div>
 
       <div id="leaflet-map"></div>
@@ -938,12 +958,21 @@
         </div>
       </div>
 
-      <div class="section-heading">Nearby Spots (Sorted by Distance)</div>
+      <div class="section-heading">Nearby Spots (Real GPS Distance)</div>
       <div id="nearby-container"></div>
     </section>
 
-    <!-- TAB 3: ESSENTIALS, PACKING & FOOD BIBLE -->
+    <!-- TAB 3: ESSENTIALS, PACKING (TOP CARD #1) & HOTEL RESERVATIONS -->
     <section id="tab-guide" class="tab-content">
+
+      <!-- TOP CARD #1: PERSONALIZED FAMILY PACKING CHECKLIST -->
+      <div class="guide-box" style="border-left: 3.5px solid var(--accent-blue);">
+        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Personalized Packing Checklist</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Categorized by person (Baby, Mother, Adults, & Hill Drive Meds) to make packing easy.</div>
+        <div id="packing-container"></div>
+      </div>
+
+      <!-- CARD #2: CONFIRMED HOTEL RESERVATIONS -->
       <div class="guide-box">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M3 21h18"/></svg> Confirmed Hotel Reservations</div>
         
@@ -975,6 +1004,7 @@
         </div>
       </div>
 
+      <!-- CARD #3: CULINARY GUIDE -->
       <div class="guide-box">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Uttarakhand Culinary Guide</div>
         
@@ -994,11 +1024,7 @@
         </div>
       </div>
 
-      <div class="guide-box">
-        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Packing Checklist</div>
-        <div id="packing-container"></div>
-      </div>
-
+      <!-- CARD #4: EMERGENCY HELPLINES -->
       <div class="guide-box">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Emergency Helplines & Travel Support</div>
         <div style="font-size:13px; color:var(--text-secondary); line-height:1.65;">
@@ -1014,7 +1040,6 @@
       <div class="guide-box">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Complete Trip Expense Tracker</div>
         
-        <!-- CLICKABLE METRIC CARDS -->
         <div class="expense-metrics-grid">
           <div class="expense-metric-card" onclick="openExpenseBreakdownModal('total')" title="Click to view Total Cost Details">
             <div class="expense-metric-val" id="total-committed" style="color:var(--accent-blue);">₹72,445</div>
@@ -1030,7 +1055,6 @@
           </div>
         </div>
 
-        <!-- CENTERED ADD EXPENSE BUTTON THAT OPENS POPUP MODAL -->
         <div style="text-align:center; margin:16px 0 20px 0;">
           <button class="btn-bento-primary" style="margin:0 auto; padding:12px 24px; font-size:13.5px;" onclick="openAddExpenseModal()">
             <svg class="line-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1042,7 +1066,6 @@
         <div id="expense-list" style="display:flex; flex-direction:column; gap:8px;"></div>
       </div>
 
-      <!-- CAB DRIVER DIRECT CONTACT CARD -->
       <div class="guide-box" style="border-left: 3px solid var(--accent-blue);">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.28a1 1 0 0 0-.3-.7l-2.7-2.7a1 1 0 0 0-.7-.3H15v7h4z"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg> Cab Driver Support</div>
         <div style="font-size:13px; color:#fff; margin-bottom:10px;">
@@ -1085,19 +1108,16 @@
     <div class="sheet-content">
       <h2 class="sheet-title" id="sheet-title">Title</h2>
       
-      <!-- MUST DO ACTIVITY BOX -->
       <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-blue);" id="sheet-mustdo-box">
         <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:3px; display:flex; align-items:center; gap:5px;"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights</div>
         <div id="sheet-mustdo" style="font-size:12.5px; color:#fff;">Must do description...</div>
       </div>
 
-      <!-- PURE VEG DINING BOX -->
       <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-emerald);" id="sheet-food-box">
         <div style="font-size:11px; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; margin-bottom:3px; display:flex; align-items:center; gap:5px;"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food Suggestions</div>
         <div id="sheet-vegfood" style="font-size:12.5px; color:#fff;">Food & dining recommendation...</div>
       </div>
 
-      <!-- LOCAL TRAVEL TIP BOX -->
       <div class="sheet-tip-box" id="sheet-tip">Tip details...</div>
 
       <label style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:6px; display:block;">Personal Notes & Driver Instructions</label>
@@ -1157,7 +1177,6 @@
       </button>
     </div>
 
-    <!-- CURRENT LIVE TELEMETRY HERO BOX -->
     <div class="guide-box" style="border-left: 3.5px solid var(--accent-blue); margin-bottom:16px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
@@ -1184,7 +1203,7 @@
     }
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=34').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=36').then(reg => {
         reg.update();
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1386,48 +1405,57 @@
       { id: 31, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport Drive", time: "10:15 AM", tip: "Souvenir & prasad shopping, then 45-min drive to Jolly Grant Airport for 2 PM flight.", dist: "45 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/motibazaar.jpg", type: "Logistics", wear: "Travel Outfit", food: "Airport Departure Snack", mustDo: "Buy authentic Haridwar Peda sweets & wooden souvenirs before cab to airport." }
     ];
 
-    /* COMPREHENSIVE PACKING CHECKLIST FOR TRAVELERS */
+    /* PERSONALIZED FAMILY PACKING CHECKLIST ORGANIZED BY PERSON */
     const PACKING_CATEGORIES = [
       {
-        category: "Medicines & First Aid",
+        category: "Baby & Infant Essentials",
         items: [
-          "Headache Medicine (Crocin / Disprin / Paracetamol)",
-          "Motion Sickness & Vomiting Tablets (Avomine / Ondem for hill drives)",
-          "Altitude Sickness & Acidity Meds (Eno / Digene)",
-          "Band-aids & Antiseptic Cream (Dettol / Neosporin)",
-          "ORS / Electral Hydration Sachet Packs",
-          "Pain Relief Spray / Balm (Volini / Moov for treks)"
+          "Woolen Cap & Warm Booties (High Altitude Cold)",
+          "Soft Baby Blanket & Rain Poncho",
+          "Baby Wipes & Diaper Rash Cream",
+          "Baby Thermometer & Paracetamol Drops",
+          "Baby Food / Milk Powder & Feeding Bottle",
+          "Baby Vomiting Syrup (Avomine / Ondem Drops)",
+          "Baby Sun Hat & Teething Toys"
         ]
       },
       {
-        category: "Clothing & Wearables",
+        category: "Mother & Senior Family Essentials",
         items: [
-          "Light Windbreaker / Raincoat (High Altitude Rain)",
-          "Light Sweater / Jacket (Landour & Kunjapuri Cold Evenings)",
-          "Breathable Full Sleeve T-Shirts",
-          "Quick-Dry Shorts & Cargo Pants (Rafting & Kempty Falls)",
-          "Floaters / Waterproof Sandals (Ganges River Ghats & Falls)",
-          "Sturdy Grip Trekking Shoes (George Everest & Kunjapuri)",
-          "Warm Socks (2-3 Pairs)"
+          "Knee Support Sleeves (For Temple Stairs & Ghats)",
+          "Daily Prescription Medicines & Pill Organizer",
+          "Soft Comfortable Cushioned Walking Shoes",
+          "Light Pashmina Shawl / Warm Stole",
+          "Acidity & Digene Gel Packets"
         ]
       },
       {
-        category: "Electronics & Gear",
+        category: "Adults & Travel Leader Essentials",
         items: [
+          "Aadhaar / Voter ID Cards & Driving License",
           "High-Capacity Power Bank (10,000mAh+)",
-          "Waterproof Phone Pouch (Rafting & Waterfall)",
-          "Camera & Extra Memory Cards",
-          "Multi-plug Travel Adapter & Car Charger",
-          "Earphones / Headphones"
+          "Credit/Debit Cards & Emergency Cash",
+          "Sunglasses & UV Protection",
+          "Sturdy Trekking Shoes & Extra Socks"
         ]
       },
       {
-        category: "Personal Hygiene & Travel Supplies",
+        category: "First Aid & Hill Drive Meds",
         items: [
+          "Headache Relief (Crocin / Disprin)",
+          "Motion Sickness Tablets (Avomine for Hill Drives)",
+          "Band-aids & Dettol Antiseptic Cream",
+          "ORS / Electral Hydration Sachets",
+          "Pain Relief Spray / Balm (Volini / Moov)"
+        ]
+      },
+      {
+        category: "Weather & General Gear",
+        items: [
+          "Light Raincoats / Ponchos (High Altitude Rain)",
+          "Floaters / Waterproof Sandals (Ganges River Ghats)",
           "Sunscreen Lotion (SPF 50+) & Lip Balm",
-          "Mosquito & Insect Repellent Cream (Odomos)",
           "Compact Travel Umbrella",
-          "Wet Wipes & Hand Sanitizer Bottles",
           "Refillable Insulated Water Bottle"
         ]
       }
@@ -1456,7 +1484,17 @@
       renderExpenses();
       updateProgress();
       fetchLiveWeather();
+      preloadAllImages();
     });
+
+    function preloadAllImages() {
+      PLACES_DATA.forEach(p => {
+        if (p.image_url) {
+          const img = new Image();
+          img.src = p.image_url;
+        }
+      });
+    }
 
     function initNavigation() {
       document.querySelectorAll('.nav-item-btn').forEach(btn => {
@@ -1516,15 +1554,30 @@
       return 0;
     }
 
+    /* SKIPPED STOPS LOGIC ACCORDING TO DAY PLAN */
+    function getSkippedStops() {
+      const scheduledIdx = getCurrentScheduledPlaceIndex();
+      const currentScheduledPlace = PLACES_DATA[scheduledIdx];
+      const currentDay = currentScheduledPlace ? currentScheduledPlace.day : 1;
+
+      return PLACES_DATA.filter((p, idx) => {
+        if (doneIds.includes(p.id)) return false;
+        // Skipped ONLY if its day is in the past, or earlier today before the current scheduled place
+        if (p.day < currentDay) return true;
+        if (p.day === currentDay && idx < scheduledIdx) return true;
+        return false;
+      });
+    }
+
     function renderTimeline() {
-      const missedPlaces = PLACES_DATA.filter(p => !doneIds.includes(p.id));
+      const skippedStops = getSkippedStops();
       const missedCountEl = document.getElementById('missed-count-badge');
-      if (missedCountEl) missedCountEl.innerText = missedPlaces.length;
+      if (missedCountEl) missedCountEl.innerText = skippedStops.length;
 
       let filtered = PLACES_DATA;
 
       if (selectedCategoryFilter === 'missed') {
-        filtered = PLACES_DATA.filter(p => !doneIds.includes(p.id));
+        filtered = skippedStops;
       } else {
         if (selectedDayFilter !== 'all') {
           filtered = filtered.filter(p => p.day === Number(selectedDayFilter));
@@ -1628,15 +1681,23 @@
         const card = document.createElement('div');
         card.className = `bento-card ${isVisited ? 'visited' : ''} ${isHotelRest ? 'hotel-rest-card' : ''}`;
         card.onclick = (e) => {
-          if (!e.target.closest('.bento-card-check')) {
+          if (!e.target.closest('.bento-card-check') && !e.target.closest('.bento-card-nav-btn')) {
             openModal(item.id);
           }
         };
 
+        /* PERSISTENT NAVIGATE MAPS & MARK VISITED BUTTONS RIGHT ON THE BENTO CARD */
         card.innerHTML = `
           <div class="bento-card-img-wrap">
             <img class="bento-card-img" src="${item.image_url}" alt="${item.name}" onerror="handleImgError(this)">
-            <button class="bento-card-check" onclick="event.stopPropagation(); toggleDone(${item.id});">
+            
+            <!-- PERSISTENT NAVIGATE MAPS BUTTON -->
+            <button class="bento-card-nav-btn" onclick="event.stopPropagation(); window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}', '_blank');" title="Navigate Maps">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            </button>
+
+            <!-- PERSISTENT MARK VISITED CHECKMARK BUTTON -->
+            <button class="bento-card-check" onclick="event.stopPropagation(); toggleDone(${item.id});" title="Mark Visited">
               ${isVisited ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
             </button>
           </div>
@@ -1695,11 +1756,10 @@
           </div>
         `);
       });
-
-      locateUserGPS();
     }
 
-    function locateUserGPS() {
+    /* ON-DEMAND GPS FETCH BUTTON TRIGGERED */
+    function locateUserGPSOnDemand() {
       if ('geolocation' in navigator) {
         document.getElementById('gps-status-text').innerText = 'Detecting current GPS position...';
         navigator.geolocation.getCurrentPosition(pos => {
