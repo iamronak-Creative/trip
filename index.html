@@ -875,19 +875,41 @@
             </div>
           </div>
 
-          <div class="hero-box">
-            <div class="hero-box-lbl"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights</div>
+          <!-- CARD 1: KEY HIGHLIGHTS -->
+          <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-blue); margin-bottom:10px;">
+            <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+              <svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights
+            </div>
             <div class="hero-box-txt" id="current-mustdo">Pick up cab outside arrivals and start scenic mountain drive to Mussoorie.</div>
           </div>
 
-          <div class="hero-box">
+          <!-- CARD 2: FOOD SUGGESTIONS -->
+          <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-emerald); margin-bottom:10px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <div class="hero-box-lbl" style="margin-bottom:0;"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food Suggestions</div>
+              <div style="font-size:11px; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; display:flex; align-items:center; gap:5px;">
+                <svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food Suggestions
+              </div>
               <button id="hero-food-nav-btn" class="expense-action-btn" style="background:rgba(16, 185, 129, 0.15); border-color:rgba(16, 185, 129, 0.4); color:var(--accent-emerald); padding:2px 8px; width:auto; height:24px; font-size:10.5px; font-weight:700; display:flex; align-items:center; gap:4px;" title="Navigate to Food Venue">
                 <svg class="line-icon" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Maps
               </button>
             </div>
             <div class="hero-box-txt" id="current-food">Airport Snacks & Fresh Coconut Water.</div>
+          </div>
+
+          <!-- CARD 3: LOCAL TRAVEL TIP -->
+          <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-amber); margin-bottom:10px;">
+            <div style="font-size:11px; font-weight:800; color:var(--accent-amber); text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+              <svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Local Travel Tip
+            </div>
+            <div class="hero-box-txt" id="current-tip">Keep Aadhaar ID physical card handy at airport arrivals.</div>
+          </div>
+
+          <!-- CARD 4: OUTFIT SUGGESTION -->
+          <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-violet); margin-bottom:14px;">
+            <div style="font-size:11px; font-weight:800; color:var(--accent-violet); text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+              <svg class="line-icon" viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 0-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg> Outfit Suggestion
+            </div>
+            <div class="hero-box-txt" id="current-wear">Comfortable Travel Clothing & Walking Shoes</div>
           </div>
 
           <div class="hero-actions">
@@ -1104,22 +1126,42 @@
     <div class="sheet-content">
       <h2 class="sheet-title" id="sheet-title">Title</h2>
       
+      <!-- CARD 1: KEY HIGHLIGHTS -->
       <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-blue);" id="sheet-mustdo-box">
-        <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:3px; display:flex; align-items:center; gap:5px;"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights</div>
-        <div id="sheet-mustdo" style="font-size:12.5px; color:#fff;">Must do description...</div>
+        <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+          <svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights
+        </div>
+        <div id="sheet-mustdo" style="font-size:12.5px; color:#fff; line-height:1.5;">Must do description...</div>
       </div>
 
+      <!-- CARD 2: FOOD SUGGESTIONS -->
       <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-emerald);" id="sheet-food-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <div style="font-size:11px; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; display:flex; align-items:center; gap:5px;"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food Suggestions</div>
+          <div style="font-size:11px; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; display:flex; align-items:center; gap:5px;">
+            <svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food Suggestions
+          </div>
           <button id="sheet-food-nav-btn" class="expense-action-btn" style="background:rgba(16, 185, 129, 0.15); border-color:rgba(16, 185, 129, 0.4); color:var(--accent-emerald); padding:2px 8px; width:auto; height:24px; font-size:10.5px; font-weight:700; display:flex; align-items:center; gap:4px;" title="Navigate to Food Venue">
             <svg class="line-icon" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg> Maps
           </button>
         </div>
-        <div id="sheet-vegfood" style="font-size:12.5px; color:#fff;">Food & dining recommendation...</div>
+        <div id="sheet-vegfood" style="font-size:12.5px; color:#fff; line-height:1.5;">Food & dining recommendation...</div>
       </div>
 
-      <div class="sheet-tip-box" id="sheet-tip">Tip details...</div>
+      <!-- CARD 3: LOCAL TRAVEL TIP -->
+      <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-amber);" id="sheet-tip-box">
+        <div style="font-size:11px; font-weight:800; color:var(--accent-amber); text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+          <svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Local Travel Tip
+        </div>
+        <div id="sheet-tip" style="font-size:12.5px; color:#fff; line-height:1.5;">Travel tip details...</div>
+      </div>
+
+      <!-- CARD 4: OUTFIT SUGGESTION -->
+      <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-violet);" id="sheet-wear-box">
+        <div style="font-size:11px; font-weight:800; color:var(--accent-violet); text-transform:uppercase; margin-bottom:4px; display:flex; align-items:center; gap:5px;">
+          <svg class="line-icon" viewBox="0 0 24 24"><path d="M20.38 3.46L16 2a4 4 0 0 0-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg> Outfit Suggestion
+        </div>
+        <div id="sheet-wear" style="font-size:12.5px; color:#fff; line-height:1.5;">Outfit suggestion details...</div>
+      </div>
 
       <label style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:6px; display:block;">Personal Notes & Driver Instructions</label>
       <textarea id="sheet-notes" class="sheet-notes" placeholder="Write cab driver contact, ticket slot numbers..."></textarea>
@@ -1636,8 +1678,10 @@
         document.getElementById('current-city').innerText = `${currentItem.city} • DAY ${currentItem.day}`;
         document.getElementById('current-dist').innerText = currentItem.dist;
         document.getElementById('current-img').src = currentItem.image_url;
-        document.getElementById('current-mustdo').innerText = currentItem.mustDo || currentItem.tip;
-        document.getElementById('current-food').innerText = currentItem.food || "Delicacies.";
+        document.getElementById('current-mustdo').innerText = currentItem.mustDo || "Explore the spot, enjoy mountain views & take photos.";
+        document.getElementById('current-food').innerText = currentItem.food || "Delicacies & Beverages.";
+        document.getElementById('current-tip').innerText = currentItem.tip || "Keep emergency cash and power bank handy.";
+        document.getElementById('current-wear').innerText = currentItem.wear || "Comfortable Travel Clothing & Walking Shoes";
 
         document.getElementById('current-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(currentItem.name)}`, '_blank');
         
@@ -2102,7 +2146,8 @@
       document.getElementById('sheet-title').innerText = item.name;
       document.getElementById('sheet-mustdo').innerText = item.mustDo || "Explore the spot, enjoy mountain views & take photos.";
       document.getElementById('sheet-vegfood').innerText = item.food || "Delicacies & Beverages.";
-      document.getElementById('sheet-tip').innerText = `Local Travel Tip:\n${item.tip}\n\nOutfit Suggestion: ${item.wear || 'Comfortable Travel Clothing'}`;
+      document.getElementById('sheet-tip').innerText = item.tip || "Keep emergency cash and power bank handy.";
+      document.getElementById('sheet-wear').innerText = item.wear || "Comfortable Travel Clothing & Walking Shoes";
       document.getElementById('sheet-notes').value = placeNotes[id] || '';
 
       document.getElementById('sheet-notes').onchange = (e) => {
