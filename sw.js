@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v40';
+const CACHE_NAME = 'uttarakhand-trip-v41';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -73,6 +73,25 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+  // Network-first strategy for navigation / HTML requests so updates show live immediately
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(() => {
+        return caches.match(e.request);
+      })
+    );
+    return;
+  }
+
+  // Cache-first strategy for images and static assets
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
