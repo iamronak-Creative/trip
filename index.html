@@ -380,7 +380,7 @@
     }
     .btn-bento-secondary:active { transform: scale(0.97); }
 
-    /* TIER 2: NEXT IMMEDIATE STOP (MEDIUM BENTO CARD) */
+    /* TIER 2: NEXT IMMEDIATE STOP (MEDIUM CARD) */
     .next-bento-card {
       background: linear-gradient(145deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.92));
       border: 1px solid var(--glass-border-blue);
@@ -745,7 +745,7 @@
   <!-- MAIN VIEWPORT -->
   <main class="main-viewport">
 
-    <!-- TAB 1: MY TRIP (TIMELINE & BENTO GRID) -->
+    <!-- TAB 1: MY TRIP (TIMELINE & CARDS) -->
     <section id="tab-trip" class="tab-content active">
 
       <!-- COUNTDOWN & LIVE TRIP STATUS BANNER -->
@@ -760,10 +760,10 @@
         </button>
       </div>
 
-      <!-- WEATHER WIDGET STRIP WITH REAL-TIME API FETCHING & INTERACTIVE CLICK -->
+      <!-- WEATHER WIDGET STRIP WITH REAL-TIME API FETCHING -->
       <div class="weather-widget-header">
         <span class="weather-widget-title"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg> Live Weather Today</span>
-        <span class="weather-live-badge" id="weather-badge">OPEN-METEO LIVE</span>
+        <span class="weather-live-badge" id="weather-badge">LIVE WEATHER</span>
       </div>
 
       <div class="weather-widget-strip" id="weather-strip">
@@ -821,25 +821,25 @@
         </div>
       </div>
 
-      <!-- CATEGORY FILTER BAR WITH MISSED PLACES TAB -->
+      <!-- CATEGORY FILTER BAR WITH SKIPPED STOPS TAB -->
       <div class="category-filter-bar">
         <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
-        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Missed Places (<span id="missed-count-badge">0</span>)</div>
+        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops (<span id="missed-count-badge">0</span>)</div>
         <div class="cat-pill" data-cat="Hotel Stay"><svg class="line-icon" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M3 21h18"/></svg> Hotel Stays</div>
-        <div class="cat-pill" data-cat="Food & Dining"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> 100% Pure Veg Dining</div>
+        <div class="cat-pill" data-cat="Food & Dining"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Pure Veg Dining</div>
         <div class="cat-pill" data-cat="Holy Shrine"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg> Holy Shrines</div>
-        <div class="cat-pill" data-cat="Extreme Adventure"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Extreme Adventure</div>
+        <div class="cat-pill" data-cat="Extreme Adventure"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Adventure</div>
         <div class="cat-pill" data-cat="Nature"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg> Nature & Views</div>
         <div class="cat-pill" data-cat="Sightseeing"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Sightseeing</div>
       </div>
 
-      <!-- TIER 1: HERO BENTO TILE (CURRENT ACTIVE DESTINATION - BIGGEST) -->
+      <!-- TIER 1: HERO TILE (CURRENT SCHEDULED DESTINATION) -->
       <div class="hero-bento-card" id="current-card">
         <div class="hero-img-wrap">
           <img id="current-img" class="hero-img" src="./assets/images/airport.jpg" alt="Current Location" onerror="handleImgError(this)">
           <div class="hero-live-tag">
             <div class="live-dot"></div>
-            <span id="current-badge-label">Current Active Stop</span>
+            <span id="current-badge-label">Current Scheduled Stop</span>
           </div>
         </div>
         <div class="hero-card-body">
@@ -865,12 +865,12 @@
           </div>
 
           <div class="hero-box">
-            <div class="hero-box-lbl"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Must-Do Activity</div>
+            <div class="hero-box-lbl"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights</div>
             <div class="hero-box-txt" id="current-mustdo">Pick up cab outside arrivals and start scenic mountain drive to Mussoorie.</div>
           </div>
 
           <div class="hero-box">
-            <div class="hero-box-lbl"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> 100% Pure Veg Dining</div>
+            <div class="hero-box-lbl"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Pure Veg Food Suggestions</div>
             <div class="hero-box-txt" id="current-food">Airport Pure Veg Snacks & Fresh Coconut Water.</div>
           </div>
 
@@ -884,7 +884,7 @@
         </div>
       </div>
 
-      <!-- TIER 2: NEXT IMMEDIATE DESTINATION (MEDIUM BENTO CARD) -->
+      <!-- TIER 2: NEXT IMMEDIATE DESTINATION -->
       <div class="next-bento-card" id="next-card" style="display:none;">
         <div class="next-card-inner">
           <div class="next-img-wrap">
@@ -904,10 +904,10 @@
         </div>
       </div>
 
-      <!-- TIER 3: SUBSEQUENT UPCOMING STOPS (SINGLE LINE SECTION HEADING) -->
+      <!-- TIER 3: SUBSEQUENT UPCOMING STOPS -->
       <div class="section-heading" id="itinerary-grid-heading">Upcoming Itinerary</div>
       <div class="bento-grid-container" id="timeline-grid-container">
-        <!-- Rendered dynamically with Day Dividers and Hotel Rest Cards -->
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
@@ -925,8 +925,8 @@
 
       <div class="guide-box">
         <div class="guide-box-title" style="display:flex; justify-content:space-between; align-items:center;">
-          <span>Mountain Altitude Profile</span>
-          <span class="editorial-eyebrow">Elevation Telemetry</span>
+          <span>Mountain Altitude Guide</span>
+          <span class="editorial-eyebrow">Elevation Levels</span>
         </div>
         <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">Altitude scale across Dehradun (430m) ➔ Mussoorie (2,005m) ➔ Surkanda Devi (2,757m Peak) ➔ Rishikesh (340m)</div>
         <div class="altitude-bar-container">
@@ -938,7 +938,7 @@
         </div>
       </div>
 
-      <div class="section-heading">Nearby Spots (Sorted by GPS)</div>
+      <div class="section-heading">Nearby Spots (Sorted by Distance)</div>
       <div id="nearby-container"></div>
     </section>
 
@@ -976,7 +976,7 @@
       </div>
 
       <div class="guide-box">
-        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> 100% Pure Vegetarian Culinary Bible</div>
+        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> 100% Pure Vegetarian Culinary Guide</div>
         
         <div class="food-spot-card" style="border-left: 3px solid var(--accent-emerald);">
           <div class="food-spot-title">Landour & Mussoorie Pure Veg Cafes</div>
@@ -995,16 +995,16 @@
       </div>
 
       <div class="guide-box">
-        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Interactive Packing Checklist (Categorized)</div>
+        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Packing Checklist</div>
         <div id="packing-container"></div>
       </div>
 
       <div class="guide-box">
-        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Emergency Helplines & Mountain Advisories</div>
+        <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Emergency Helplines & Travel Support</div>
         <div style="font-size:13px; color:var(--text-secondary); line-height:1.65;">
           <div>Disaster Management: <strong style="color:var(--accent-rose);" class="mono-num">1070</strong> | Police: <strong style="color:var(--accent-rose);" class="mono-num">112</strong></div>
           <div>Ambulance: <strong style="color:var(--accent-rose);" class="mono-num">108</strong> | Cab Support: <strong class="mono-num">+91 90272 44461</strong></div>
-          <div style="margin-top:8px; color:var(--accent-blue);">Mountain Advice: Keep floaters handy for wet ghat steps & carry a rain poncho for high altitude treks.</div>
+          <div style="margin-top:8px; color:var(--accent-blue);">Travel Advice: Keep floaters handy for wet ghat steps & carry a rain poncho for high altitude treks.</div>
         </div>
       </div>
     </section>
@@ -1014,7 +1014,7 @@
       <div class="guide-box">
         <div class="guide-box-title"><svg class="line-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Complete Trip Expense Tracker</div>
         
-        <!-- CLICKABLE INTERACTIVE METRIC CARDS -->
+        <!-- CLICKABLE METRIC CARDS -->
         <div class="expense-metrics-grid">
           <div class="expense-metric-card" onclick="openExpenseBreakdownModal('total')" title="Click to view Total Cost Details">
             <div class="expense-metric-val" id="total-committed" style="color:var(--accent-blue);">₹72,445</div>
@@ -1087,17 +1087,17 @@
       
       <!-- MUST DO ACTIVITY BOX -->
       <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-blue);" id="sheet-mustdo-box">
-        <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:3px;">⚡ Must-Do Activity</div>
+        <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:3px; display:flex; align-items:center; gap:5px;"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Key Highlights</div>
         <div id="sheet-mustdo" style="font-size:12.5px; color:#fff;">Must do description...</div>
       </div>
 
-      <!-- 100% PURE VEG DINING BOX -->
+      <!-- PURE VEG DINING BOX -->
       <div class="sheet-tip-box" style="border-left: 3.5px solid var(--accent-emerald);" id="sheet-food-box">
-        <div style="font-size:11px; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; margin-bottom:3px;">🥬 100% Pure Veg Dining</div>
+        <div style="font-size:11px; font-weight:800; color:var(--accent-emerald); text-transform:uppercase; margin-bottom:3px; display:flex; align-items:center; gap:5px;"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Pure Veg Food Suggestions</div>
         <div id="sheet-vegfood" style="font-size:12.5px; color:#fff;">Pure veg food recommendation...</div>
       </div>
 
-      <!-- PRO TIP & OVERVIEW BOX -->
+      <!-- LOCAL TRAVEL TIP BOX -->
       <div class="sheet-tip-box" id="sheet-tip">Tip details...</div>
 
       <label style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:6px; display:block;">Personal Notes & Driver Instructions</label>
@@ -1150,7 +1150,7 @@
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
       <div>
         <h3 style="font-family:'Google Sans Flex', sans-serif !important; font-size:18px; font-weight:800; color:#fff;" id="weather-modal-city">Dehradun Weather</h3>
-        <div style="font-size:11px; color:var(--accent-blue);" id="weather-modal-elevation">Elevation Telemetry: 430m</div>
+        <div style="font-size:11px; color:var(--accent-blue);" id="weather-modal-elevation">Altitude: 430m</div>
       </div>
       <button onclick="closeWeatherDetailsModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
         <svg class="line-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -1167,7 +1167,7 @@
         </div>
         <div style="text-align:right;">
           <div style="font-size:11.5px; color:var(--text-secondary);">Wind: <strong style="color:#fff;" id="weather-modal-cur-wind">3.5 km/h</strong></div>
-          <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">Accuracy: <strong style="color:var(--accent-blue);">±1°C IMD Radar</strong></div>
+          <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">Accuracy: <strong style="color:var(--accent-blue);">Accurate Live Feed</strong></div>
         </div>
       </div>
     </div>
@@ -1184,7 +1184,7 @@
     }
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js?v=33').then(reg => {
+      navigator.serviceWorker.register('./sw.js?v=34').then(reg => {
         reg.update();
       });
       navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -1266,7 +1266,7 @@
       if (!cityInfo || !data) return;
 
       document.getElementById('weather-modal-city').innerText = `${cityInfo.name} Weather`;
-      document.getElementById('weather-modal-elevation').innerText = `Elevation Telemetry: ${cityInfo.elevation}`;
+      document.getElementById('weather-modal-elevation').innerText = `Altitude: ${cityInfo.elevation}`;
 
       if (data.current_weather) {
         const temp = Math.round(data.current_weather.temperature);
@@ -1336,7 +1336,6 @@
       { id: 'exp-hotel-3', title: 'Perfectstayz Aalaya Suites (Haridwar)', total: 1000.00, advance: 300, pending: 700, cat: 'Hotel', timestamp: 6 }
     ];
 
-    /* ENHANCED ITINERARY DATA WITH SPECIFIC MUST-DO ACTIVITIES, 100% PURE VEG FOOD, & DAY END HOTEL REST STOPS */
     const PLACES_DATA = [
       // DAY 1 (Sep 4)
       { id: 1, day: 1, dateLabel: "Sep 4", city: "Dehradun", name: "Dehradun Airport (Jolly Grant)", time: "11:00 AM", tip: "Arrive at Jolly Grant Airport. Pick up cab outside arrivals and start scenic drive into the city.", dist: "0 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/airport.jpg", type: "Logistics", wear: "Casual Travel Outfit", food: "100% Pure Veg Airport Snacks & Fresh Coconut Water", mustDo: "Meet cab driver at exit gate & inspect luggage rack before mountain climb." },
@@ -1387,7 +1386,7 @@
       { id: 31, day: 6, dateLabel: "Sep 9", city: "Dehradun", name: "Moti Bazaar Shopping & Airport Drive", time: "10:15 AM", tip: "Souvenir & prasad shopping, then 45-min drive to Jolly Grant Airport for 2 PM flight.", dist: "45 km", lat: 30.1897, lng: 78.1803, image_url: "./assets/images/motibazaar.jpg", type: "Logistics", wear: "Travel Outfit", food: "100% Pure Veg Airport Departure Snack", mustDo: "Buy authentic Haridwar Peda sweets & wooden souvenirs before cab to airport." }
     ];
 
-    /* COMPREHENSIVE CATEGORIZED PACKING CHECKLIST WITH ALL SMALL ESSENTIALS */
+    /* COMPREHENSIVE PACKING CHECKLIST FOR TRAVELERS */
     const PACKING_CATEGORIES = [
       {
         category: "Medicines & First Aid",
@@ -1498,16 +1497,14 @@
       });
     }
 
-    /* DYNAMIC DATE & TIME SCHEDULER HELPER */
     function getCurrentScheduledPlaceIndex() {
       const now = new Date();
-      const tripStartDate = new Date(2026, 8, 4, 11, 0, 0); // Sep 4, 2026 11:00 AM
+      const tripStartDate = new Date(2026, 8, 4, 11, 0, 0);
 
       if (now < tripStartDate) {
-        return 0; // Pre-trip: Start from Place #1
+        return 0;
       }
 
-      // If during trip, calculate day difference
       const dayDiff = Math.floor((now - tripStartDate) / (1000 * 60 * 60 * 24)) + 1;
       const dayNum = Math.min(Math.max(1, dayDiff), 6);
 
@@ -1519,9 +1516,7 @@
       return 0;
     }
 
-    /* 3-TIER ITINERARY RENDERER WITH DAY DIVIDERS, HOTEL REST CARDS & MISSED PLACES TAB */
     function renderTimeline() {
-      // Calculate missed count
       const missedPlaces = PLACES_DATA.filter(p => !doneIds.includes(p.id));
       const missedCountEl = document.getElementById('missed-count-badge');
       if (missedCountEl) missedCountEl.innerText = missedPlaces.length;
@@ -1551,14 +1546,13 @@
       let upcomingItems = [];
 
       if (selectedCategoryFilter === 'missed') {
-        gridHeadingEl.innerText = 'Missed / Pending Places List';
+        gridHeadingEl.innerText = 'Skipped & Pending Stops';
         currentCardEl.style.display = 'none';
         nextCardEl.style.display = 'none';
         upcomingItems = filtered;
       } else {
         gridHeadingEl.innerText = 'Upcoming Itinerary Cards';
         
-        // Auto-progression logic based on date schedule
         const scheduledIdx = getCurrentScheduledPlaceIndex();
         const unvisitedFromScheduled = PLACES_DATA.slice(scheduledIdx).filter(p => !doneIds.includes(p.id));
 
@@ -1580,7 +1574,6 @@
         }
       }
 
-      // TIER 1: CURRENT ACTIVE STOP (BIGGEST HERO CARD)
       if (currentItem) {
         currentCardEl.style.display = 'block';
         document.getElementById('current-badge-label').innerText = 'Current Scheduled Stop';
@@ -1601,7 +1594,6 @@
         currentCardEl.style.display = 'none';
       }
 
-      // TIER 2: NEXT IMMEDIATE STOP (MEDIUM BENTO CARD)
       if (nextItem) {
         nextCardEl.style.display = 'block';
         document.getElementById('next-img').src = nextItem.image_url;
@@ -1616,18 +1608,16 @@
         nextCardEl.style.display = 'none';
       }
 
-      // TIER 3: SUBSEQUENT STOPS WITH DAY DIVIDER HEADERS & HOTEL REST CARDS
       let currentRenderDay = null;
 
       upcomingItems.forEach(item => {
-        // Insert Day Banner Divider if day changes in ALL view or Day View
         if (selectedCategoryFilter !== 'missed' && item.day !== currentRenderDay) {
           currentRenderDay = item.day;
           const dayBanner = document.createElement('div');
           dayBanner.className = 'day-divider-banner';
           dayBanner.innerHTML = `
-            <span class="day-divider-title">--- DAY ${item.day}: ${item.dateLabel} • ${item.city.toUpperCase()} ---</span>
-            <span class="day-divider-sub">${item.day === 1 ? 'Dehradun to Mussoorie' : item.day === 2 ? 'Mussoorie Highlights' : item.day === 3 ? 'Surkanda to Rishikesh' : item.day === 4 ? 'Rishikesh Extreme' : item.day === 5 ? 'Kunjapuri to Haridwar' : 'Haridwar to Airport'}</span>
+            <span class="day-divider-title">DAY ${item.day}: ${item.dateLabel} • ${item.city.toUpperCase()}</span>
+            <span class="day-divider-sub">${item.day === 1 ? 'Dehradun to Mussoorie' : item.day === 2 ? 'Mussoorie Highlights' : item.day === 3 ? 'Surkanda to Rishikesh' : item.day === 4 ? 'Rishikesh Adventure' : item.day === 5 ? 'Kunjapuri to Haridwar' : 'Haridwar to Airport'}</span>
           `;
           gridContainerEl.appendChild(dayBanner);
         }
@@ -1658,7 +1648,7 @@
               <div class="bento-card-sub"><svg class="line-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${item.city}</div>
             </div>
             
-            <span class="bento-card-type-tag">${isHotelRest ? '🌙 NIGHT HOTEL REST' : item.type}</span>
+            <span class="bento-card-type-tag">${isHotelRest ? 'HOTEL STAY & NIGHT REST' : item.type}</span>
           </div>
         `;
         gridContainerEl.appendChild(card);
@@ -1761,13 +1751,12 @@
             <strong style="color:#fff; font-size:13px;">${item.name}</strong>
             <span style="color:var(--accent-blue); font-size:12px; font-weight:700;" class="mono-num">${item.calcDist.toFixed(1)} KM</span>
           </div>
-          <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">📍 ${item.city} • ${item.type}</div>
+          <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${item.city} • ${item.type}</div>
         `;
         container.appendChild(card);
       });
     }
 
-    /* RENDER CATEGORIZED PACKING CHECKLIST */
     function renderPackingList() {
       const container = document.getElementById('packing-container');
       container.innerHTML = '';
@@ -1872,15 +1861,15 @@
       let badgeColor = '';
 
       if (type === 'total') {
-        headerTitle = 'Total Cost Itemized Cards';
+        headerTitle = 'Total Expense Summary';
         badgeColor = 'var(--accent-blue)';
         filtered = expenses;
       } else if (type === 'advance') {
-        headerTitle = 'Advance Paid Itemized Cards';
+        headerTitle = 'Advance Payments Made';
         badgeColor = 'var(--accent-emerald)';
         filtered = expenses.filter(item => Number(item.advance || 0) > 0);
       } else if (type === 'pending') {
-        headerTitle = 'Pending Dues Itemized Cards';
+        headerTitle = 'Pending Balance Dues';
         badgeColor = 'var(--accent-violet)';
         filtered = expenses.filter(item => {
           const tot = Number(item.total || item.amount || 0);
@@ -2035,7 +2024,6 @@
       }
     }
 
-    /* MODAL BOTTOM SHEET FOR PLACE DETAILS WITH MUST-DO & PURE VEG DINING */
     function openModal(id) {
       const item = PLACES_DATA.find(p => p.id === id);
       if (!item) return;
@@ -2044,7 +2032,7 @@
       document.getElementById('sheet-title').innerText = item.name;
       document.getElementById('sheet-mustdo').innerText = item.mustDo || "Explore the spot, enjoy mountain views & take photos.";
       document.getElementById('sheet-vegfood').innerText = item.food || "100% Pure Veg Delicacies & Beverages.";
-      document.getElementById('sheet-tip').innerText = `📍 Pro Tip & Overview:\n${item.tip}\n\nOutfit Suggestion: ${item.wear || 'Comfortable Travel Clothing'}`;
+      document.getElementById('sheet-tip').innerText = `Local Travel Tip:\n${item.tip}\n\nOutfit Suggestion: ${item.wear || 'Comfortable Travel Clothing'}`;
       document.getElementById('sheet-notes').value = placeNotes[id] || '';
 
       document.getElementById('sheet-notes').onchange = (e) => {
