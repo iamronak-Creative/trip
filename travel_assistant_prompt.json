@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "project_name": "Uttarakhand Personal Travel Assistant PWA",
+    "version": "v35",
+    "live_url": "https://iamronak-creative.github.io/trip/",
+    "target_audience": "Personal & Family Traveler (Lightweight, Personal Scale, Non-Enterprise)",
+    "trip_duration": "6 Days (Sep 4 – Sep 9, 2026)",
+    "destinations": ["Dehradun", "Mussoorie", "Surkanda Devi", "Rishikesh", "Haridwar"],
+    "dietary_default": "100% Pure Vegetarian / Sattvik (App default, no redundant labelling needed)"
+  },
+  "architecture": {
+    "stack": {
+      "type": "Single-Page Progressive Web Application (SPA/PWA)",
+      "frontend_technologies": ["HTML5", "CSS3 Custom Properties", "Vanilla JavaScript (ES6+)", "Leaflet.js Maps"],
+      "typography": "Google Sans Flex (Used exclusively across all components)",
+      "icons": "Minimal Flat SVG Line Icons (No emojis allowed)",
+      "theme": "Dark Glass System (Sapphire Blue #38BDF8 & Radiant Violet #8B5CF6 on #070913 background)",
+      "offline_capabilities": "Service Worker (Cache-first network fallback, offline PWA installation)"
+    },
+    "storage": {
+      "client_side": "Browser LocalStorage",
+      "keys": [
+        "uttarakhand_done_places (Visited stop IDs)",
+        "uttarakhand_packed_items (Checked packing item indices)",
+        "uttarakhand_notes (Personal notes per location)",
+        "uttarakhand_expenses (Custom added & edited expense items)"
+      ]
+    },
+    "integrations": {
+      "weather_api": "Open-Meteo Live API (Fetch current temp, wind speed, WMO weather codes & 7-day mountain rain forecast)",
+      "maps": "Leaflet.js (Dark CartoDB tiles, elevation markers, distance calculation & Google Maps direct navigation links)"
+    }
+  },
+  "user_interface_and_features": {
+    "header": {
+      "brand": "Clickable UK Uttarakhand Logo (Takes user to Home/Itinerary tab and scrolls to top)",
+      "reset_action": "Icon-only reset button (Clears location checkmarks only, preserves expenses and notes)",
+      "progress_counter": "Real-time fractional counter (e.g. 0/34 stops completed)"
+    },
+    "tab_1_itinerary": {
+      "countdown_banner": "Flight arrival status banner with one-tap cab driver call (+91 90272 44461)",
+      "weather_widget_strip": "Interactive city weather cards (Dehradun, Mussoorie, Rishikesh, Haridwar) opening 7-day forecast modal",
+      "date_filter_strip": "Horizontal day selector (ALL TRIP, SEP 4 - SEP 9)",
+      "category_filter_bar": "Pill filters (All Stops, Skipped Stops, Hotel Stays, Food & Dining, Holy Shrines, Adventure, Nature, Sightseeing)",
+      "bento_grid_layout": {
+        "tier_1_hero": "Current Scheduled Stop (Auto-progressed based on real-time date/time, displays distance, est. drive, weather, highlights, food recommendations, and maps navigation)",
+        "tier_2_next": "Next Immediate Stop (Medium horizontal card showing distance away and category tag)",
+        "tier_3_upcoming": "Upcoming stops rendered in a 2-column bento grid separated by visual Day Divider Headers (e.g. DAY 1: SEP 4 • DEHRADUN TO MUSSOORIE)"
+      },
+      "night_rest_cards": "Explicit Hotel Stay & Night Rest cards at the end of each day highlighting confirmed hotel bookings"
+    },
+    "tab_2_live_map": {
+      "interactive_map": "Leaflet map with route polyline connecting all 35 locations",
+      "gps_integration": "Device GPS location detection and live sorting of nearby spots by distance",
+      "mountain_altitude_profile": "Visual elevation bar chart showing altitude progression from Dehradun (430m) up to Surkanda Devi (2,757m Peak)"
+    },
+    "tab_3_essentials": {
+      "hotel_reservations": "Confirmed booking cards with reservation IDs, dates, advance paid, and total cost",
+      "culinary_guide": "Regional food recommendations for Landour cafes, Rishikesh riverside dining, and Haridwar street food",
+      "categorized_packing_checklist": "Expandable checklist across 4 categories: Medicines & First Aid (headache, vomiting, altitude), Clothing & Wearables, Electronics & Gear, Hygiene Supplies",
+      "emergency_helplines": "Disaster management (1070), police (112), ambulance (108), cab support"
+    },
+    "tab_4_toolkit_expenses": {
+      "metric_cards": "Interactive clickable cards for Total Cost, Advance Paid, and Pending Due that open breakdown modals",
+      "expense_management": "Centered 'Add Expense' popup modal + inline pencil edit and trash delete controls for each expense item",
+      "sorting": "Expense breakdown grid sorted in descending order (latest expenses first)",
+      "driver_support": "Dedicated cab driver direct call card (+91 90272 44461)"
+    },
+    "location_details_modal": {
+      "trigger": "Tapping any location bento card opens a bottom sheet modal",
+      "content": ["Location hero image", "Key Highlights (Must-do activity)", "Food Suggestions", "Local Travel Tip & Outfit Advice", "Personal Notes & Driver Instructions", "Maps Navigation & Visited Toggle"]
+    }
+  },
+  "instructions_for_ai_assistant": {
+    "role": "You are acting as an expert AI Personal Travel Assistant & Product Advisor.",
+    "task": "Review the above technical specifications, UI design, and feature set of this personal travel PWA. Provide smart, actionable recommendations to improve the app and suggest innovative new features.",
+    "constraints": [
+      "Keep recommendations tailored for a personal / family travel app (NOT an enterprise or multi-tenant commercial SaaS).",
+      "Focus on lightweight, high-value personal utility that makes a 6-day road trip smooth, stress-free, and memorable.",
+      "Respect the offline-first, single-file HTML/JS PWA architecture."
+    ],
+    "requested_output_format": {
+      "1_app_strengths_summary": "Brief analysis of what makes this current setup strong for personal travel.",
+      "2_ux_ui_refinements": "3 to 4 practical UI/UX tweaks to make on-the-go usage even smoother while riding in a cab or walking in mountain terrain.",
+      "3_smart_feature_suggestions": "4 to 5 high-impact personal travel assistant features (e.g. Quick Offline Audio / Sight Info snippets, Family Photo Spot Logger, Offline Trip Expense Splitter, Daily Morning Pack Reminder, Sunset Alert Notifier).",
+      "4_technical_optimization_tips": "2 to 3 lightweight technical performance or PWA enhancements."
+    }
+  }
+}
