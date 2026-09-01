@@ -1346,19 +1346,23 @@
             if (data.current_weather) {
               const temp = Math.round(data.current_weather.temperature);
               const wmo = parseWmoWeather(data.current_weather.weathercode);
+              const rainProb = (data.daily && data.daily.precipitation_probability_max) ? data.daily.precipitation_probability_max[0] : 0;
               const cardEl = document.getElementById(cityInfo.elId);
 
               if (cardEl) {
                 cardEl.innerHTML = `
                   <span class="weather-city">${cityInfo.name}</span>
-                  <span class="weather-temp">${temp}°C</span>
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; margin: 2px 0;">
+                    <span class="weather-temp">${temp}°C</span>
+                    <span style="font-size:10px; font-weight:800; color:${rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">☔ ${rainProb}%</span>
+                  </div>
                   <span class="weather-desc">${wmo.icon} ${wmo.desc}</span>
                 `;
               }
 
               if (key === 'dehradun') {
                 const heroWeatherVal = document.getElementById('current-weather-val');
-                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C`;
+                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (☔${rainProb}%)`;
               }
             }
           }
