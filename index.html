@@ -832,21 +832,6 @@
         </div>
       </div>
 
-      <!-- DAY WEATHER FORECAST BANNER (DYNAMICALLY UPDATED ON DAY CHIP SELECTION) -->
-      <div id="day-weather-banner" style="display:none; background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.9)); border: 1.5px solid var(--glass-border-blue); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px; cursor: pointer; backdrop-filter: blur(20px);" onclick="handleDayWeatherBannerClick()" title="Click to view full 7-day weather forecast">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; display:flex; align-items:center; gap:5px;" id="day-weather-title">
-            <svg class="line-icon" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg> Day Weather Report
-          </div>
-          <span style="font-size:10.5px; font-weight:800; color:var(--accent-emerald); background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); padding:2px 8px; border-radius:6px;" id="day-weather-city">Dehradun</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; align-items:baseline;">
-          <div style="font-size:15px; font-weight:800; color:#fff;" id="day-weather-temp">28°C / 22°C</div>
-          <div style="font-size:12px; font-weight:800;" id="day-weather-rain">☔ 90% Rain Chance</div>
-        </div>
-        <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;" id="day-weather-desc">Thunderstorm expected. Tap to view full forecast modal.</div>
-      </div>
-
       <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB -->
       <div class="category-filter-bar">
         <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
@@ -1300,7 +1285,16 @@
       </div>
     </div>
 
-    <div class="section-heading" style="font-size:14px; margin-bottom:10px;">7-Day Weather & Rain Forecast</div>
+    <div class="section-heading" style="font-size:13px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+      <span>Today's 24-Hour Hourly Forecast</span>
+      <span style="font-size:10.5px; font-weight:600; color:var(--text-secondary);">Scroll ➔</span>
+    </div>
+    <div id="weather-hourly-cards" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:16px; scrollbar-width:none;"></div>
+
+    <div class="section-heading" style="font-size:13px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+      <span>7-Day Daily Forecast</span>
+      <span style="font-size:10.5px; font-weight:600; color:var(--text-secondary);">Tap card to expand details</span>
+    </div>
     <div id="weather-forecast-cards" style="display:flex; flex-direction:column; gap:8px;"></div>
   </div>
 
@@ -1351,7 +1345,7 @@
     async function fetchLiveWeather() {
       for (const [key, cityInfo] of Object.entries(CITY_COORDS)) {
         try {
-          const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityInfo.lat}&longitude=${cityInfo.lng}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&timezone=Asia%2FKolkata`;
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityInfo.lat}&longitude=${cityInfo.lng}&current_weather=true&hourly=temperature_2m,precipitation_probability,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode,precipitation_sum,windspeed_10m_max&timezone=Asia%2FKolkata`;
           const res = await fetch(url);
           const data = await res.json();
           
@@ -1441,6 +1435,15 @@
       }
     }
 
+    function toggleWeatherCardExpand(cardEl) {
+      const expandBox = cardEl.querySelector('.weather-card-expandable');
+      const arrowEl = cardEl.querySelector('.weather-expand-arrow');
+      if (!expandBox) return;
+      const isHidden = expandBox.style.display === 'none';
+      expandBox.style.display = isHidden ? 'block' : 'none';
+      if (arrowEl) arrowEl.innerText = isHidden ? '▲' : '▼';
+    }
+
     function openWeatherDetailsModal(cityKey) {
       const cityInfo = CITY_COORDS[cityKey];
       const data = weatherCacheData[cityKey];
@@ -1458,6 +1461,36 @@
         document.getElementById('weather-modal-cur-wind').innerText = `${data.current_weather.windspeed} km/h`;
       }
 
+      // 1. POPULATE 24-HOUR HOURLY FORECAST STRIP
+      const hourlyContainer = document.getElementById('weather-hourly-cards');
+      if (hourlyContainer) {
+        hourlyContainer.innerHTML = '';
+        if (data.hourly && data.hourly.time) {
+          const nowIdx = new Date().getHours();
+          const next24 = data.hourly.time.slice(nowIdx, nowIdx + 24);
+          
+          next24.forEach((tStr, i) => {
+            const actualIdx = nowIdx + i;
+            const hourDate = new Date(tStr);
+            const hourLabel = hourDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const hTemp = Math.round(data.hourly.temperature_2m[actualIdx]);
+            const hProb = data.hourly.precipitation_probability ? data.hourly.precipitation_probability[actualIdx] : 0;
+            const hWmo = parseWmoWeather(data.hourly.weathercode[actualIdx]);
+
+            const hCard = document.createElement('div');
+            hCard.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:8px 10px; min-width:75px; text-align:center; flex-shrink:0;';
+            hCard.innerHTML = `
+              <div style="font-size:10px; font-weight:700; color:var(--text-secondary);">${hourLabel}</div>
+              <div style="font-size:16px; margin:3px 0;">${hWmo.icon}</div>
+              <div style="font-size:12.5px; font-weight:800; color:#fff;" class="mono-num">${hTemp}°C</div>
+              <div style="font-size:9.5px; font-weight:700; color:${hProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">☔${hProb}%</div>
+            `;
+            hourlyContainer.appendChild(hCard);
+          });
+        }
+      }
+
+      // 2. POPULATE EXPANDABLE 7-DAY DAILY FORECAST CARDS
       const cardsContainer = document.getElementById('weather-forecast-cards');
       cardsContainer.innerHTML = '';
 
@@ -1466,10 +1499,18 @@
           const maxTemp = Math.round(data.daily.temperature_2m_max[idx]);
           const minTemp = Math.round(data.daily.temperature_2m_min[idx]);
           const rainProb = data.daily.precipitation_probability_max ? data.daily.precipitation_probability_max[idx] : 0;
+          const rainSum = data.daily.precipitation_sum ? data.daily.precipitation_sum[idx] : 0;
+          const windMax = data.daily.windspeed_10m_max ? data.daily.windspeed_10m_max[idx] : 0;
           const wmo = parseWmoWeather(data.daily.weathercode[idx]);
+
+          let travelAdvice = "Good day for sightseeing. Carry lightweight layers & water.";
+          if (rainProb > 70) travelAdvice = "High rain chance. Keep rain poncho accessible, avoid slippery waterfall steps & night hill drives.";
+          else if (rainProb > 40) travelAdvice = "Passing showers possible. Carry compact umbrella & wear comfortable waterproof shoes.";
 
           const card = document.createElement('div');
           card.className = 'food-spot-card';
+          card.style.cursor = 'pointer';
+          card.onclick = function() { toggleWeatherCardExpand(this); };
           card.innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
@@ -1478,8 +1519,15 @@
               </div>
               <div style="text-align:right;">
                 <span style="font-size:13.5px; font-weight:700; color:var(--accent-blue);" class="mono-num">${maxTemp}°C / ${minTemp}°C</span>
-                <div style="font-size:11px; color:${rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">Rain Prob: ${rainProb}%</div>
+                <div style="font-size:11px; font-weight:800; color:${rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">☔ ${rainProb}% Rain <span class="weather-expand-arrow" style="font-size:9px; opacity:0.8;">▼</span></div>
               </div>
+            </div>
+            <div class="weather-card-expandable" style="display:none; margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15); font-size:11.5px; color:#e2e8f0; line-height:1.5;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px;">
+                <div>🌧️ Rain Volume: <strong style="color:#fff;" class="mono-num">${rainSum} mm</strong></div>
+                <div>💨 Max Wind: <strong style="color:#fff;" class="mono-num">${windMax} km/h</strong></div>
+              </div>
+              <div style="color:var(--text-secondary);">💡 <strong>Day Advice:</strong> ${travelAdvice}</div>
             </div>
           `;
           cardsContainer.appendChild(card);
