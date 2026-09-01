@@ -832,6 +832,21 @@
         </div>
       </div>
 
+      <!-- DAY WEATHER FORECAST BANNER (DYNAMICALLY UPDATED ON DAY CHIP SELECTION) -->
+      <div id="day-weather-banner" style="display:none; background: linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(15, 23, 42, 0.9)); border: 1.5px solid var(--glass-border-blue); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 14px; cursor: pointer; backdrop-filter: blur(20px);" onclick="handleDayWeatherBannerClick()" title="Click to view full 7-day weather forecast">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; display:flex; align-items:center; gap:5px;" id="day-weather-title">
+            <svg class="line-icon" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg> Day Weather Report
+          </div>
+          <span style="font-size:10.5px; font-weight:800; color:var(--accent-emerald); background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); padding:2px 8px; border-radius:6px;" id="day-weather-city">Dehradun</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <div style="font-size:15px; font-weight:800; color:#fff;" id="day-weather-temp">28°C / 22°C</div>
+          <div style="font-size:12px; font-weight:800;" id="day-weather-rain">☔ 90% Rain Chance</div>
+        </div>
+        <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;" id="day-weather-desc">Thunderstorm expected. Tap to view full forecast modal.</div>
+      </div>
+
       <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB -->
       <div class="category-filter-bar">
         <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
@@ -1370,6 +1385,60 @@
           console.warn(`Weather fetch failed for ${cityInfo.name}`, err);
         }
       }
+      updateDayWeatherBanner();
+    }
+
+    const DAY_CITY_MAP = {
+      1: { cityKey: 'dehradun', label: 'Day 1 Weather Forecast (Dehradun & Mussoorie)', dateIdx: 3 },
+      2: { cityKey: 'mussoorie', label: 'Day 2 Weather Forecast (Mussoorie Hills)', dateIdx: 4 },
+      3: { cityKey: 'mussoorie', label: 'Day 3 Weather Forecast (Mussoorie to Rishikesh)', dateIdx: 5 },
+      4: { cityKey: 'rishikesh', label: 'Day 4 Weather Forecast (Rishikesh Valley)', dateIdx: 6 },
+      5: { cityKey: 'haridwar', label: 'Day 5 Weather Forecast (Haridwar Ghats)', dateIdx: 7 },
+      6: { cityKey: 'haridwar', label: 'Day 6 Weather Forecast (Haridwar & Airport)', dateIdx: 8 }
+    };
+
+    function updateDayWeatherBanner() {
+      const banner = document.getElementById('day-weather-banner');
+      if (!banner) return;
+
+      if (selectedDayFilter === 'all' || !DAY_CITY_MAP[selectedDayFilter]) {
+        banner.style.display = 'none';
+        return;
+      }
+
+      const info = DAY_CITY_MAP[selectedDayFilter];
+      const data = weatherCacheData[info.cityKey];
+      const cityInfo = CITY_COORDS[info.cityKey];
+
+      banner.style.display = 'block';
+      document.getElementById('day-weather-title').innerHTML = `<svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg> ${info.label}`;
+      document.getElementById('day-weather-city').innerText = cityInfo ? cityInfo.name : '';
+
+      if (data && data.daily && data.daily.time) {
+        const idx = Math.min(info.dateIdx, data.daily.time.length - 1);
+        const maxTemp = Math.round(data.daily.temperature_2m_max[idx]);
+        const minTemp = Math.round(data.daily.temperature_2m_min[idx]);
+        const rainProb = data.daily.precipitation_probability_max ? data.daily.precipitation_probability_max[idx] : 0;
+        const wmo = parseWmoWeather(data.daily.weathercode[idx]);
+
+        document.getElementById('day-weather-temp').innerText = `${maxTemp}°C / ${minTemp}°C`;
+        const rainEl = document.getElementById('day-weather-rain');
+        rainEl.innerText = `☔ ${rainProb}% Rain Chance`;
+        rainEl.style.color = rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)';
+        document.getElementById('day-weather-desc').innerText = `${wmo.desc}. Tap to open full 7-day forecast modal.`;
+      } else {
+        document.getElementById('day-weather-temp').innerText = `Live Weather Available`;
+        document.getElementById('day-weather-rain').innerText = `Tap to View`;
+        document.getElementById('day-weather-desc').innerText = `Tap to open full 7-day forecast modal.`;
+      }
+    }
+
+    function handleDayWeatherBannerClick() {
+      if (selectedDayFilter !== 'all' && DAY_CITY_MAP[selectedDayFilter]) {
+        openWeatherDetailsModal(DAY_CITY_MAP[selectedDayFilter].cityKey);
+      } else {
+        openWeatherDetailsModal('dehradun');
+      }
     }
 
     function openWeatherDetailsModal(cityKey) {
@@ -1677,6 +1746,7 @@
     }
 
     function renderTimeline() {
+      updateDayWeatherBanner();
       const skippedStops = getSkippedStops();
       const missedCountEl = document.getElementById('missed-count-badge');
       if (missedCountEl) missedCountEl.innerText = skippedStops.length;
