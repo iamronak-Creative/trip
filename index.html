@@ -1324,14 +1324,15 @@
 
               if (cardEl) {
                 cardEl.innerHTML = `
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
                     <span class="weather-city" style="margin-bottom:0;">${cityInfo.name}</span>
-                    <span style="font-size:10px; font-weight:800; color:${nowRainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${nowRainProb}% • <span class="mono-num">${rainSum}mm</span></span>
+                    <span style="font-size:10px; font-weight:700; color:var(--text-secondary);">• <span class="mono-num" style="color:#fff; font-weight:800;">${rainSum}mm</span></span>
                   </div>
-                  <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:2px;">
                     <span class="weather-temp">${temp}°C</span>
-                    <span class="weather-desc">${wmo.icon} ${wmo.desc}</span>
+                    <span style="font-size:10px; font-weight:800; color:${nowRainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${nowRainProb}%</span>
                   </div>
+                  <span class="weather-desc" style="display:block;">${wmo.icon} ${wmo.desc}</span>
                 `;
               }
 
