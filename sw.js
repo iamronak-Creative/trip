@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v70';
+const CACHE_NAME = 'uttarakhand-trip-v71';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
