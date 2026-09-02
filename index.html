@@ -774,12 +774,9 @@
       <!-- WEATHER WIDGET STRIP WITH REAL-TIME API FETCHING -->
       <div class="weather-widget-header" style="display:flex; justify-content:space-between; align-items:center;">
         <span class="weather-widget-title"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg> Live Weather Today</span>
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span class="weather-live-badge" id="weather-badge">LIVE WEATHER</span>
-          <button class="reset-icon-btn" onclick="purgeAppCache()" title="Purge Cache & Fetch Fresh Live Weather" style="width:24px; height:24px;">
-            <svg class="line-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-          </button>
-        </div>
+        <button class="reset-icon-btn" onclick="purgeAppCache()" title="Purge Cache & Fetch Fresh Live Weather" style="width:24px; height:24px;">
+          <svg class="line-icon" viewBox="0 0 24 24" style="width:12px; height:12px;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
       </div>
 
       <div class="weather-widget-strip" id="weather-strip">
