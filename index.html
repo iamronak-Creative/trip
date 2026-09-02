@@ -1285,6 +1285,10 @@
       </div>
     </div>
 
+    <!-- QUICK 4-CITY LOCATION SWITCHER TABS -->
+    <div style="font-size:10.5px; font-weight:800; color:var(--text-secondary); text-transform:uppercase; margin-bottom:6px;">Switch Location:</div>
+    <div id="weather-city-switcher" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; scrollbar-width:none;"></div>
+
     <div class="section-heading" style="font-size:13px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
       <span>Today's 24-Hour Hourly Forecast</span>
       <span style="font-size:10.5px; font-weight:600; color:var(--text-secondary);">Scroll ➔</span>
@@ -1444,6 +1448,41 @@
       if (arrowEl) arrowEl.innerText = isHidden ? '▲' : '▼';
     }
 
+    const TRIP_DAY_LABELS = {
+      '2026-09-04': 'DAY 1 (WED SEP 4): Dehradun ➔ Mussoorie Drive',
+      '2026-09-05': 'DAY 2 (THU SEP 5): Mussoorie Hills & Kempty Falls',
+      '2026-09-06': 'DAY 3 (FRI SEP 6): Mussoorie to Rishikesh Transfer',
+      '2026-09-07': 'DAY 4 (SAT SEP 7): Rishikesh Rafting & Ganga Aarti',
+      '2026-09-08': 'DAY 5 (SUN SEP 8): Haridwar Ghats & Mansa Devi',
+      '2026-09-09': 'DAY 6 (MON SEP 9): Haridwar & Airport Departure'
+    };
+
+    function formatWeatherDate(dateStr) {
+      if (TRIP_DAY_LABELS[dateStr]) return TRIP_DAY_LABELS[dateStr];
+      const d = new Date(dateStr + 'T00:00:00');
+      const dayName = d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+      const monthName = d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+      return `${dayName} ${monthName} ${d.getDate()}`;
+    }
+
+    function getDynamicDayAdvice(cityKey, dateStr, rainProb, rainSum, windMax) {
+      if (cityKey === 'mussoorie') {
+        if (dateStr === '2026-09-05') return `Day 2 Mussoorie Sightseeing. Rain volume: ${rainSum}mm. Cable car ropeway operates normally; wear slip-resistant footwear around Kempty steps.`;
+        if (dateStr === '2026-09-04') return `Day 1 Mountain Drive to Mussoorie (2,005m). Rain volume: ${rainSum}mm. Misty hill curves; driver (+91 90272 44461) uses fog lights.`;
+        return `Mussoorie Peak Altitude (2,005m). High rain volume: ${rainSum}mm. Carry warm layers & light rain jacket for cool evening mountain breeze.`;
+      } else if (cityKey === 'rishikesh') {
+        if (dateStr === '2026-09-07') return `Day 4 Rishikesh Waterfalls & Ganga Aarti. Rain volume: ${rainSum}mm. Rafting runs in mild showers; keep waterproof phone pouch.`;
+        if (dateStr === '2026-09-06') return `Day 3 Scenic Valley Arrival. Rain volume: ${rainSum}mm. Enjoy riverview cafes & evening Parmarth Niketan Aarti.`;
+        return `Rishikesh Valley (340m). Rain volume: ${rainSum}mm. Covered ghat shelters available at Ram Jhula & Parmarth Niketan.`;
+      } else if (cityKey === 'haridwar') {
+        if (dateStr === '2026-09-08') return `Day 5 Haridwar Holy Dip & Mansa Devi Cable Car. Rain volume: ${rainSum}mm. Covered shopping arcades at Moti Bazaar.`;
+        if (dateStr === '2026-09-09') return `Day 6 Departure via Jolly Grant Airport. Rain volume: ${rainSum}mm. Safe 4-lane highway route to airport terminal.`;
+        return `Haridwar Plains (314m). Rain volume: ${rainSum}mm. Excellent road drainage; carry compact umbrella for temple markets.`;
+      } else {
+        return `Dehradun Capital Foothills (430m). Rain volume: ${rainSum}mm. Great road conditions; visit Forest Research Institute & indoor dining.`;
+      }
+    }
+
     function openWeatherDetailsModal(cityKey) {
       const cityInfo = CITY_COORDS[cityKey];
       const data = weatherCacheData[cityKey];
@@ -1459,6 +1498,21 @@
         document.getElementById('weather-modal-cur-temp').innerText = `${temp}°C`;
         document.getElementById('weather-modal-cur-desc').innerText = wmo.desc;
         document.getElementById('weather-modal-cur-wind').innerText = `${data.current_weather.windspeed} km/h`;
+      }
+
+      // RENDER CITY SWITCHER TABS INSIDE MODAL TOP
+      const switcherContainer = document.getElementById('weather-city-switcher');
+      if (switcherContainer) {
+        switcherContainer.innerHTML = '';
+        Object.entries(CITY_COORDS).forEach(([cKey, cObj]) => {
+          const cData = weatherCacheData[cKey];
+          const cTemp = (cData && cData.current_weather) ? Math.round(cData.current_weather.temperature) : '--';
+          const btn = document.createElement('button');
+          btn.style.cssText = `padding:5px 10px; border-radius:18px; font-size:11px; font-weight:700; border:1px solid ${cKey === cityKey ? 'var(--accent-blue)' : 'var(--glass-border)'}; background:${cKey === cityKey ? 'rgba(56,189,248,0.2)' : 'rgba(255,255,255,0.05)'}; color:${cKey === cityKey ? '#fff' : 'var(--text-secondary)'}; cursor:pointer; font-family:'Google Sans Flex',sans-serif; transition:var(--transition-fast);`;
+          btn.innerHTML = `${cObj.name} <strong style="color:var(--accent-blue);" class="mono-num">${cTemp}°C</strong>`;
+          btn.onclick = () => openWeatherDetailsModal(cKey);
+          switcherContainer.appendChild(btn);
+        });
       }
 
       // 1. POPULATE 24-HOUR HOURLY FORECAST STRIP
@@ -1490,7 +1544,7 @@
         }
       }
 
-      // 2. POPULATE EXPANDABLE 7-DAY DAILY FORECAST CARDS
+      // 2. POPULATE EXPANDABLE 7-DAY DAILY FORECAST CARDS WITH ACCURATE TRIP DAY LABELS
       const cardsContainer = document.getElementById('weather-forecast-cards');
       cardsContainer.innerHTML = '';
 
@@ -1499,22 +1553,22 @@
           const maxTemp = Math.round(data.daily.temperature_2m_max[idx]);
           const minTemp = Math.round(data.daily.temperature_2m_min[idx]);
           const rainProb = data.daily.precipitation_probability_max ? data.daily.precipitation_probability_max[idx] : 0;
-          const rainSum = data.daily.precipitation_sum ? data.daily.precipitation_sum[idx] : 0;
-          const windMax = data.daily.windspeed_10m_max ? data.daily.windspeed_10m_max[idx] : 0;
+          const rainSum = data.daily.precipitation_sum ? Math.round(data.daily.precipitation_sum[idx] * 10) / 10 : 0;
+          const windMax = data.daily.windspeed_10m_max ? Math.round(data.daily.windspeed_10m_max[idx]) : 0;
           const wmo = parseWmoWeather(data.daily.weathercode[idx]);
 
-          let travelAdvice = "Good day for sightseeing. Carry lightweight layers & water.";
-          if (rainProb > 70) travelAdvice = "High rain chance. Keep rain poncho accessible, avoid slippery waterfall steps & night hill drives.";
-          else if (rainProb > 40) travelAdvice = "Passing showers possible. Carry compact umbrella & wear comfortable waterproof shoes.";
+          const formattedTitle = formatWeatherDate(dateStr);
+          const travelAdvice = getDynamicDayAdvice(cityKey, dateStr, rainProb, rainSum, windMax);
+          const isTripDay = !!TRIP_DAY_LABELS[dateStr];
 
           const card = document.createElement('div');
           card.className = 'food-spot-card';
-          card.style.cursor = 'pointer';
+          card.style.cssText = `cursor:pointer; ${isTripDay ? 'border-left: 3.5px solid var(--accent-blue); background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(15,23,42,0.6));' : ''}`;
           card.onclick = function() { toggleWeatherCardExpand(this); };
           card.innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
-                <strong style="color:#fff; font-size:13px;">${dateStr}</strong>
+                <strong style="color:${isTripDay ? 'var(--accent-blue)' : '#fff'}; font-size:12.5px;">${formattedTitle}</strong>
                 <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${wmo.icon} ${wmo.desc}</div>
               </div>
               <div style="text-align:right;">
@@ -1524,10 +1578,10 @@
             </div>
             <div class="weather-card-expandable" style="display:none; margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15); font-size:11.5px; color:#e2e8f0; line-height:1.5;">
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px;">
-                <div>🌧️ Rain Volume: <strong style="color:#fff;" class="mono-num">${rainSum} mm</strong></div>
+                <div>🌧️ Expected Rain: <strong style="color:#fff;" class="mono-num">${rainSum} mm</strong></div>
                 <div>💨 Max Wind: <strong style="color:#fff;" class="mono-num">${windMax} km/h</strong></div>
               </div>
-              <div style="color:var(--text-secondary);">💡 <strong>Day Advice:</strong> ${travelAdvice}</div>
+              <div style="color:var(--text-secondary);">💡 <strong>Location & Itinerary Tip:</strong> ${travelAdvice}</div>
             </div>
           `;
           cardsContainer.appendChild(card);
@@ -1863,7 +1917,16 @@
         document.getElementById('current-mustdo').innerText = currentItem.mustDo || "Explore the spot, enjoy mountain views & take photos.";
         document.getElementById('current-food').innerText = currentItem.food || "Delicacies & Beverages.";
         document.getElementById('current-tip').innerText = currentItem.tip || "Keep emergency cash and power bank handy.";
-        document.getElementById('current-wear').innerText = currentItem.wear || "Comfortable Travel Clothing & Walking Shoes";
+        // Dynamically update hero weather pill to match currentItem city
+        const cityKeyMap = { 'Dehradun': 'dehradun', 'Mussoorie': 'mussoorie', 'Rishikesh': 'rishikesh', 'Haridwar': 'haridwar' };
+        const cKey = cityKeyMap[currentItem.city] || 'dehradun';
+        const cData = weatherCacheData[cKey];
+        const heroWeatherVal = document.getElementById('current-weather-val');
+        if (heroWeatherVal && cData && cData.current_weather) {
+          const cTemp = Math.round(cData.current_weather.temperature);
+          const cRain = (cData.daily && cData.daily.precipitation_probability_max) ? cData.daily.precipitation_probability_max[0] : 0;
+          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (☔${cRain}%)`;
+        }
 
         currentCardEl.onclick = (e) => {
           if (!e.target.closest('#current-nav-btn') && !e.target.closest('#current-done-btn') && !e.target.closest('#hero-food-nav-btn')) {
