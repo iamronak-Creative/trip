@@ -772,31 +772,33 @@
     <section id="tab-trip" class="tab-content active">
 
       <!-- WEATHER WIDGET STRIP WITH REAL-TIME API FETCHING -->
-      <div class="weather-widget-header">
+      <div class="weather-widget-header" style="display:flex; justify-content:space-between; align-items:center;">
         <span class="weather-widget-title"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg> Live Weather Today</span>
-        <span class="weather-live-badge" id="weather-badge">LIVE WEATHER</span>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span class="weather-live-badge" id="weather-badge" onclick="purgeAppCache()" style="cursor:pointer;" title="Click to Purge Cache & Fetch Fresh Weather">LIVE WEATHER 🔄</span>
+        </div>
       </div>
 
       <div class="weather-widget-strip" id="weather-strip">
         <div class="weather-card" id="weather-dehradun" onclick="openWeatherDetailsModal('dehradun')" title="Click for 7-Day Forecast & Mountain Details">
           <span class="weather-city">Dehradun</span>
-          <span class="weather-temp">26°C</span>
-          <span class="weather-desc"><svg class="line-icon" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg> Light Rain</span>
+          <span class="weather-temp">--°C</span>
+          <span class="weather-desc">Loading live...</span>
         </div>
         <div class="weather-card" id="weather-mussoorie" onclick="openWeatherDetailsModal('mussoorie')" title="Click for 7-Day Forecast & Mountain Details">
           <span class="weather-city">Mussoorie</span>
-          <span class="weather-temp">21°C</span>
-          <span class="weather-desc"><svg class="line-icon" viewBox="0 0 24 24"><line x1="16" y1="13" x2="16" y2="21"/><line x1="8" y1="13" x2="8" y2="21"/><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/></svg> Light Mist</span>
+          <span class="weather-temp">--°C</span>
+          <span class="weather-desc">Loading live...</span>
         </div>
         <div class="weather-card" id="weather-rishikesh" onclick="openWeatherDetailsModal('rishikesh')" title="Click for 7-Day Forecast & Mountain Details">
           <span class="weather-city">Rishikesh</span>
-          <span class="weather-temp">28°C</span>
-          <span class="weather-desc"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Thunderstorm</span>
+          <span class="weather-temp">--°C</span>
+          <span class="weather-desc">Loading live...</span>
         </div>
         <div class="weather-card" id="weather-haridwar" onclick="openWeatherDetailsModal('haridwar')" title="Click for 7-Day Forecast & Mountain Details">
           <span class="weather-city">Haridwar</span>
-          <span class="weather-temp">28°C</span>
-          <span class="weather-desc"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg> Clear Sky</span>
+          <span class="weather-temp">--°C</span>
+          <span class="weather-desc">Loading live...</span>
         </div>
       </div>
 
@@ -1750,6 +1752,25 @@
     let selectedCategoryFilter = 'all';
     let leafletMap = null;
     let userMarker = null;
+
+    function purgeAppCache() {
+      if ('caches' in window) {
+        caches.keys().then(keys => {
+          return Promise.all(keys.map(k => caches.delete(k)));
+        }).then(() => {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => {
+              for (let r of regs) r.unregister();
+              window.location.reload(true);
+            });
+          } else {
+            window.location.reload(true);
+          }
+        });
+      } else {
+        window.location.reload(true);
+      }
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       initNavigation();
