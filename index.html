@@ -1370,6 +1370,7 @@
             if (data.current_weather) {
               const temp = Math.round(data.current_weather.temperature);
               const wmo = parseWmoWeather(data.current_weather.weathercode);
+              const rainSum = (data.daily && data.daily.precipitation_sum) ? Math.round(data.daily.precipitation_sum[0] * 10) / 10 : 0;
               
               let nowRainProb = 0;
               if (data.hourly && data.hourly.time && data.hourly.precipitation_probability) {
@@ -1386,13 +1387,13 @@
                     <span class="weather-temp">${temp}°C</span>
                     <span style="font-size:10px; font-weight:800; color:${nowRainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${nowRainProb}%</span>
                   </div>
-                  <span class="weather-desc">${wmo.icon} ${wmo.desc}</span>
+                  <span class="weather-desc">${wmo.icon} ${wmo.desc} • <span class="mono-num">${rainSum}mm</span></span>
                 `;
               }
 
               if (key === 'dehradun') {
                 const heroWeatherVal = document.getElementById('current-weather-val');
-                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (${nowRainProb}%)`;
+                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (${nowRainProb}% • ${rainSum}mm)`;
               }
             }
           }
@@ -1962,7 +1963,8 @@
           const cTemp = Math.round(cData.current_weather.temperature);
           const curHour = new Date().getHours();
           const nowRainProb = (cData.hourly && cData.hourly.precipitation_probability) ? cData.hourly.precipitation_probability[curHour] : 0;
-          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (${nowRainProb}%)`;
+          const cRainSum = (cData.daily && cData.daily.precipitation_sum) ? Math.round(cData.daily.precipitation_sum[0] * 10) / 10 : 0;
+          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (${nowRainProb}% • ${cRainSum}mm)`;
         }
 
         currentCardEl.onclick = (e) => {
