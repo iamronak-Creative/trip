@@ -935,16 +935,16 @@
         </div>
       </div>
 
-      <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB -->
+      <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB PLACED AT VERY END -->
       <div class="category-filter-bar">
         <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
-        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops (<span id="missed-count-badge">0</span>)</div>
         <div class="cat-pill" data-cat="Hotel Stay"><svg class="line-icon" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M3 21h18"/></svg> Hotel Stays</div>
         <div class="cat-pill" data-cat="Food & Dining"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food & Dining</div>
         <div class="cat-pill" data-cat="Holy Shrine"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg> Holy Shrines</div>
         <div class="cat-pill" data-cat="Extreme Adventure"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Adventure</div>
         <div class="cat-pill" data-cat="Nature"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg> Nature & Views</div>
         <div class="cat-pill" data-cat="Sightseeing"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Sightseeing</div>
+        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops (<span id="missed-count-badge">0</span>)</div>
       </div>
 
       <div class="bento-grid-container" id="timeline-grid-container">
@@ -2072,6 +2072,16 @@
         `;
         gridContainerEl.appendChild(card);
       });
+
+      if (upcomingItems.length === 0) {
+        gridContainerEl.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding: 36px 16px; background: rgba(255,255,255,0.02); border:1px dashed var(--glass-border); border-radius:12px; color: var(--text-secondary);">
+            <div style="font-size: 22px; margin-bottom: 6px;">✨</div>
+            <strong style="color:#fff; font-size:13.5px; display:block; margin-bottom:4px;">No Skipped Stops</strong>
+            <span style="font-size:11.5px;">All itinerary stops are currently active and on schedule.</span>
+          </div>
+        `;
+      }
     }
 
     function updateProgress() {
