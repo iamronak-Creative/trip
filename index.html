@@ -802,50 +802,6 @@
         </div>
       </div>
 
-      <!-- HORIZONTAL DATE STRIP -->
-      <div class="date-strip-container">
-        <div class="date-chip active" data-day="all">
-          <span class="date-chip-day">ALL</span>
-          <span class="date-chip-num">TRIP</span>
-        </div>
-        <div class="date-chip" data-day="1">
-          <span class="date-chip-day">WED</span>
-          <span class="date-chip-num">SEP 4</span>
-        </div>
-        <div class="date-chip" data-day="2">
-          <span class="date-chip-day">THU</span>
-          <span class="date-chip-num">SEP 5</span>
-        </div>
-        <div class="date-chip" data-day="3">
-          <span class="date-chip-day">FRI</span>
-          <span class="date-chip-num">SEP 6</span>
-        </div>
-        <div class="date-chip" data-day="4">
-          <span class="date-chip-day">SAT</span>
-          <span class="date-chip-num">SEP 7</span>
-        </div>
-        <div class="date-chip" data-day="5">
-          <span class="date-chip-day">SUN</span>
-          <span class="date-chip-num">SEP 8</span>
-        </div>
-        <div class="date-chip" data-day="6">
-          <span class="date-chip-day">MON</span>
-          <span class="date-chip-num">SEP 9</span>
-        </div>
-      </div>
-
-      <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB -->
-      <div class="category-filter-bar">
-        <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
-        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops (<span id="missed-count-badge">0</span>)</div>
-        <div class="cat-pill" data-cat="Hotel Stay"><svg class="line-icon" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M3 21h18"/></svg> Hotel Stays</div>
-        <div class="cat-pill" data-cat="Food & Dining"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food & Dining</div>
-        <div class="cat-pill" data-cat="Holy Shrine"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg> Holy Shrines</div>
-        <div class="cat-pill" data-cat="Extreme Adventure"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Adventure</div>
-        <div class="cat-pill" data-cat="Nature"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg> Nature & Views</div>
-        <div class="cat-pill" data-cat="Sightseeing"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Sightseeing</div>
-      </div>
-
       <!-- TIER 1: HERO TILE (CURRENT SCHEDULED DESTINATION) -->
       <div class="hero-bento-card" id="current-card">
         <div class="hero-img-wrap">
@@ -944,8 +900,53 @@
         </div>
       </div>
 
-      <!-- TIER 3: SUBSEQUENT UPCOMING STOPS -->
-      <div class="section-heading" id="itinerary-grid-heading">Upcoming Itinerary</div>
+      <!-- HORIZONTAL DATE STRIP & CATEGORY FILTERS PLACED RIGHT BEFORE UPCOMING ITINERARY -->
+      <div class="section-heading" id="itinerary-grid-heading" style="margin-top:20px; margin-bottom:10px;">Upcoming Itinerary</div>
+
+      <!-- HORIZONTAL DATE STRIP -->
+      <div class="date-strip-container">
+        <div class="date-chip active" data-day="all">
+          <span class="date-chip-day">ALL</span>
+          <span class="date-chip-num">TRIP</span>
+        </div>
+        <div class="date-chip" data-day="1">
+          <span class="date-chip-day">WED</span>
+          <span class="date-chip-num">SEP 4</span>
+        </div>
+        <div class="date-chip" data-day="2">
+          <span class="date-chip-day">THU</span>
+          <span class="date-chip-num">SEP 5</span>
+        </div>
+        <div class="date-chip" data-day="3">
+          <span class="date-chip-day">FRI</span>
+          <span class="date-chip-num">SEP 6</span>
+        </div>
+        <div class="date-chip" data-day="4">
+          <span class="date-chip-day">SAT</span>
+          <span class="date-chip-num">SEP 7</span>
+        </div>
+        <div class="date-chip" data-day="5">
+          <span class="date-chip-day">SUN</span>
+          <span class="date-chip-num">SEP 8</span>
+        </div>
+        <div class="date-chip" data-day="6">
+          <span class="date-chip-day">MON</span>
+          <span class="date-chip-num">SEP 9</span>
+        </div>
+      </div>
+
+      <!-- CATEGORY FILTER BAR WITH DYNAMIC SKIPPED STOPS TAB -->
+      <div class="category-filter-bar">
+        <div class="cat-pill active" data-cat="all"><svg class="line-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> All Stops</div>
+        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops (<span id="missed-count-badge">0</span>)</div>
+        <div class="cat-pill" data-cat="Hotel Stay"><svg class="line-icon" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16"/><path d="M3 21h18"/></svg> Hotel Stays</div>
+        <div class="cat-pill" data-cat="Food & Dining"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food & Dining</div>
+        <div class="cat-pill" data-cat="Holy Shrine"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg> Holy Shrines</div>
+        <div class="cat-pill" data-cat="Extreme Adventure"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Adventure</div>
+        <div class="cat-pill" data-cat="Nature"><svg class="line-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg> Nature & Views</div>
+        <div class="cat-pill" data-cat="Sightseeing"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Sightseeing</div>
+      </div>
+
       <div class="bento-grid-container" id="timeline-grid-container">
         <!-- Rendered dynamically -->
       </div>
@@ -1915,7 +1916,7 @@
         nextCardEl.style.display = 'none';
         upcomingItems = filtered;
       } else {
-        gridHeadingEl.innerText = 'Upcoming Itinerary Cards';
+        gridHeadingEl.innerText = 'Upcoming Itinerary';
         
         const scheduledIdx = getCurrentScheduledPlaceIndex();
         const unvisitedFromScheduled = PLACES_DATA.slice(scheduledIdx).filter(p => !doneIds.includes(p.id));
