@@ -26,42 +26,41 @@
        NATIVE LUXURY DESIGN SYSTEM (STRICTLY GOOGLE SANS FLEX ONLY)
        ========================================================= */
     :root {
-      --bg-dark: #070913;
-      --bg-card: rgba(15, 23, 42, 0.88);
-      --bg-card-solid: #0f172a;
-      --bg-card-hover: rgba(30, 41, 59, 0.95);
+      --bg-dark: #101114;
+      --bg-header: #16171b;
+      --bg-card: #18191e;
+      --bg-card-solid: #18191e;
+      --bg-card-hover: #202229;
       
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-border-violet: rgba(139, 92, 246, 0.35);
-      --glass-border-blue: rgba(56, 189, 248, 0.35);
+      --glass-border: #262830;
+      --glass-border-violet: #3b3e4d;
+      --glass-border-blue: #2a3442;
       
       --accent-blue: #38bdf8;
       --accent-indigo: #6366f1;
-      --accent-violet: #8b5cf6;
-      --accent-purple: #a855f7;
-      --accent-emerald: #10b981;
-      --accent-rose: #f43f5e;
-      --accent-amber: #f59e0b;
+      --accent-violet: #a78bfa;
+      --accent-emerald: #34d399;
+      --accent-rose: #fb7185;
+      --accent-amber: #fbbf24;
       
-      --text-main: #ffffff;
+      --text-main: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
       
-      /* STRICTLY GOOGLE SANS FLEX ONLY ACROSS THE ENTIRE APPLICATION */
       --font-display: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-body: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-editorial: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 10px;
-      --radius-xl: 14px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
       
-      --shadow-liquid: 0 16px 40px rgba(0, 0, 0, 0.85), inset 1px 1px 1px rgba(255, 255, 255, 0.2);
-      --shadow-violet-glow: 0 0 25px rgba(139, 92, 246, 0.3);
-      --transition-spring: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-liquid: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-violet-glow: none;
+      --transition-spring: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-fast: all 0.18s ease;
     }
 
     * {
@@ -73,12 +72,8 @@
     }
 
     html, body {
-      background: var(--bg-dark);
-      background-image: 
-        radial-gradient(circle at 20% 0%, rgba(99, 102, 241, 0.35) 0%, transparent 50%),
-        radial-gradient(circle at 80% 40%, rgba(139, 92, 246, 0.25) 0%, transparent 45%),
-        radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.15) 0%, transparent 50%);
-      background-attachment: fixed;
+      background: #101114 !important;
+      background-image: none !important;
       color: var(--text-main);
       min-height: 100vh;
       min-height: 100dvh;
@@ -719,27 +714,58 @@
     .nav-item-btn.active { color: var(--accent-blue); }
     .nav-item-btn.active svg { stroke: var(--accent-blue); }
 
-    /* MODAL BOTTOM SHEET */
+    /* FULL-SCREEN SLIDE OVERLAY SCREEN */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(14px);
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7);
       z-index: 2000; opacity: 0; visibility: hidden; transition: var(--transition-fast); display: none;
     }
     .modal-overlay.active { opacity: 1; visibility: visible; display: block; }
 
     .bottom-sheet {
-      position: fixed; bottom: 0; left: 0; right: 0; max-height: 88dvh; background: #0b0f19;
-      border-top: 1px solid var(--glass-border-violet); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      z-index: 2001; transform: translateY(100%); transition: var(--transition-spring); overflow-y: auto;
-      padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: none;
-      box-shadow: var(--shadow-liquid);
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100dvh; max-height: 100dvh;
+      background: #101114;
+      border: none; border-radius: 0;
+      z-index: 2500; transform: translateY(100%);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto; display: none;
+      padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
     }
     .bottom-sheet.active { transform: translateY(0); display: block; }
 
-    .sheet-img { width: 100%; height: 210px; object-fit: cover; }
-    .sheet-content { padding: 18px; }
-    .sheet-title { font-family: 'Google Sans Flex', sans-serif !important; font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-    .sheet-tip-box { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px 14px; font-size: 13px; line-height: 1.5; color: var(--text-main); margin-bottom: 16px; box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.15); }
-    .sheet-notes { width: 100%; height: 80px; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 12px; color: #fff; font-size: 13px; outline: none; resize: none; margin-bottom: 18px; }
+    .sheet-sticky-bar {
+      position: sticky; top: 0; left: 0; right: 0;
+      height: 60px; padding-top: env(safe-area-inset-top, 0px);
+      background: #16171b; border-bottom: 1px solid #262830;
+      z-index: 100; display: flex; align-items: center; justify-content: space-between;
+      padding-left: 16px; padding-right: 16px;
+    }
+
+    .sheet-back-btn {
+      background: rgba(255, 255, 255, 0.08); border: 1px solid #2d303b;
+      color: #fff; border-radius: 10px; padding: 6px 14px;
+      font-size: 12.5px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+      cursor: pointer; transition: var(--transition-fast);
+    }
+    .sheet-back-btn:active { transform: scale(0.94); background: #262830; }
+
+    .sheet-header-title {
+      font-size: 13px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.8px;
+    }
+
+    .sheet-img-container {
+      position: relative; width: 100%; height: 250px;
+    }
+    .sheet-img { width: 100%; height: 100%; object-fit: cover; }
+    .sheet-img-gradient {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+      background: linear-gradient(180deg, transparent 0%, #101114 100%);
+    }
+
+    .sheet-content { padding: 20px 18px; }
+    .sheet-title { font-family: 'Google Sans Flex', sans-serif !important; font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.25; }
+    .sheet-tip-box { background: #18191e; border: 1px solid #262830; border-radius: var(--radius-md); padding: 14px 16px; font-size: 13px; line-height: 1.5; color: var(--text-main); margin-bottom: 16px; }
+    .sheet-notes { width: 100%; height: 85px; background: #18191e; border: 1px solid #262830; border-radius: var(--radius-md); padding: 12px; color: #fff; font-size: 13px; outline: none; resize: none; margin-bottom: 20px; }
   </style>
 </head>
 <body>
@@ -1118,10 +1144,25 @@
     </button>
   </nav>
 
-  <!-- MODAL BOTTOM SHEET FOR PLACE DETAILS -->
-  <div class="modal-overlay" id="modal-overlay"></div>
+  <!-- FULL-SCREEN SLIDE OVERLAY SCREEN FOR PLACE DETAILS -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closePlaceDetailsModal()"></div>
   <div class="bottom-sheet" id="bottom-sheet">
-    <img id="sheet-img" class="sheet-img" src="" alt="Place" onerror="handleImgError(this)">
+    <div class="sheet-sticky-bar">
+      <button class="sheet-back-btn" onclick="closePlaceDetailsModal()" title="Back to Itinerary">
+        <svg class="line-icon" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span>Back to Itinerary</span>
+      </button>
+      <div class="sheet-header-title" id="sheet-header-city">Place Details</div>
+      <button class="sheet-back-btn" style="padding:6px; border-radius:50%; width:32px; height:32px; justify-content:center;" onclick="closePlaceDetailsModal()" title="Close">
+        <svg class="line-icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="sheet-img-container">
+      <img id="sheet-img" class="sheet-img" src="" alt="Place" onerror="handleImgError(this)">
+      <div class="sheet-img-gradient"></div>
+    </div>
+
     <div class="sheet-content">
       <h2 class="sheet-title" id="sheet-title">Title</h2>
       
@@ -2566,6 +2607,8 @@
       pushModalHistoryState();
 
       document.getElementById('sheet-img').src = item.image_url;
+      const headerCityEl = document.getElementById('sheet-header-city');
+      if (headerCityEl) headerCityEl.innerText = `${item.city} • DAY ${item.day}`;
       document.getElementById('sheet-title').innerText = item.name;
       document.getElementById('sheet-mustdo').innerText = item.mustDo || "Explore the spot, enjoy mountain views & take photos.";
       document.getElementById('sheet-vegfood').innerText = item.food || "Delicacies & Beverages.";
