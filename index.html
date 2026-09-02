@@ -940,7 +940,7 @@
         <div class="cat-pill" data-cat="Food & Dining"><svg class="line-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg> Food & Dining</div>
         <div class="cat-pill" data-cat="Holy Shrine"><svg class="line-icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/></svg> Holy Shrines</div>
         <div class="cat-pill" data-cat="Sightseeing"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Sightseeing</div>
-        <div class="cat-pill missed-pill" data-cat="missed" style="border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops</div>
+        <div class="cat-pill missed-pill" data-cat="missed" style="display:none; border-color:rgba(244, 63, 94, 0.4); color:var(--accent-rose);"><svg class="line-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Skipped Stops</div>
       </div>
 
       <div class="bento-grid-container" id="timeline-grid-container">
@@ -1882,8 +1882,20 @@
     function renderTimeline() {
       updateDayWeatherBanner();
       const skippedStops = getSkippedStops();
-      const missedCountEl = document.getElementById('missed-count-badge');
-      if (missedCountEl) missedCountEl.innerText = skippedStops.length;
+      const missedPillEl = document.querySelector('.missed-pill');
+      if (missedPillEl) {
+        if (skippedStops.length > 0) {
+          missedPillEl.style.display = 'inline-flex';
+        } else {
+          missedPillEl.style.display = 'none';
+          if (selectedCategoryFilter === 'missed') {
+            selectedCategoryFilter = 'all';
+            document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+            const allPill = document.querySelector('.cat-pill[data-cat="all"]');
+            if (allPill) allPill.classList.add('active');
+          }
+        }
+      }
 
       let filtered = PLACES_DATA;
 
