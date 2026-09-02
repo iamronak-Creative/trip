@@ -1364,7 +1364,8 @@
             if (data.current_weather) {
               const temp = Math.round(data.current_weather.temperature);
               const wmo = parseWmoWeather(data.current_weather.weathercode);
-              const rainProb = (data.daily && data.daily.precipitation_probability_max) ? data.daily.precipitation_probability_max[0] : 0;
+              const curHour = new Date().getHours();
+              const nowRainProb = (data.hourly && data.hourly.precipitation_probability) ? data.hourly.precipitation_probability[curHour] : 0;
               const cardEl = document.getElementById(cityInfo.elId);
 
               if (cardEl) {
@@ -1372,7 +1373,7 @@
                   <span class="weather-city">${cityInfo.name}</span>
                   <div style="display:flex; justify-content:space-between; align-items:baseline; margin: 2px 0;">
                     <span class="weather-temp">${temp}°C</span>
-                    <span style="font-size:10px; font-weight:800; color:${rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${rainProb}%</span>
+                    <span style="font-size:10px; font-weight:800; color:${nowRainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${nowRainProb}% Now</span>
                   </div>
                   <span class="weather-desc">${wmo.icon} ${wmo.desc}</span>
                 `;
@@ -1380,7 +1381,7 @@
 
               if (key === 'dehradun') {
                 const heroWeatherVal = document.getElementById('current-weather-val');
-                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (${rainProb}%)`;
+                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (${nowRainProb}% Now)`;
               }
             }
           }
@@ -1929,8 +1930,9 @@
         const heroWeatherVal = document.getElementById('current-weather-val');
         if (heroWeatherVal && cData && cData.current_weather) {
           const cTemp = Math.round(cData.current_weather.temperature);
-          const cRain = (cData.daily && cData.daily.precipitation_probability_max) ? cData.daily.precipitation_probability_max[0] : 0;
-          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (☔${cRain}%)`;
+          const curHour = new Date().getHours();
+          const nowRainProb = (cData.hourly && cData.hourly.precipitation_probability) ? cData.hourly.precipitation_probability[curHour] : 0;
+          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (${nowRainProb}% Rain Now)`;
         }
 
         currentCardEl.onclick = (e) => {
@@ -1978,11 +1980,31 @@
       upcomingItems.forEach(item => {
         if (selectedCategoryFilter !== 'missed' && item.day !== currentRenderDay) {
           currentRenderDay = item.day;
+
+          let dayWeatherBadge = '';
+          const dayCityKey = DAY_CITY_MAP[item.day] ? DAY_CITY_MAP[item.day].cityKey : 'dehradun';
+          const dayCityData = weatherCacheData[dayCityKey];
+
+          if (dayCityData && dayCityData.daily && dayCityData.daily.time) {
+            const targetDateStr = `2026-09-0${item.day + 3}`;
+            const dIdx = dayCityData.daily.time.indexOf(targetDateStr);
+            if (dIdx >= 0) {
+              const maxT = Math.round(dayCityData.daily.temperature_2m_max[dIdx]);
+              const minT = Math.round(dayCityData.daily.temperature_2m_min[dIdx]);
+              const rProb = dayCityData.daily.precipitation_probability_max[dIdx];
+              dayWeatherBadge = `<span style="font-size:10.5px; font-weight:800; color:var(--accent-blue); background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3); padding:2px 8px; border-radius:6px; margin-left:auto;" class="mono-num">${maxT}°C / ${minT}°C • ${WATER_DROP_SVG}${rProb}% Rain</span>`;
+            }
+          }
+
           const dayBanner = document.createElement('div');
           dayBanner.className = 'day-divider-banner';
+          dayBanner.style.cssText = 'display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;';
           dayBanner.innerHTML = `
-            <span class="day-divider-title">DAY ${item.day}: ${item.dateLabel} • ${item.city.toUpperCase()}</span>
-            <span class="day-divider-sub">${item.day === 1 ? 'Dehradun to Mussoorie' : item.day === 2 ? 'Mussoorie Highlights' : item.day === 3 ? 'Surkanda to Rishikesh' : item.day === 4 ? 'Rishikesh Adventure' : item.day === 5 ? 'Kunjapuri to Haridwar' : 'Haridwar to Airport'}</span>
+            <div>
+              <span class="day-divider-title">DAY ${item.day}: ${item.dateLabel} • ${item.city.toUpperCase()}</span>
+              <div class="day-divider-sub" style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${item.day === 1 ? 'Dehradun to Mussoorie' : item.day === 2 ? 'Mussoorie Highlights' : item.day === 3 ? 'Surkanda to Rishikesh' : item.day === 4 ? 'Rishikesh Adventure' : item.day === 5 ? 'Kunjapuri to Haridwar' : 'Haridwar to Airport'}</div>
+            </div>
+            ${dayWeatherBadge}
           `;
           gridContainerEl.appendChild(dayBanner);
         }
