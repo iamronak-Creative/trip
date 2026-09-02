@@ -1302,7 +1302,7 @@
     async function fetchLiveWeather() {
       for (const [key, cityInfo] of Object.entries(CITY_COORDS)) {
         try {
-          const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityInfo.lat}&longitude=${cityInfo.lng}&current_weather=true&hourly=temperature_2m,precipitation_probability,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode,precipitation_sum,windspeed_10m_max&timezone=Asia%2FKolkata`;
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityInfo.lat}&longitude=${cityInfo.lng}&current_weather=true&hourly=temperature_2m,precipitation_probability,precipitation,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode,precipitation_sum,windspeed_10m_max&timezone=Asia%2FKolkata`;
           const res = await fetch(url);
           const data = await res.json();
           
@@ -1492,22 +1492,24 @@
             const hourLabel = hourDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             const hTemp = Math.round(data.hourly.temperature_2m[actualIdx]);
             const hProb = data.hourly.precipitation_probability ? data.hourly.precipitation_probability[actualIdx] : 0;
+            const hPrecip = data.hourly.precipitation ? (Math.round(data.hourly.precipitation[actualIdx] * 10) / 10) : 0;
             const hWmo = parseWmoWeather(data.hourly.weathercode[actualIdx]);
 
             const hCard = document.createElement('div');
-            hCard.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:8px 10px; min-width:75px; text-align:center; flex-shrink:0;';
+            hCard.style.cssText = 'background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); border-radius:8px; padding:8px 10px; min-width:78px; text-align:center; flex-shrink:0;';
             hCard.innerHTML = `
               <div style="font-size:10px; font-weight:700; color:var(--text-secondary);">${hourLabel}</div>
-              <div style="font-size:16px; margin:3px 0;">${hWmo.icon}</div>
-              <div style="font-size:12.5px; font-weight:800; color:#fff;" class="mono-num">${hTemp}°C</div>
-              <div style="font-size:9.5px; font-weight:700; color:${hProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${hProb}%</div>
+              <div style="font-size:15px; margin:2px 0;">${hWmo.icon}</div>
+              <div style="font-size:12px; font-weight:800; color:#fff;" class="mono-num">${hTemp}°C</div>
+              <div style="font-size:9px; font-weight:800; color:${hProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${hProb}%</div>
+              <div style="font-size:8.5px; font-weight:700; color:var(--text-secondary);" class="mono-num">• ${hPrecip}mm</div>
             `;
             hourlyContainer.appendChild(hCard);
           });
         }
       }
 
-      // 2. POPULATE EXPANDABLE 7-DAY DAILY FORECAST CARDS WITH ACCURATE TRIP DAY LABELS
+      // 2. POPULATE EXPANDABLE 7-DAY DAILY FORECAST CARDS WITH ACCURATE TRIP DAY LABELS & 24-HR DAY BREAKDOWN
       const cardsContainer = document.getElementById('weather-forecast-cards');
       cardsContainer.innerHTML = '';
 
@@ -1524,6 +1526,46 @@
           const travelAdvice = getDynamicDayAdvice(cityKey, dateStr, rainProb, rainSum, windMax);
           const isTripDay = !!TRIP_DAY_LABELS[dateStr];
 
+          // Generate 24-Hour Day Hourly Breakdown for this specific date
+          let dayHourlyHtml = '';
+          if (data.hourly && data.hourly.time) {
+            const dayPills = [];
+            data.hourly.time.forEach((tStr, hIdx) => {
+              if (tStr.startsWith(dateStr)) {
+                const hTime = new Date(tStr);
+                const hHourStr = hTime.toLocaleTimeString([], { hour: 'numeric', hour12: true });
+                const hTemp = Math.round(data.hourly.temperature_2m[hIdx]);
+                const hProb = data.hourly.precipitation_probability ? data.hourly.precipitation_probability[hIdx] : 0;
+                const hPrecip = data.hourly.precipitation ? (Math.round(data.hourly.precipitation[hIdx] * 10) / 10) : 0;
+                const hWmo = parseWmoWeather(data.hourly.weathercode[hIdx]);
+
+                dayPills.push(`
+                  <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:6px 8px; min-width:68px; text-align:center; flex-shrink:0;">
+                    <div style="font-size:9.5px; font-weight:700; color:var(--text-secondary);">${hHourStr}</div>
+                    <div style="font-size:14px; margin:2px 0;">${hWmo.icon}</div>
+                    <div style="font-size:11.5px; font-weight:800; color:#fff;" class="mono-num">${hTemp}°C</div>
+                    <div style="font-size:9px; font-weight:700; color:${hProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${hProb}%</div>
+                    <div style="font-size:8.5px; font-weight:700; color:var(--text-secondary);" class="mono-num">• ${hPrecip}mm</div>
+                  </div>
+                `);
+              }
+            });
+
+            if (dayPills.length > 0) {
+              dayHourlyHtml = `
+                <div style="margin-top:10px;">
+                  <div style="font-size:10.5px; font-weight:800; color:var(--accent-blue); margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+                    <span>⏱️ 24-HOUR HOURLY FORECAST</span>
+                    <span style="font-size:9px; font-weight:600; color:var(--text-secondary);">Scroll ➔</span>
+                  </div>
+                  <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; scrollbar-width:thin;">
+                    ${dayPills.join('')}
+                  </div>
+                </div>
+              `;
+            }
+          }
+
           const card = document.createElement('div');
           card.className = 'food-spot-card';
           card.style.cssText = `cursor:pointer; ${isTripDay ? 'border-left: 3.5px solid var(--accent-blue); background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(15,23,42,0.6));' : ''}`;
@@ -1536,15 +1578,16 @@
               </div>
               <div style="text-align:right;">
                 <span style="font-size:13.5px; font-weight:700; color:var(--accent-blue);" class="mono-num">${maxTemp}°C / ${minTemp}°C</span>
-                <div style="font-size:11px; font-weight:800; color:${rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG} ${rainProb}% Rain <span class="weather-expand-arrow" style="font-size:9px; opacity:0.8;">▼</span></div>
+                <div style="font-size:11px; font-weight:800; color:${rainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG} ${rainProb}% • <span class="mono-num" style="color:#fff;">${rainSum}mm</span> <span class="weather-expand-arrow" style="font-size:9px; opacity:0.8;">▼</span></div>
               </div>
             </div>
             <div class="weather-card-expandable" style="display:none; margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.15); font-size:11.5px; color:#e2e8f0; line-height:1.5;">
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px;">
-                <div>🌧️ Expected Rain: <strong style="color:#fff;" class="mono-num">${rainSum} mm</strong></div>
-                <div>💨 Max Wind: <strong style="color:#fff;" class="mono-num">${windMax} km/h</strong></div>
+                <div>🌧️ Expected Rain Volume: <strong style="color:#fff;" class="mono-num">${rainSum} mm</strong></div>
+                <div>💨 Max Wind Speed: <strong style="color:#fff;" class="mono-num">${windMax} km/h</strong></div>
               </div>
-              <div style="color:var(--text-secondary);">💡 <strong>Location & Itinerary Tip:</strong> ${travelAdvice}</div>
+              <div style="color:var(--text-secondary); margin-bottom:6px;">💡 <strong>Location & Itinerary Tip:</strong> ${travelAdvice}</div>
+              ${dayHourlyHtml}
             </div>
           `;
           cardsContainer.appendChild(card);
