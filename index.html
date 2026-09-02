@@ -1364,8 +1364,13 @@
             if (data.current_weather) {
               const temp = Math.round(data.current_weather.temperature);
               const wmo = parseWmoWeather(data.current_weather.weathercode);
-              const curHour = new Date().getHours();
-              const nowRainProb = (data.hourly && data.hourly.precipitation_probability) ? data.hourly.precipitation_probability[curHour] : 0;
+              
+              let nowRainProb = 0;
+              if (data.hourly && data.hourly.time && data.hourly.precipitation_probability) {
+                const nowHour = new Date().getHours();
+                nowRainProb = data.hourly.precipitation_probability[nowHour] || 0;
+              }
+
               const cardEl = document.getElementById(cityInfo.elId);
 
               if (cardEl) {
@@ -1373,7 +1378,7 @@
                   <span class="weather-city">${cityInfo.name}</span>
                   <div style="display:flex; justify-content:space-between; align-items:baseline; margin: 2px 0;">
                     <span class="weather-temp">${temp}°C</span>
-                    <span style="font-size:10px; font-weight:800; color:${nowRainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${nowRainProb}% Now</span>
+                    <span style="font-size:10px; font-weight:800; color:${nowRainProb > 50 ? 'var(--accent-rose)' : 'var(--accent-emerald)'};">${WATER_DROP_SVG}${nowRainProb}%</span>
                   </div>
                   <span class="weather-desc">${wmo.icon} ${wmo.desc}</span>
                 `;
@@ -1381,7 +1386,7 @@
 
               if (key === 'dehradun') {
                 const heroWeatherVal = document.getElementById('current-weather-val');
-                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (${nowRainProb}% Now)`;
+                if (heroWeatherVal) heroWeatherVal.innerText = `${temp}°C (${nowRainProb}%)`;
               }
             }
           }
@@ -1932,7 +1937,7 @@
           const cTemp = Math.round(cData.current_weather.temperature);
           const curHour = new Date().getHours();
           const nowRainProb = (cData.hourly && cData.hourly.precipitation_probability) ? cData.hourly.precipitation_probability[curHour] : 0;
-          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (${nowRainProb}% Rain Now)`;
+          heroWeatherVal.innerText = `${currentItem.city}: ${cTemp}°C (${nowRainProb}%)`;
         }
 
         currentCardEl.onclick = (e) => {
