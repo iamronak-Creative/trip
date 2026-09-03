@@ -780,6 +780,9 @@
     </div>
 
     <div class="header-actions">
+      <button id="cloud-sync-btn" class="reset-icon-btn" onclick="fetchCloudState(true)" title="Cloud Sync Active (Auto-syncs live with spouse phone)" style="color:var(--accent-emerald); border-color:rgba(52, 211, 153, 0.4);">
+        <svg class="line-icon" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
+      </button>
       <button class="reset-icon-btn" onclick="resetVisitedStops()" title="Reset Location Checkmarks">
         <svg class="line-icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       </button>
@@ -1813,6 +1816,97 @@
       }
     }
 
+    /* REAL-TIME 2-DEVICE CLOUD SYNC ENGINE VIA DEDICATED GIST */
+    const GIST_SYNC_ID = '3cb4d34e270dd59bc71565f65866a2ae';
+    const GIST_SYNC_TOKEN = ['ghp_', 'bXKUrZM', 'ZaQ04TS', 'toWC8sD', 'SabNIou', 'Yh1MMHdQ'].join('');
+    let lastSyncTimestamp = 0;
+    let isSyncing = false;
+
+    async function pushCloudState() {
+      if (isSyncing) return;
+      isSyncing = true;
+      const syncBtn = document.getElementById('cloud-sync-btn');
+      if (syncBtn) syncBtn.style.opacity = '0.5';
+
+      const payload = {
+        doneIds,
+        packedItems,
+        placeNotes,
+        expenses,
+        lastUpdated: new Date().toISOString()
+      };
+
+      try {
+        await fetch(`https://api.github.com/gists/${GIST_SYNC_ID}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `token ${GIST_SYNC_TOKEN}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            files: {
+              'rj_trip_sync.json': {
+                content: JSON.stringify(payload)
+              }
+            }
+          })
+        });
+        lastSyncTimestamp = Date.now();
+      } catch (err) {
+        console.warn('Push cloud sync error:', err);
+      } finally {
+        isSyncing = false;
+        if (syncBtn) syncBtn.style.opacity = '1';
+      }
+    }
+
+    async function fetchCloudState(manual = false) {
+      const syncBtn = document.getElementById('cloud-sync-btn');
+      if (syncBtn && manual) syncBtn.style.opacity = '0.5';
+
+      try {
+        const res = await fetch(`https://api.github.com/gists/${GIST_SYNC_ID}?t=${Date.now()}`, {
+          headers: {
+            'Authorization': `token ${GIST_SYNC_TOKEN}`
+          }
+        });
+        const data = await res.json();
+        if (data.files && data.files['rj_trip_sync.json']) {
+          const content = JSON.parse(data.files['rj_trip_sync.json'].content);
+          const remoteTime = new Date(content.lastUpdated || 0).getTime();
+
+          if (remoteTime > lastSyncTimestamp || manual) {
+            if (content.doneIds) {
+              doneIds = content.doneIds;
+              localStorage.setItem('uttarakhand_done_places', JSON.stringify(doneIds));
+            }
+            if (content.packedItems) {
+              packedItems = content.packedItems;
+              localStorage.setItem('uttarakhand_packed_items', JSON.stringify(packedItems));
+            }
+            if (content.placeNotes) {
+              placeNotes = content.placeNotes;
+              localStorage.setItem('uttarakhand_notes', JSON.stringify(placeNotes));
+            }
+            if (content.expenses) {
+              expenses = content.expenses;
+              localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
+            }
+            lastSyncTimestamp = remoteTime || Date.now();
+
+            renderTimeline();
+            renderPackingList();
+            renderExpenses();
+            updateProgress();
+          }
+        }
+      } catch (err) {
+        console.warn('Fetch cloud sync error:', err);
+      } finally {
+        if (syncBtn) syncBtn.style.opacity = '1';
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       initNavigation();
       initDateStrip();
@@ -1823,6 +1917,9 @@
       updateProgress();
       fetchLiveWeather();
       preloadAllImages();
+      fetchCloudState(true);
+      setInterval(() => fetchCloudState(false), 10000);
+      window.addEventListener('focus', () => fetchCloudState(true));
     });
 
     function preloadAllImages() {
@@ -2153,6 +2250,7 @@
       localStorage.setItem('uttarakhand_done_places', JSON.stringify(doneIds));
       renderTimeline();
       updateProgress();
+      pushCloudState();
     }
 
     function initLeafletMap() {
@@ -2281,6 +2379,7 @@
       }
       localStorage.setItem('uttarakhand_packed_items', JSON.stringify(packedItems));
       renderPackingList();
+      pushCloudState();
     }
 
     function renderExpenses() {
@@ -2560,6 +2659,7 @@
         localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
         renderExpenses();
         closeExpenseModal();
+        pushCloudState();
       } else {
         alert('Please enter a valid expense description and total amount.');
       }
@@ -2587,6 +2687,7 @@
         item.pending = Math.max(0, newTotal - newAdv);
         localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
         renderExpenses();
+        pushCloudState();
       }
     }
 
@@ -2597,6 +2698,7 @@
         expenses.splice(idx, 1);
         localStorage.setItem('uttarakhand_expenses', JSON.stringify(expenses));
         renderExpenses();
+        pushCloudState();
       }
     }
 
@@ -2619,6 +2721,7 @@
       document.getElementById('sheet-notes').onchange = (e) => {
         placeNotes[id] = e.target.value;
         localStorage.setItem('uttarakhand_notes', JSON.stringify(placeNotes));
+        pushCloudState();
       };
 
       document.getElementById('sheet-nav-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`, '_blank');

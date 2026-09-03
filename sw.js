@@ -1,4 +1,4 @@
-const CACHE_NAME = 'uttarakhand-trip-v73';
+const CACHE_NAME = 'uttarakhand-trip-v74';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -27,7 +27,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   // Always fetch fresh HTML & API data from Network first
-  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/') || e.request.url.includes('open-meteo.com')) {
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/') || e.request.url.includes('open-meteo.com') || e.request.url.includes('github.com')) {
     e.respondWith(
       fetch(e.request).catch(() => caches.match(e.request))
     );
